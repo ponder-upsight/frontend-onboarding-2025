@@ -6,7 +6,7 @@ interface LayoutProviderProps {
 
 const LayoutProvider = ({ children }: LayoutProviderProps) => {
   return (
-    <Flex pt={5} justifyContent={"center"}>
+    <Flex pt={10} justifyContent={"center"} px={10}>
       {children}
     </Flex>
   );
