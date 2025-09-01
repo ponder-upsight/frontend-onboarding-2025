@@ -16,7 +16,7 @@ const HomePage = () => {
         textAlign={"start"}>
         상품 목록
       </Heading>
-      <Text color={"gray.500"}>총 {}개의 상품이 등록되어 있습니다.</Text>
+      <Text color={"gray.600"}>총 {}개의 상품이 등록되어 있습니다.</Text>
     </Flex>
   );
 };
