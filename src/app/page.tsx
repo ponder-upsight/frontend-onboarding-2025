@@ -5,10 +5,10 @@ export const metadata = {
 
 const HomePage = () => {
   return (
-    <main>
+    <>
       <h1>Welcome to the Home Page</h1>
       <p>This is the main content of the homepage.</p>
-    </main>
+    </>
   );
 };
 export default HomePage;

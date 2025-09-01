@@ -4,6 +4,7 @@ import { colors } from "./foundations/colors";
 import { radius } from "./foundations/radius";
 import { spacing } from "./foundations/spacing";
 import { text } from "./foundations/text";
+import { buttonTheme } from "./components/button";
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -41,5 +42,8 @@ export const theme = extendTheme({
         _hover: { textDecoration: "underline" },
       },
     },
+  },
+  components: {
+    Button: buttonTheme,
   },
 });

@@ -1,5 +1,6 @@
 import ChakraLayoutProvider from "@/lib/theme";
 import "./globals.css";
+import AppHeader from "@/components/AppHeader";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ChakraLayoutProvider>{children}</ChakraLayoutProvider>
+      <body>
+        <ChakraLayoutProvider>
+          <AppHeader />
+          {children}
+        </ChakraLayoutProvider>
+      </body>
     </html>
   );
 }
