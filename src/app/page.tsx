@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import HomePage from "./[page]/page";
 
 export const metadata = {
   title: "상품 목록페이지",
@@ -6,6 +6,6 @@ export const metadata = {
 };
 
 const Page = () => {
-  redirect("/1");
+  return <HomePage />;
 };
 export default Page;

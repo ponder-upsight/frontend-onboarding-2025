@@ -1,4 +1,4 @@
-import useGetPrefetchProductList from "@/api/product/useGetPrefetchProductList";
+import useGetPrefetchProductList from "@/api/products/useGetPrefetchProductList";
 import { useEffect, useRef } from "react";
 
 interface UsePrefetchObserveProps {

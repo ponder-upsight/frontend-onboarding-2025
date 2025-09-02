@@ -1,28 +1,5 @@
 import { Product } from "@/types/products";
 
-type getProductListResponse = {
-  totalPageCount: number;
-  productList: Product[];
-};
-
-const getProductList = async (
-  page: number,
-  size: number
-): Promise<getProductListResponse> => {
-  // 네트워크 지연 시뮬레이션
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // 2. 총 페이지 수를 올바르게 계산합니다.
-  const totalPageCount = Math.ceil(dummyProducts.length / size);
-
-  return {
-    totalPageCount,
-    productList: dummyProducts.slice((page - 1) * size, page * size),
-  };
-};
-
-export default getProductList;
-
 export const dummyProducts: Product[] = [
   {
     id: "product-001",
@@ -31,7 +8,11 @@ export const dummyProducts: Product[] = [
       "고음질 무선 블루투스 헤드폰입니다. 노이즈 캔슬링 기능과 장시간 배터리 사용이 가능합니다.",
     stock: 25,
     createdAt: "2025-08-15",
-    imageUrl: "https://picsum.photos/id/1082/400/300",
+    thumbUrl: "https://picsum.photos/id/1082/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/1080/800/600",
+      "https://picsum.photos/id/1078/800/600",
+    ],
   },
   {
     id: "product-002",
@@ -40,7 +21,11 @@ export const dummyProducts: Product[] = [
       "건강 관리와 편의성을 제공하는 최신 스마트 워치입니다. 다양한 운동 모드와 심박수 측정 기능이 탑재되어 있습니다.",
     stock: 12,
     createdAt: "2025-08-10",
-    imageUrl: "https://picsum.photos/id/180/400/300",
+    thumbUrl: "https://picsum.photos/id/180/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/200/800/600",
+      "https://picsum.photos/id/53/800/600",
+    ],
   },
   {
     id: "product-003",
@@ -49,7 +34,11 @@ export const dummyProducts: Product[] = [
       "인체공학적 설계로 목과 어깨 부담을 줄여주는 노트북 거치대입니다. 각도 조절이 가능하여 최적의 시야를 제공합니다.",
     stock: 0,
     createdAt: "2025-08-05",
-    imageUrl: "https://picsum.photos/id/26/400/300",
+    thumbUrl: "https://picsum.photos/id/26/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/40/800/600",
+      "https://picsum.photos/id/42/800/600",
+    ],
   },
   {
     id: "product-004",
@@ -58,7 +47,11 @@ export const dummyProducts: Product[] = [
       "타건감이 뛰어난 청축 기계식 키보드입니다. 화려한 RGB 백라이트와 커스텀 키캡을 지원합니다.",
     stock: 38,
     createdAt: "2025-07-28",
-    imageUrl: "https://picsum.photos/id/593/400/300",
+    thumbUrl: "https://picsum.photos/id/593/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/494/800/600",
+      "https://picsum.photos/id/1066/800/600",
+    ],
   },
   {
     id: "product-005",
@@ -67,7 +60,11 @@ export const dummyProducts: Product[] = [
       "선명한 화질을 자랑하는 Full HD 웹캠입니다. 내장 마이크가 포함되어 있어 화상 회의나 온라인 강의에 적합합니다.",
     stock: 5,
     createdAt: "2025-07-22",
-    imageUrl: "https://picsum.photos/id/48/400/300",
+    thumbUrl: "https://picsum.photos/id/48/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/111/800/600",
+      "https://picsum.photos/id/137/800/600",
+    ],
   },
   {
     id: "product-006",
@@ -76,7 +73,11 @@ export const dummyProducts: Product[] = [
       "대용량 보조 배터리로, 스마트폰과 태블릿을 동시에 충전할 수 있습니다. C타입 PD 충전을 지원합니다.",
     stock: 150,
     createdAt: "2025-07-15",
-    imageUrl: "https://picsum.photos/id/59/400/300",
+    thumbUrl: "https://picsum.photos/id/59/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/60/800/600",
+      "https://picsum.photos/id/1074/800/600",
+    ],
   },
   {
     id: "product-007",
@@ -85,7 +86,11 @@ export const dummyProducts: Product[] = [
       "생생한 색감과 넓은 시야각을 제공하는 전문가용 4K 모니터입니다. HDR을 지원하여 콘텐츠의 몰입감을 높여줍니다.",
     stock: 18,
     createdAt: "2025-07-01",
-    imageUrl: "https://picsum.photos/id/12/400/300",
+    thumbUrl: "https://picsum.photos/id/12/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/0/800/600",
+      "https://picsum.photos/id/1075/800/600",
+    ],
   },
   {
     id: "product-008",
@@ -94,7 +99,11 @@ export const dummyProducts: Product[] = [
       "손목 터널 증후군 예방에 도움을 주는 인체공학적 설계의 버티컬 마우스입니다. 장시간 사용에도 편안함을 제공합니다.",
     stock: 45,
     createdAt: "2025-06-25",
-    imageUrl: "https://picsum.photos/id/175/400/300",
+    thumbUrl: "https://picsum.photos/id/175/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/218/800/600",
+      "https://picsum.photos/id/219/800/600",
+    ],
   },
   {
     id: "product-009",
@@ -103,7 +112,11 @@ export const dummyProducts: Product[] = [
       "HDMI, SD카드, USB-A 포트 등 7개의 포트를 하나로 확장해주는 멀티 허브입니다. 맥북 및 최신 노트북과 호환됩니다.",
     stock: 72,
     createdAt: "2025-06-18",
-    imageUrl: "https://picsum.photos/id/18/400/300",
+    thumbUrl: "https://picsum.photos/id/18/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/20/800/600",
+      "https://picsum.photos/id/33/800/600",
+    ],
   },
   {
     id: "product-010",
@@ -112,7 +125,11 @@ export const dummyProducts: Product[] = [
       "편안한 착석감과 강력한 지지력으로 장시간 게임에도 최적의 환경을 제공하는 게이밍 의자입니다.",
     stock: 8,
     createdAt: "2025-06-11",
-    imageUrl: "https://picsum.photos/id/119/400/300",
+    thumbUrl: "https://picsum.photos/id/119/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/212/800/600",
+      "https://picsum.photos/id/211/800/600",
+    ],
   },
   {
     id: "product-011",
@@ -121,7 +138,11 @@ export const dummyProducts: Product[] = [
       "스튜디오급 녹음 품질을 제공하는 USB 콘덴서 마이크입니다. 팟캐스트, 스트리밍, 홈레코딩에 적합합니다.",
     stock: 22,
     createdAt: "2025-06-04",
-    imageUrl: "https://picsum.photos/id/1025/400/300",
+    thumbUrl: "https://picsum.photos/id/1025/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/435/800/600",
+      "https://picsum.photos/id/103/800/600",
+    ],
   },
   {
     id: "product-012",
@@ -130,7 +151,11 @@ export const dummyProducts: Product[] = [
       "밝기 및 색온도 조절이 가능한 스마트 LED 스탠드입니다. 스마트폰 무선 충전 기능을 지원합니다.",
     stock: 31,
     createdAt: "2025-05-29",
-    imageUrl: "https://picsum.photos/id/249/400/300",
+    thumbUrl: "https://picsum.photos/id/249/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/1072/800/600",
+      "https://picsum.photos/id/1069/800/600",
+    ],
   },
   {
     id: "product-013",
@@ -139,7 +164,11 @@ export const dummyProducts: Product[] = [
       "외부 충격과 스크래치로부터 태블릿을 안전하게 보호하는 전용 파우치입니다. 수납 공간이 넉넉합니다.",
     stock: 95,
     createdAt: "2025-05-21",
-    imageUrl: "https://picsum.photos/id/355/400/300",
+    thumbUrl: "https://picsum.photos/id/355/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/356/800/600",
+      "https://picsum.photos/id/366/800/600",
+    ],
   },
   {
     id: "product-014",
@@ -148,7 +177,11 @@ export const dummyProducts: Product[] = [
       "초고속 데이터 전송 속도를 자랑하는 휴대용 외장 SSD입니다. 대용량 파일도 순식간에 옮길 수 있습니다.",
     stock: 15,
     createdAt: "2025-05-14",
-    imageUrl: "https://picsum.photos/id/30/400/300",
+    thumbUrl: "https://picsum.photos/id/30/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/160/800/600",
+      "https://picsum.photos/id/106/800/600",
+    ],
   },
   {
     id: "product-015",
@@ -157,6 +190,10 @@ export const dummyProducts: Product[] = [
       "음성 명령으로 음악 재생, 정보 검색, 스마트 홈 제어가 가능한 인공지능 스피커입니다. 풍부한 사운드를 제공합니다.",
     stock: 40,
     createdAt: "2025-05-07",
-    imageUrl: "https://picsum.photos/id/326/400/300",
+    thumbUrl: "https://picsum.photos/id/326/400/300",
+    imageUrls: [
+      "https://picsum.photos/id/145/800/600",
+      "https://picsum.photos/id/319/800/600",
+    ],
   },
 ];

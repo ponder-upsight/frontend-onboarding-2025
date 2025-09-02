@@ -4,7 +4,7 @@ import { Product } from "@/types/products";
 import { Grid } from "@chakra-ui/react";
 import ProductCard from "./_ui/ProudctCard";
 import { Flex, Heading, Text } from "@chakra-ui/react";
-import useGetProductList from "@/api/product/useGetProductList";
+import useGetProductList from "@/api/products/useGetProductList";
 import ProductCardSkeleton from "./_ui/ProudctCard/skeleton";
 import usePrefetchObserve from "./_hooks/usePrefetchObserve";
 import Link from "next/link";
@@ -65,7 +65,6 @@ const ProductContent = ({ page }: ProductContentProps) => {
       <Flex justifyContent={"center"} mt={4} gap={2}>
         {Array.from({ length: totalPageCount }, (_, idx) => {
           const pageNumber = idx + 1;
-          console.log(page, pageNumber);
           return (
             <Link href={`/${pageNumber}`} key={pageNumber}>
               <Text

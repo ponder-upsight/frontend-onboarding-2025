@@ -2,6 +2,7 @@ import { Box, Image, Text, Badge, Flex, Button } from "@chakra-ui/react";
 
 import { Product } from "@/types/products";
 import { formattedDotDate } from "@/util/dateUtil";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: Product;
@@ -9,7 +10,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, observeRef }: ProductCardProps) => {
-  const { name, description, stock, createdAt, imageUrl } = product;
+  const { id, name, description, stock, createdAt, thumbUrl } = product;
 
   return (
     <Box
@@ -21,7 +22,7 @@ const ProductCard = ({ product, observeRef }: ProductCardProps) => {
       boxShadow="md"
       bg="white">
       <Image
-        src={imageUrl}
+        src={thumbUrl}
         alt={name}
         objectFit="cover"
         height="200px"
@@ -55,15 +56,11 @@ const ProductCard = ({ product, observeRef }: ProductCardProps) => {
           </Text>
         </Flex>
 
-        <Button
-          mt="6"
-          width="100%"
-          colorScheme="blue"
-          variant="outline"
-          // leftIcon={<Icon as={ViewIcon} />}
-        >
-          상세보기
-        </Button>
+        <Link href={`/product/${id}`}>
+          <Button mt="6" width="100%" colorScheme="blue" variant="outline">
+            상세보기
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

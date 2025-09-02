@@ -17,7 +17,7 @@ const toggle = defineStyle({
   _selected: {
     bg: "primary.500",
     color: "white",
-    borderColor: "primary.500 !important", // 테두리 색상도 유지하여 일관성 확보
+    borderColor: "primary.500 ", // 테두리 색상도 유지하여 일관성 확보
     _hover: {
       bg: "primary.600", // 선택된 상태에서의 호버 효과
     },

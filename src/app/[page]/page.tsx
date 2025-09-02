@@ -1,4 +1,4 @@
-import getPrefetchHydrateProductList from "@/api/product/getPrefetchHydrateProductList";
+import getPrefetchHydrateProductList from "@/api/products/getPrefetchHydrateProductList";
 import ProductContent from "./_ui/ProductContent";
 import { HydrationBoundary } from "@tanstack/react-query";
 
@@ -12,12 +12,12 @@ export async function generateStaticParams() {
   return [{ page: "1" }];
 }
 interface PageProps {
-  params: Promise<{ page: string }>; // params가 Promise임을 명시
+  params?: Promise<{ page: string }>; // params가 Promise임을 명시
 }
 
 const HomePage = async ({ params }: PageProps) => {
-  const resolvedParams = await params; // params를 await
-  const page = Number(resolvedParams.page || 1);
+  const resolvedParams = (await params) || { page: 1 }; // 기본페이지는 1
+  const page = Number(resolvedParams.page);
 
   const dehydratedState = await getPrefetchHydrateProductList(page);
   return (
