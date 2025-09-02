@@ -10,6 +10,7 @@ import ProductCard from "./components/Product/ProductCard";
 import {Product} from "@/api/ProductApi/ProductApiTypes";
 import { useGetProducts } from "@/api/ProductApi/getProducts";
 import {useDeleteProduct} from "@/api/ProductApi/deleteProduct";
+import {LoadingSpinner} from "@/app/components/ui/LoadingSpinner";
 
 type PageProps = {
   params: Promise<{
@@ -20,7 +21,7 @@ type PageProps = {
 const HomePage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
   const { t } = useTranslation(lng);
-  const { data: products } = useGetProducts();
+  const { data: products, isPending } = useGetProducts();
   const { mutate } = useDeleteProduct()
 
   const handleProductDetail = (product: Product) => {
@@ -36,6 +37,24 @@ const HomePage = ({ params }: PageProps) => {
       setLng(resolvedParams.lng);
     });
   }, [params]);
+
+  if (isPending) {
+    return (
+      <Box minH="100vh" bg="gray.50" pt="128px">
+        <Box maxW="1200px" mx="auto" p="32px">
+          <Flex
+            alignItems="center"
+            gap="16px"
+          >
+          <LoadingSpinner size={20} color="#101010" />
+          <TypoGraph variant="headline01" color="gray.800">
+            {t("loading")}
+          </TypoGraph>
+          </Flex>
+        </Box>
+      </Box>
+    )
+  }
 
   return (
     <Box minH="100vh" bg="gray.50" pt="128px">

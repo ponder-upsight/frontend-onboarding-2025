@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Flex, Grid } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { LeftIcon } from "@/assets/icons";
@@ -10,6 +10,7 @@ import { useTranslation } from "@/app/i18n/client";
 import ImageGallery from "./components/ImageGallery";
 import ProductInfo from "./components/ProductInfo";
 import { useGetProduct } from "@/api/ProductApi/getProduct";
+import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 
 type PageProps = {
   params: Promise<{
@@ -22,7 +23,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
   const [productId, setProductId] = useState<number>(0);
   const router = useRouter();
-  const { data: product } = useGetProduct(productId)
+  const { data: product, isPending } = useGetProduct(productId)
   const { t } = useTranslation(lng);
 
   useEffect(() => {
@@ -35,6 +36,24 @@ const ProductDetailPage = ({ params }: PageProps) => {
   const handleBackToList = () => {
     router.push(`/${lng}`);
   };
+
+  if (isPending) {
+      return (
+          <Box minH="100vh" bg="gray.50" pt="128px">
+              <Box maxW="1200px" mx="auto" p="32px">
+                  <Flex
+                    alignItems="center"
+                    gap="16px"
+                  >
+                      <LoadingSpinner size={20} color="#101010" />
+                      <TypoGraph variant="headline01" color="gray.800">
+                          {t("loading")}
+                      </TypoGraph>
+                  </Flex>
+              </Box>
+          </Box>
+      )
+  }
 
   if (!product) {
     return (
