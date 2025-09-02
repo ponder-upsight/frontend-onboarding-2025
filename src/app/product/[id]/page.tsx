@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import RouterBackButton from "@/components/RouterBackButton.tsx";
 import ImageViewrPanel from "@/components/ImageViewrPanel";
+import { formattedDotDate } from "@/util/dateUtil";
 
 export const revalidate = 3600;
 
@@ -23,18 +24,21 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { product } = await getProduct(params.id);
+  const { name, description } = await getProduct({ productId: params.id });
   return {
-    title: product?.name || "상품 상세",
-    description: product?.description || "상품 상세 페이지입니다.",
+    title: name || "상품 상세",
+    description: description || "상품 상세 페이지입니다.",
   };
 }
 
 const ProductDetailPage = async ({ params }: PageProps) => {
   const { id } = params;
-  const { product } = await getProduct(id);
+  const { name, description, stock, thumbnailUrl, detailFileUrls } =
+    await getProduct({
+      productId: id,
+    });
 
-  if (!product) {
+  if (!name) {
     return (
       <Container centerContent p={8}>
         <Text>상품을 찾을 수 없습니다.</Text>
@@ -69,10 +73,10 @@ const ProductDetailPage = async ({ params }: PageProps) => {
                   imageProps={{
                     fill: true,
                     priority: true,
-                    src: product.thumbUrl,
-                    alt: product.name,
+                    src: thumbnailUrl,
+                    alt: name,
                   }}
-                  images={[product.thumbUrl, ...product.imageUrls]}
+                  images={[thumbnailUrl, ...detailFileUrls]}
                   position={0}
                 />
               </Box>
@@ -81,7 +85,7 @@ const ProductDetailPage = async ({ params }: PageProps) => {
                   상세 이미지
                 </Heading>
                 <HStack spacing={4}>
-                  {product.imageUrls.map((url, index) => (
+                  {detailFileUrls.map((url, index) => (
                     <Box
                       key={index}
                       borderWidth="1px"
@@ -93,14 +97,14 @@ const ProductDetailPage = async ({ params }: PageProps) => {
                           width: 100,
                           height: 100,
                           src: url,
-                          alt: `${product.name} 상세 이미지 ${index + 1}`,
+                          alt: `${name} 상세 이미지 ${index + 1}`,
                           style: {
                             width: "100%",
                             height: "100%",
                             objectFit: "cover",
                           },
                         }}
-                        images={[product.thumbUrl, ...product.imageUrls]}
+                        images={[thumbnailUrl, ...detailFileUrls]}
                         position={index + 1}
                       />
                     </Box>
@@ -116,11 +120,13 @@ const ProductDetailPage = async ({ params }: PageProps) => {
           <Card variant="outline" h="full">
             <CardBody as={VStack} align="start" spacing={5}>
               <Heading as="h1" size="md" color="primary.500">
-                {product.name}
+                {name}
               </Heading>
 
               <HStack spacing={2} color="gray.500">
-                <Text fontSize="sm">{product.createdAt}</Text>
+                <Text fontSize="sm">
+                  {formattedDotDate(new Date().toISOString())}
+                </Text>
               </HStack>
 
               <VStack align="start" spacing={2}>
@@ -128,7 +134,7 @@ const ProductDetailPage = async ({ params }: PageProps) => {
                   상품 설명
                 </Heading>
                 <Text color="gray.600" lineHeight="tall">
-                  {product.description}
+                  {description}
                 </Text>
               </VStack>
 
@@ -143,7 +149,7 @@ const ProductDetailPage = async ({ params }: PageProps) => {
                   color="white"
                   borderRadius="md"
                   px={4}>
-                  재고 {product.stock}개
+                  재고 {stock}개
                 </Tag>
               </VStack>
 

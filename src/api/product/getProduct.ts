@@ -1,16 +1,24 @@
-import { Product } from "@/types/products";
-import { dummyProducts } from "../dummy";
+import { ProductDetailItem } from "@/types/products"; // ProductDetail 타입을 정의해야 합니다.
+import serverFetch from "@/util/fetchUtil/serverFetch";
 
-type getProductResponse = {
-  product: Product;
-};
+interface GetProductParams {
+  productId: string;
+}
+type GetProductResponse = ProductDetailItem;
 
-const getProduct = async (id: string): Promise<getProductResponse> => {
-  // 네트워크 지연 시뮬레이션
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return {
-    product: dummyProducts.find((product) => product.id === `${id}`)!,
-  };
+const getProduct = async ({
+  productId,
+}: GetProductParams): Promise<GetProductResponse> => {
+  const API_PATH = `/api/v1/products/${productId}`;
+
+  const result = await serverFetch<ProductDetailItem>(API_PATH);
+
+  if (result.isSuccess) {
+    return result.data;
+  } else {
+    console.error("API Error:", result.status, result.error);
+    throw new Error(`상품 정보를 불러오는 데 실패했습니다: ${result.error}`);
+  }
 };
 
 export default getProduct;
