@@ -5,20 +5,25 @@ import { Grid } from "@chakra-ui/react";
 import ProductCard from "./_ui/ProudctCard";
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import useGetProductList from "@/api/product/useGetProductList";
-import { useState } from "react";
 import ProductCardSkeleton from "./_ui/ProudctCard/skeleton";
-import useGetPrefetchProductList from "@/api/product/useGetPrefetchProductList";
+import usePrefetchObserve from "./_hooks/usePrefetchObserve";
+import Link from "next/link";
 
-const ProductContent = () => {
-  const [page, setPage] = useState<number>(1);
+interface ProductContentProps {
+  page: number;
+}
+
+const ProductContent = ({ page }: ProductContentProps) => {
+  // get product list
   const { data, isLoading } = useGetProductList(page);
-
   const { totalPageCount = 0, productList = [] } = data || {};
-  const { handlePrefetchNextPage } = useGetPrefetchProductList({
+  const productCount = productList.length;
+
+  // observe prefetch
+  const { observeRef } = usePrefetchObserve({
     nextPage: page + 1,
     totalPageCount,
   });
-  const productCount = productList.length;
 
   return (
     <Flex direction={"column"} gap={2} width={"100%"} maxWidth={1200}>
@@ -44,8 +49,14 @@ const ProductContent = () => {
         </Grid>
       ) : (
         <Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={4}>
-          {productList.map((product: Product) => (
-            <ProductCard key={product.id} product={product} />
+          {productList.map((product: Product, index) => (
+            <ProductCard
+              observeRef={
+                productList.length - 1 === index ? observeRef : undefined
+              }
+              key={product.id}
+              product={product}
+            />
           ))}
         </Grid>
       )}
@@ -54,20 +65,20 @@ const ProductContent = () => {
       <Flex justifyContent={"center"} mt={4} gap={2}>
         {Array.from({ length: totalPageCount }, (_, idx) => {
           const pageNumber = idx + 1;
+          console.log(page, pageNumber);
           return (
-            <Text
-              onMouseEnter={handlePrefetchNextPage}
-              key={pageNumber}
-              as="button"
-              onClick={() => setPage(pageNumber)}
-              fontWeight={page === pageNumber ? 700 : 500}
-              color={page === pageNumber ? "blue.500" : "gray.600"}
-              _hover={{
-                textDecoration: page === pageNumber ? "none" : "underline",
-                cursor: "pointer",
-              }}>
-              {pageNumber}
-            </Text>
+            <Link href={`/${pageNumber}`} key={pageNumber}>
+              <Text
+                as="button"
+                fontWeight={page === pageNumber ? 700 : 500}
+                color={page === pageNumber ? "blue.500" : "gray.600"}
+                _hover={{
+                  textDecoration: page === pageNumber ? "none" : "underline",
+                  cursor: "pointer",
+                }}>
+                {pageNumber}
+              </Text>
+            </Link>
           );
         })}
       </Flex>

@@ -3,8 +3,11 @@ import { dehydrate } from "@tanstack/react-query";
 import { QueryKeys } from "./QueryKeys";
 import getProductList from "./getProductList";
 
-const getPrefetchHydrateProductList = async () => {
+const getPrefetchHydrateProductList = async (page: number) => {
   const queryClient = getQueryClient();
+  if (page !== 1) {
+    return;
+  }
 
   // 1. 서버에서 'posts' 쿼리를 미리 가져와 캐시에 저장합니다.
   await queryClient.prefetchQuery({

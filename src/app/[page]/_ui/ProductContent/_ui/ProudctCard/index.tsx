@@ -5,13 +5,15 @@ import { formattedDotDate } from "@/util/dateUtil";
 
 interface ProductCardProps {
   product: Product;
+  observeRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, observeRef }: ProductCardProps) => {
   const { name, description, stock, createdAt, imageUrl } = product;
 
   return (
     <Box
+      ref={observeRef}
       maxW="sm"
       borderWidth="1px"
       borderRadius="lg"
