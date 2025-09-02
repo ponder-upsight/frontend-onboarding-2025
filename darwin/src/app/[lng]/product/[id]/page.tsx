@@ -6,7 +6,7 @@ import { Box, Flex, Grid } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { LeftIcon } from "@/assets/icons";
-import { Product, products } from "@/data/products";
+import { Product, productDatas } from "@/data/products";
 import { useTranslation } from "@/app/i18n/client";
 import ImageGallery from "./components/ImageGallery";
 import ProductInfo from "./components/ProductInfo";
@@ -30,7 +30,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
       setLng(resolvedParams.lng);
       setProductId(resolvedParams.id);
       
-      const foundProduct = products.find(p => p.id === resolvedParams.id);
+      const foundProduct = productDatas.find(p => p.id === resolvedParams.id);
       setProduct(foundProduct || null);
     });
   }, [params]);
