@@ -1,5 +1,5 @@
 import { ProductListItem } from "@/types/products";
-import { axiosInstance } from "@/util/fetchUtil/axionsInstance";
+import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 
 // 함수에 전달될 파라미터 타입
 interface GetProductListParams {
@@ -18,8 +18,8 @@ const getProductList = async ({
 }: GetProductListParams): Promise<GetProductListResponse> => {
   try {
     // axiosInstance.get<T>()를 사용하여 응답 데이터의 타입을 지정합니다.
-    const response = await axiosInstance.get<GetProductListResponse>(
-      "/api/v1/products", // baseURL 이후의 경로만 입력
+    const response = await publicAxiosInstance.get<GetProductListResponse>(
+      "/products", // baseURL 이후의 경로만 입력
       {
         params: {
           page: page, // API 스펙에 따라 0-based index

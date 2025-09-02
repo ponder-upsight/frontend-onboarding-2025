@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 
 interface ImagePreviewProps {
   control: Control<ProductFormValues>;
-  name: "thumbnail" | "detailImages";
+  name: "thumbnail" | "detail";
   label: string;
   error?: string;
   multiple?: boolean;

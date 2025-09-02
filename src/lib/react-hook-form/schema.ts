@@ -18,6 +18,9 @@ export const productSchema = z.object({
   description: z
     .string({ message: "상품 설명을 입력해주세요." })
     .min(1, "상품 설명은 필수입니다."),
+  amount: z
+    .number({ message: "가격을 입력해주세요." })
+    .min(0, "가격은 0 이상이어야 합니다."),
   stock: z
     .number({ message: "재고 수량을 입력해주세요." })
     .min(0, "재고는 0 이상이어야 합니다."),
@@ -37,7 +40,7 @@ export const productSchema = z.object({
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       "지원되지 않는 파일 형식입니다. (jpeg, jpg, png, webp)"
     ),
-  detailImages: z
+  detail: z
     .custom<FileList>((files) => !files || files instanceof FileList, {
       message: "상세 이미지 파일을 확인해주세요.",
     })

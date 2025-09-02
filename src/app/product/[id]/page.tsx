@@ -1,4 +1,4 @@
-import getProduct from "@/api/product/server/getProduct";
+import getProduct from "@/api/products/server/getProduct";
 import {
   Box,
   Button,

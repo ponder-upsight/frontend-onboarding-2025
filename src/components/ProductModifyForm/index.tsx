@@ -19,12 +19,18 @@ import { Controller, useForm } from "react-hook-form";
 import React from "react";
 import { productSchema, ProductFormValues } from "@/lib/react-hook-form/schema";
 import ImagePreview from "./ImagePreview";
+import usePostCreateProduct from "@/api/products/client/usePostCreateProduct";
+import { ProductDetailItem } from "@/types/products";
 
 interface ProductModifyFormProps {
-  initData?: ProductFormValues; // 수정 페이지에서 기존 데이터를 받을 때 사용
+  isAddPage?: boolean; // 추가 페이지인지 여부
+  initData?: ProductDetailItem;
 }
 
-const ProductAddPage = ({ initData }: ProductModifyFormProps) => {
+const ProductAddPage = ({
+  initData,
+  isAddPage = false,
+}: ProductModifyFormProps) => {
   const {
     handleSubmit,
     control,
@@ -34,14 +40,33 @@ const ProductAddPage = ({ initData }: ProductModifyFormProps) => {
     defaultValues: {
       name: initData?.name || "",
       description: initData?.description || "",
+      amount: 0, // 가격 필드 추가
       stock: initData?.stock || 0,
-      thumbnail: initData?.thumbnail,
-      detailImages: initData?.detailImages,
+      thumbnail: undefined,
+      detail: undefined,
     },
   });
 
+  const { mutate: postCreateProduct } = usePostCreateProduct();
+
   const onSubmit = (data: ProductFormValues) => {
-    console.log("Form submitted:", data);
+    // 필수 검증
+    if (!data.thumbnail || data.thumbnail.length === 0) {
+      alert("메인 이미지를 선택해주세요.");
+      return;
+    }
+
+    // FormData를 API 형식에 맞게 변환
+    const apiData = {
+      name: data.name,
+      description: data.description,
+      amount: data.amount,
+      stock: data.stock,
+      thumbnail: data.thumbnail[0], // FileList에서 첫 번째 파일
+      detail: data.detail ? Array.from(data.detail) : [], // FileList를 File 배열로 변환
+    };
+
+    postCreateProduct(apiData);
   };
 
   return (
@@ -93,6 +118,29 @@ const ProductAddPage = ({ initData }: ProductModifyFormProps) => {
                   {errors.description?.message}
                 </FormErrorMessage>
               </FormControl>
+              <FormControl isInvalid={!!errors.amount}>
+                <FormLabel fontSize="sm">가격</FormLabel>
+                <Controller
+                  name="amount"
+                  control={control}
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <NumberInput
+                      {...field}
+                      value={value?.toString() || ""}
+                      onChange={(valueString) =>
+                        onChange(Number(valueString) || 0)
+                      }
+                      min={0}>
+                      <NumberInputField
+                        placeholder="0"
+                        bg="gray.100"
+                        border="none"
+                      />
+                    </NumberInput>
+                  )}
+                />
+                <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
+              </FormControl>
               <FormControl isInvalid={!!errors.stock}>
                 <FormLabel fontSize="sm">재고량</FormLabel>
                 <Controller
@@ -125,9 +173,9 @@ const ProductAddPage = ({ initData }: ProductModifyFormProps) => {
               />
               <ImagePreview
                 control={control}
-                name="detailImages"
+                name="detail"
                 label="상세 이미지"
-                error={errors.detailImages?.message as string}
+                error={errors.detail?.message as string}
                 multiple={true}
               />{" "}
               <Button

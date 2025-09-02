@@ -9,3 +9,5 @@ const ProductAdd = () => {
   );
 };
 export default ProductAdd;
+
+export const revalidate = 3600;

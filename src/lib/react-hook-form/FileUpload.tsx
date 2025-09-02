@@ -5,7 +5,7 @@ import { ACCEPTED_IMAGE_TYPES } from "@/lib/react-hook-form/schema";
 import { ProductFormValues } from "@/lib/react-hook-form/schema";
 
 interface FileUploadProps {
-  name: "thumbnail" | "detailImages";
+  name: "thumbnail" | "detail";
   control: Control<ProductFormValues>;
   multiple?: boolean;
 }
