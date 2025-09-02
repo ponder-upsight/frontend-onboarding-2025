@@ -1,8 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { QueryKeys } from "./QueryKeys";
+import { QueryKeys } from "../QueryKeys";
 import getProductList from "./getProductList";
 
-const PAGE_SIZE = 9; // 한 페이지당 상품 수
+const PAGE_SIZE = 20; // 한 페이지당 상품 수
 
 interface UseGetPrefetchProductListReturn {
   handlePrefetchNextPage: () => void;
@@ -23,10 +23,9 @@ const useGetPrefetchProductList = ({
   const handlePrefetchNextPage = () => {
     // 이 함수는 훅이 아니므로 이벤트 핸들러에서 자유롭게 호출 가능
     if (nextPage <= totalPageCount) {
-      console.log("Prefetching page:", nextPage);
       queryClient.prefetchQuery({
         queryKey: [QueryKeys.PRODUCTS, nextPage],
-        queryFn: () => getProductList(nextPage, PAGE_SIZE),
+        queryFn: () => getProductList({ page: nextPage, size: PAGE_SIZE }),
       });
     }
   };

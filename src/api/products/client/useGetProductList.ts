@@ -1,13 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { QueryKeys } from "./QueryKeys";
+import { QueryKeys } from "../QueryKeys";
 import getProductList from "./getProductList";
-import { Product } from "@/types/products";
+import { ProductListItem } from "@/types/products";
 
-const PAGE_SIZE = 9; // 한 페이지당 상품 수
+const PAGE_SIZE = 20; // 한 페이지당 상품 수
 
 interface GetProductListResponse {
-  totalPageCount: number;
-  productList: Product[];
+  pageResult: ProductListItem[];
 }
 
 // 훅이 페이지 번호를 인자로 받도록 수정 (page: number)
@@ -18,7 +17,8 @@ const useGetProductList = (page: number) => {
     queryKey: [QueryKeys.PRODUCTS, page],
 
     // 쿼리 함수에 인자로 받은 page를 전달
-    queryFn: () => getProductList(page, PAGE_SIZE),
+    queryFn: () => getProductList({ page, size: PAGE_SIZE }),
+
     staleTime: 1000 * 60 * 5, // 5분
   });
 };

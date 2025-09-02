@@ -1,5 +1,4 @@
 import getProduct from "@/api/product/getProduct";
-import Image from "next/image";
 import {
   Box,
   Button,

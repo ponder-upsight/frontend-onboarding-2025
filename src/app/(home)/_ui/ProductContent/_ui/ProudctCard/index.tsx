@@ -1,17 +1,18 @@
 import { Box, Image, Text, Badge, Flex, Button } from "@chakra-ui/react";
 
-import { Product } from "@/types/products";
+import { ProductListItem } from "@/types/products";
 import { formattedDotDate } from "@/util/dateUtil";
 import Link from "next/link";
 
-interface ProductCardProps {
-  product: Product;
-  observeRef?: React.RefObject<HTMLDivElement | null>;
-  page?: number;
-}
+type ProductCardProps = {
+  product: ProductListItem;
+  observeRef?:
+    | React.Ref<HTMLDivElement>
+    | ((node: HTMLDivElement | null) => void);
+};
 
-const ProductCard = ({ product, observeRef, page }: ProductCardProps) => {
-  const { id, name, description, stock, createdAt, thumbUrl } = product;
+const ProductCard = ({ product, observeRef }: ProductCardProps) => {
+  const { id, productName, thumbnailUrl, stock } = product;
 
   return (
     <Box
@@ -23,8 +24,8 @@ const ProductCard = ({ product, observeRef, page }: ProductCardProps) => {
       boxShadow="md"
       bg="white">
       <Image
-        src={thumbUrl}
-        alt={name}
+        src={thumbnailUrl}
+        alt={productName}
         objectFit="cover"
         height="200px"
         width="100%"
@@ -38,11 +39,11 @@ const ProductCard = ({ product, observeRef, page }: ProductCardProps) => {
           lineHeight="tight"
           noOfLines={1}
           fontSize="l">
-          {name}
+          {productName}
         </Text>
 
         <Text mt="2" color="gray.600" fontSize="sm" noOfLines={2}>
-          {description}
+          {productName}
         </Text>
 
         <Flex justify="space-between" align="center" mt="4">
@@ -53,11 +54,11 @@ const ProductCard = ({ product, observeRef, page }: ProductCardProps) => {
             재고: {stock}개
           </Badge>
           <Text fontSize="sm" color="gray.500">
-            {formattedDotDate(createdAt)}
+            {formattedDotDate(new Date().toString())}
           </Text>
         </Flex>
 
-        <Link href={`/product/${id}?router=${page}`}>
+        <Link href={`/product/${id}`}>
           <Button mt="6" width="100%" colorScheme="blue" variant="outline">
             상세보기
           </Button>
