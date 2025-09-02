@@ -11,6 +11,7 @@ import { Input } from "@/app/components/ui/Input";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { Box, Flex, VStack, FormControl } from "@chakra-ui/react";
 import { css } from "@emotion/react";
+import { usePostProduct } from "@/api/ProductApi/postProduct";
 
 import FileUploadSection from "./components/FileUploadSection";
 
@@ -40,6 +41,7 @@ const RegisterPage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
   const { t, i18n, ready } = useTranslation(lng);
   const router = useRouter();
+  const postProductMutation = usePostProduct();
 
   const {
     register,
@@ -71,30 +73,41 @@ const RegisterPage = ({ params }: PageProps) => {
       setIsSubmitting(true);
       
       try {
-        const formData = new FormData();
+        const mainImageBase64 = mainImages.length > 0 
+          ? await new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result as string);
+              reader.readAsDataURL(mainImages[0]);
+            })
+          : "";
         
-        formData.append('name', data.name);
-        formData.append('description', data.description);
-        formData.append('stock', data.stock.toString());
+        const detailImagesBase64 = await Promise.all(
+          detailImages.map(file => 
+            new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result as string);
+              reader.readAsDataURL(file);
+            })
+          )
+        );
         
-        if (mainImages.length > 0) {
-          formData.append('mainImage', mainImages[0]);
-        }
+        const productData = {
+          name: data.name,
+          description: data.description,
+          stock: data.stock,
+          imageUrl: mainImageBase64,
+          detailImageUrls: detailImagesBase64,
+        };
         
-        detailImages.forEach((image, index) => {
-          formData.append(`detailImages`, image);
-        });
-        
-        setTimeout(() => {
-          router.push(`/${lng}`);
-        }, 1000);
+        await postProductMutation.mutateAsync(productData);
+        router.push(`/${lng}`);
       } catch (error) {
         console.error("Product registration failed:", error);
       } finally {
         setIsSubmitting(false);
       }
     },
-    [lng, router, mainImages, detailImages]
+    [lng, router, mainImages, detailImages, postProductMutation]
   );
 
   const handleMainImageChange = useCallback((files: File[]) => {

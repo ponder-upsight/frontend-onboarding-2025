@@ -7,6 +7,9 @@ export const ProductApi = {
     getProduct: (id: number) => {
         return axiosInstance.get(`/product/${id}`);
     },
+    postProduct: (productData: any) => {
+        return axiosInstance.post(`/product`, productData);
+    },
     deleteProduct: (id: number) => {
         return axiosInstance.delete(`/product/${id}`);
     },
