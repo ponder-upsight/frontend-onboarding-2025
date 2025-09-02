@@ -1,8 +1,10 @@
 import axios, { type AxiosInstance } from "axios";
 
-const axiosInstance: AxiosInstance = axios.create({
+export const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER_URL,
   withCredentials: true,
 });
 
-export default axiosInstance;
+export const publicAxiosInstance: AxiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_SERVER_URL,
+});
