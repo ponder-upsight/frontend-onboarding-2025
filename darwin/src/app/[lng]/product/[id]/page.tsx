@@ -2,36 +2,33 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Flex, Grid } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { LeftIcon } from "@/assets/icons";
-import { Product, productDatas } from "@/data/products";
 import { useTranslation } from "@/app/i18n/client";
 import ImageGallery from "./components/ImageGallery";
 import ProductInfo from "./components/ProductInfo";
+import { useGetProduct } from "@/api/ProductApi/getProduct";
 
 type PageProps = {
   params: Promise<{
     lng: string;
-    id: string;
+    id: number;
   }>;
 };
 
 const ProductDetailPage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
-  const [productId, setProductId] = useState<string>("");
-  const [product, setProduct] = useState<Product | null>(null);
+  const [productId, setProductId] = useState<number>(0);
   const router = useRouter();
+  const { data: product } = useGetProduct(productId)
   const { t } = useTranslation(lng);
 
   useEffect(() => {
     params.then((resolvedParams) => {
       setLng(resolvedParams.lng);
       setProductId(resolvedParams.id);
-      
-      const foundProduct = productDatas.find(p => p.id === resolvedParams.id);
-      setProduct(foundProduct || null);
     });
   }, [params]);
 

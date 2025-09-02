@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
 import { Box, Grid, Flex } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { Product, productDatas } from "@/data/products";
 import ProductCard from "./components/Product/ProductCard";
+import {Product} from "@/api/ProductApi/ProductApiTypes";
+import { useGetProducts } from "@/api/ProductApi/getProducts";
+import {useDeleteProduct} from "@/api/ProductApi/deleteProduct";
 
 type PageProps = {
   params: Promise<{
@@ -17,16 +19,16 @@ type PageProps = {
 
 const HomePage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
-  const { t, i18n, ready } = useTranslation(lng);
-  const [products, setProducts] = useState<Product[]>(productDatas);
+  const { t } = useTranslation(lng);
+  const { data: products } = useGetProducts();
+  const { mutate } = useDeleteProduct()
 
   const handleProductDetail = (product: Product) => {
     window.location.href = `/${lng}/product/${product.id}`;
   };
 
   const handleDeleteProduct = (product: Product) => {
-    setProducts(products.filter((p) => p.id !== product.id));
-    
+    mutate(product.id);
   };
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const HomePage = ({ params }: PageProps) => {
             {t("productList")}
           </TypoGraph>
           <TypoGraph variant="body02" color="gray.700">
-            {t("totalProducts", { count: products.length })}
+            {t("totalProducts", { count: products?.length })}
           </TypoGraph>
         </Flex>
         
@@ -52,7 +54,7 @@ const HomePage = ({ params }: PageProps) => {
           gap="24px"
           w="100%"
         >
-          {products.map((product) => (
+          {products?.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
