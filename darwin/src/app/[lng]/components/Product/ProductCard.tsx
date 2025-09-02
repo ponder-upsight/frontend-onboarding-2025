@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { DeleteSmallBlack, DeleteSmallWhite, EyeOn } from "@/assets/icons";
+import { DeleteSmallWhite, EyeOn } from "@/assets/icons";
 import { Product } from "@/api/ProductApi/ProductApiTypes";
 import { useTranslation } from "@/app/i18n/client";
 import { IconButton } from "@/app/components/ui/IconButton";
@@ -82,8 +82,8 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
         ) : (
           <Box
             as="img"
-            src={product.imageUrl}
-            alt={product.name}
+            src={product.thumbnailUrl}
+            alt={product.productName}
             maxH="160px"
             maxW="160px"
             objectFit="contain"
@@ -94,7 +94,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
       
       <VStack spacing="12px" p="20px" align="stretch">
         <TypoGraph variant="headline03" color="gray.900">
-          {product.name}
+          {product.productName}
         </TypoGraph>
         
         <TypoGraph 
@@ -103,7 +103,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
           noOfLines={2}
           minH="44px"
         >
-          {product.description}
+          {product.productName}
         </TypoGraph>
         
         <Flex justify="space-between" align="center">
@@ -111,15 +111,15 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
             {t("stock", { count: product.stock })}
           </TypoGraph>
           <TypoGraph variant="label06" color="gray.500">
-            {product.createdAt}
+            {product.productName}
           </TypoGraph>
         </Flex>
         
         <Button
-          variant="neutral"
+          variant="outlined"
           size="sm"
           w="100%"
-          leftIcon={<EyeOn width="16px" height="16px" />}
+          leftIcon={<EyeOn />}
           onClick={(e) => {
             e.stopPropagation();
             onDetailClick(product);

@@ -1,8 +1,8 @@
-import { ProductApi } from "@/utils/fetchData";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import apiClient from "@/api/apiClient";
 
 const deleteProduct = async (id: number) => {
-    const response = await ProductApi.deleteProduct(id);
+    const response = await apiClient.delete(`/api/v1/products/${id}`);
     return response.data;
 };
 

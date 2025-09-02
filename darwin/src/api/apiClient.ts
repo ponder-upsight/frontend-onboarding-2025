@@ -1,11 +1,12 @@
 import axios from 'axios'
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://221.147.96.41:13354/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
+    withCredentials: true,
 })
 
 apiClient.interceptors.request.use(

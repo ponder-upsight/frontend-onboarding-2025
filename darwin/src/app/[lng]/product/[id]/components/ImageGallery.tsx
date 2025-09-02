@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { Product } from "@/data/products";
 import { useTranslation } from "@/app/i18n/client";
+import { Product } from "@/api/ProductApi/ProductApiTypes";
 
 interface ImageGalleryProps {
   product: Product;
@@ -15,7 +15,7 @@ const ImageGallery = ({ product, lng }: ImageGalleryProps) => {
   const [imageError, setImageError] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { t } = useTranslation(lng);
-  const images = [product.imageUrl, ...product.detailImageUrls];
+  const images = [product.thumbnailUrl, ...product.detailFileUrls];
 
   return (
     <VStack spacing="16px" align="stretch">

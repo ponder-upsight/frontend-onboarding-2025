@@ -1,27 +1,38 @@
 export interface Product {
+    id: string;
+    productName: string;
+    thumbnailUrl: string;
+    stock: number;
+}
+
+export interface ProductDetails {
     id: number;
     name: string;
     description: string;
     stock: number;
     createdAt: string;
-    imageUrl: string;
-    detailImageUrls: string[];
+    thumbnailUrl: string;
+    detailFileUrls: string[];
 }
 
 export interface PostProductRequest {
     name: string;
     description: string;
-    stock: number;
-    imageUrl: string;
-    detailImageUrls: string[];
+    amount: number;
+    thumbnail: string;
+    detail: string[];
 }
 
-export interface PostProductResponse {
-    id: number;
+
+export interface PutProductRequest {
     name: string;
     description: string;
     stock: number;
-    createdAt: string;
-    imageUrl: string;
-    detailImageUrls: string[];
+    deletedImageIds: string[];
+    newThumbnail: string;
+    newDetailImages: string[];
+}
+
+export interface OrderProductRequest {
+    quantity: number;
 }

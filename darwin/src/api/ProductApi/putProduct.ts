@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { PostProductRequest } from "./ProductApiTypes";
+import { PutProductRequest } from "./ProductApiTypes";
 import apiClient from "@/api/apiClient";
 
-const postProduct = async (productData: PostProductRequest) => {
-    const response = await apiClient.post(`/api/v1/products`, productData);
+const putProduct = async (productData: PutProductRequest) => {
+    const response = await apiClient.put(`/api/v1/products`, productData);
     return response.data;
 };
 
-export const usePostProduct = () => {
+export const usePutProduct = () => {
     const queryClient = useQueryClient();
-    
-    return useMutation<null, Error, PostProductRequest>({
-        mutationFn: postProduct,
+
+    return useMutation<null, Error, PutProductRequest>({
+        mutationFn: putProduct,
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
