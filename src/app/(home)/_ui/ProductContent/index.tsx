@@ -2,17 +2,22 @@
 
 import { Product } from "@/types/products";
 import { Grid } from "@chakra-ui/react";
-import ProductCard from "../ProudctCard";
+import ProductCard from "./_ui/ProudctCard";
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import useGetProductList from "@/api/product/useGetProductList";
 import { useState } from "react";
-import ProductCardSkeleton from "../ProudctCard/skeleton";
+import ProductCardSkeleton from "./_ui/ProudctCard/skeleton";
+import useGetPrefetchProductList from "@/api/product/useGetPrefetchProductList";
 
 const ProductContent = () => {
   const [page, setPage] = useState<number>(1);
   const { data, isLoading } = useGetProductList(page);
-  const { totalPageCount = 0, productList = [] } = data || {};
 
+  const { totalPageCount = 0, productList = [] } = data || {};
+  const { handlePrefetchNextPage } = useGetPrefetchProductList({
+    nextPage: page + 1,
+    totalPageCount,
+  });
   const productCount = productList.length;
 
   return (
@@ -51,6 +56,7 @@ const ProductContent = () => {
           const pageNumber = idx + 1;
           return (
             <Text
+              onMouseEnter={handlePrefetchNextPage}
               key={pageNumber}
               as="button"
               onClick={() => setPage(pageNumber)}
