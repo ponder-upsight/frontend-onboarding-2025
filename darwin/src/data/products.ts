@@ -8,7 +8,7 @@ export interface Product {
   detailImageUrls: string[];
 }
 
-export const products: Product[] = [
+export const productDatas: Product[] = [
   {
     id: "1",
     name: "무선 블루투스 헤드폰",

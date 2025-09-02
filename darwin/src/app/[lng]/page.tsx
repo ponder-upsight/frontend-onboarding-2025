@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/i18n/client";
 import { Box, Grid, Flex } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { Product, products } from "@/data/products";
+import { Product, productDatas } from "@/data/products";
 import ProductCard from "./components/Product/ProductCard";
 
 type PageProps = {
@@ -18,9 +18,15 @@ type PageProps = {
 const HomePage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
   const { t, i18n, ready } = useTranslation(lng);
+  const [products, setProducts] = useState<Product[]>(productDatas);
 
   const handleProductDetail = (product: Product) => {
     window.location.href = `/${lng}/product/${product.id}`;
+  };
+
+  const handleDeleteProduct = (product: Product) => {
+    setProducts(products.filter((p) => p.id !== product.id));
+    
   };
 
   useEffect(() => {
@@ -51,6 +57,7 @@ const HomePage = ({ params }: PageProps) => {
               key={product.id}
               product={product}
               onDetailClick={handleProductDetail}
+              onDeleteClick={handleDeleteProduct}
               lng={lng}
             />
           ))}

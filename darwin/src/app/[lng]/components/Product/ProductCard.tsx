@@ -4,19 +4,40 @@ import { useState } from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { EyeOn } from "@/assets/icons";
+import { DeleteSmallBlack, DeleteSmallWhite, EyeOn } from "@/assets/icons";
 import { Product } from "@/data/products";
 import { useTranslation } from "@/app/i18n/client";
+import { IconButton } from "@/app/components/ui/IconButton";
+import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
+import { useModalStore } from "@/store/useModalStore";
+import { toast } from "react-toastify";
+import { SuccessToast } from "@/app/components/ui/Toast";
 
 interface ProductCardProps {
   product: Product;
   onDetailClick: (product: Product) => void;
+  onDeleteClick: (product: Product) => void;
   lng: string;
 }
 
-const ProductCard = ({ product, onDetailClick, lng }: ProductCardProps) => {
+const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCardProps) => {
   const [imageError, setImageError] = useState(false);
   const { t } = useTranslation(lng);
+  const { isOpen, onConfirm, openModal, closeModal } = useModalStore();
+
+  const handleDelete = () => {
+    openModal(() => {})
+  };
+
+  const handleDeleteConfirm = () => {
+    onDeleteClick(product);
+
+    toast(SuccessToast, {
+      data: { title: t("deleteProductSuccess") },
+      position: "top-center",
+      autoClose: 3000,
+    });
+  };
 
   return (
     <Box
@@ -33,6 +54,17 @@ const ProductCard = ({ product, onDetailClick, lng }: ProductCardProps) => {
         justifyContent="center"
         position="relative"
       >
+        <IconButton
+          position="absolute"
+          top="8px"
+          right="8px"
+          size="sm"
+          variant="neutral_icon"
+          bg="rgba(0, 0, 0, 0.5)"
+          onClick={handleDelete}
+          leftIcon={<DeleteSmallWhite />}
+          _hover = {{ bg: "rgba(0, 0, 0, 0.7)" }}
+        />
         {imageError ? (
           <Box
             w="160px"
@@ -96,6 +128,16 @@ const ProductCard = ({ product, onDetailClick, lng }: ProductCardProps) => {
           {t("viewDetail")}
         </Button>
       </VStack>
+
+      <ConfirmModal
+        title={t("deleteProduct")}
+        content={t("deleteProductContent")}
+        onConfirm={handleDeleteConfirm}
+        isOpen={isOpen}
+        onClose={closeModal}
+        confirmBtn={t("delete")}
+        closeBtn={t("cancel")}
+      />
     </Box>
   );
 };
