@@ -1,5 +1,10 @@
 export const Path = {
-  PRODUCTS_LIST: "/",
+  ROOT: `/`,
+  PRODUCTS_LIST: `/product-list`,
+  PRODUCTS_DETAIL: `/products`,
   PRODUCTS_ADD: "/products/add",
-  PRODUCTS_DETAIL: (id: string | number) => `/products/${id}`,
+};
+
+export const startWithPath = (currentPath: string, targetPath: string) => {
+  return currentPath.startsWith(targetPath);
 };

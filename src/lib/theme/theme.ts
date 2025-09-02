@@ -47,3 +47,6 @@ export const theme = extendTheme({
     Button: buttonTheme,
   },
 });
+
+// 타입 확장 - 순환 참조 문제 해결
+export type AppTheme = typeof theme;

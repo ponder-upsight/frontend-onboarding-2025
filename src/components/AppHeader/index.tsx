@@ -1,15 +1,16 @@
 "use client";
-/** @jsxImportSource @emotion/react */
 
-import { Path } from "@/util/path";
+import { Path, startWithPath } from "@/util/path";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const AppHeader = () => {
   const path = usePathname();
-  const isProductsList = path === Path.PRODUCTS_LIST;
-  const isProductsAdd = path === Path.PRODUCTS_ADD;
+
+  const isProductsList =
+    startWithPath(path, Path.PRODUCTS_LIST) || path === Path.ROOT;
+  const isProductsAdd = startWithPath(path, Path.PRODUCTS_ADD);
 
   return (
     <Flex

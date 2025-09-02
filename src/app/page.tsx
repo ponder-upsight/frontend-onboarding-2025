@@ -1,4 +1,4 @@
-import HomePage from "./[page]/page";
+import HomePage from "./product-list/[page]/page";
 
 export const metadata = {
   title: "상품 목록페이지",

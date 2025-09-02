@@ -51,6 +51,7 @@ const ProductContent = ({ page }: ProductContentProps) => {
         <Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={4}>
           {productList.map((product: Product, index) => (
             <ProductCard
+              page={page}
               observeRef={
                 productList.length - 1 === index ? observeRef : undefined
               }
@@ -66,7 +67,7 @@ const ProductContent = ({ page }: ProductContentProps) => {
         {Array.from({ length: totalPageCount }, (_, idx) => {
           const pageNumber = idx + 1;
           return (
-            <Link href={`/${pageNumber}`} key={pageNumber}>
+            <Link href={`/product-list/${pageNumber}`} key={pageNumber}>
               <Text
                 as="button"
                 fontWeight={page === pageNumber ? 700 : 500}

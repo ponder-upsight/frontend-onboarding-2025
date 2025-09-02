@@ -7,9 +7,10 @@ import Link from "next/link";
 interface ProductCardProps {
   product: Product;
   observeRef?: React.RefObject<HTMLDivElement | null>;
+  page?: number;
 }
 
-const ProductCard = ({ product, observeRef }: ProductCardProps) => {
+const ProductCard = ({ product, observeRef, page }: ProductCardProps) => {
   const { id, name, description, stock, createdAt, thumbUrl } = product;
 
   return (
@@ -56,7 +57,7 @@ const ProductCard = ({ product, observeRef }: ProductCardProps) => {
           </Text>
         </Flex>
 
-        <Link href={`/product/${id}`}>
+        <Link href={`/product/${id}?router=${page}`}>
           <Button mt="6" width="100%" colorScheme="blue" variant="outline">
             상세보기
           </Button>
