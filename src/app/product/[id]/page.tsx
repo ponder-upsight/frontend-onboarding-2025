@@ -14,8 +14,8 @@ import {
   CardBody,
   Tag,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import RouterBackButton from "@/components/RouterBackButton.tsx";
+import ImageViewrPanel from "@/components/ImageViewrPanel";
 
 export const revalidate = 3600;
 
@@ -66,14 +66,15 @@ const ProductDetailPage = async ({ params }: PageProps) => {
                 position="relative"
                 aspectRatio="1 / 1"
                 overflow="hidden">
-                <Image
-                  src={product.thumbUrl}
-                  alt={product.name}
-                  // width={600}
-                  // height={600}
-                  // style={{ width: "100%", height: "auto" }}
-                  fill
-                  priority
+                <ImageViewrPanel
+                  imageProps={{
+                    fill: true,
+                    priority: true,
+                    src: product.thumbUrl,
+                    alt: product.name,
+                  }}
+                  images={[product.thumbUrl, ...product.imageUrls]}
+                  position={0}
                 />
               </Box>
               <Box p={4} width="100%">
@@ -88,16 +89,20 @@ const ProductDetailPage = async ({ params }: PageProps) => {
                       borderRadius="md"
                       overflow="hidden"
                       boxSize={{ base: "70px", md: "80px" }}>
-                      <Image
-                        src={url}
-                        alt={`${product.name} 상세 이미지 ${index + 1}`}
-                        width={100}
-                        height={100}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
+                      <ImageViewrPanel
+                        imageProps={{
+                          width: 100,
+                          height: 100,
+                          src: url,
+                          alt: `${product.name} 상세 이미지 ${index + 1}`,
+                          style: {
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          },
                         }}
+                        images={[product.thumbUrl, ...product.imageUrls]}
+                        position={index + 1}
                       />
                     </Box>
                   ))}
