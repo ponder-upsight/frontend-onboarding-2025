@@ -8,13 +8,11 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
-  HStack,
   Input,
   NumberInput,
   NumberInputField,
   Textarea,
   VStack,
-  Flex,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
@@ -30,11 +28,15 @@ const ProductAddPage = ({ initData }: ProductModifyFormProps) => {
   const {
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      ...initData,
+      name: initData?.name || "",
+      description: initData?.description || "",
+      stock: initData?.stock || 0,
+      thumbnail: initData?.thumbnail,
+      detailImages: initData?.detailImages,
     },
   });
 
@@ -99,7 +101,7 @@ const ProductAddPage = ({ initData }: ProductModifyFormProps) => {
                   render={({ field: { onChange, value, ...field } }) => (
                     <NumberInput
                       {...field}
-                      value={value}
+                      value={value?.toString() || ""}
                       onChange={(valueString) =>
                         onChange(Number(valueString) || 0)
                       }
@@ -130,10 +132,11 @@ const ProductAddPage = ({ initData }: ProductModifyFormProps) => {
               />{" "}
               <Button
                 mt={8}
-                bg="blue.800"
                 color="white"
-                _hover={{ bg: "blue.900" }}
+                bg={isValid ? "primary.500" : "gray.400"}
+                _hover={{ bg: isValid ? "primary.600" : "" }}
                 isLoading={isSubmitting}
+                isDisabled={!isValid}
                 type="submit"
                 size="lg"
                 w="full">

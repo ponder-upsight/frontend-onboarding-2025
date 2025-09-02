@@ -19,7 +19,30 @@ const FileUpload = ({ name, control, multiple = false }: FileUploadProps) => {
       control={control}
       render={({ field: { onChange, value } }) => {
         const fileCount = value?.length || 0;
-        const label = multiple ? "추가" : "이미지 추가";
+        const label = multiple
+          ? fileCount > 0
+            ? "이미지 추가"
+            : "상세 이미지 추가"
+          : "이미지 추가";
+
+        const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const newFiles = e.target.files;
+          if (newFiles && newFiles.length > 0) {
+            if (multiple && value && value.length > 0) {
+              // 기존 파일에 새 파일 추가
+              const combinedFiles = Array.from(value).concat(
+                Array.from(newFiles)
+              );
+              const dataTransfer = new DataTransfer();
+              combinedFiles.forEach((file) => dataTransfer.items.add(file));
+              onChange(dataTransfer.files);
+            } else {
+              // 새 파일로 교체
+              onChange(newFiles);
+            }
+          }
+        };
+
         return (
           <Box
             border="2px dashed"
@@ -33,8 +56,17 @@ const FileUpload = ({ name, control, multiple = false }: FileUploadProps) => {
             <VStack>
               <Icon boxSize={8} color="gray.500" />
               <Text color="blue.500" fontWeight="medium">
-                {fileCount > 0 ? `${fileCount}개의 파일 선택됨` : label}
+                {fileCount > 0
+                  ? `${fileCount}개의 파일 선택됨${
+                      multiple ? " - 클릭하여 추가" : ""
+                    }`
+                  : label}
               </Text>
+              {multiple && (
+                <Text fontSize="xs" color="gray.500">
+                  최대 10개까지 선택 가능
+                </Text>
+              )}
             </VStack>
             <Input
               type="file"
@@ -42,7 +74,7 @@ const FileUpload = ({ name, control, multiple = false }: FileUploadProps) => {
               hidden
               accept={ACCEPTED_IMAGE_TYPES.join(",")}
               ref={inputRef}
-              onChange={(e) => onChange(e.target.files)}
+              onChange={handleFileChange}
             />
           </Box>
         );
