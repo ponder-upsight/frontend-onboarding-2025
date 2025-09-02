@@ -41,15 +41,15 @@ const ProductInfo = ({ product, lng }: ProductInfoProps) => {
       position: "top-center",
       autoClose: 3000,
     });
-    router.push(`/`);
+    router.push(`/${lng}`);
   };
 
   const handleAddToCart = () => {
-         toast(SuccessToast, {
-         data: { title: t("addToCartSuccess", { name: product.name, quantity: quantity }) },
-         position: "top-center",
-         autoClose: 3000,
-     });
+    toast(SuccessToast, {
+      data: { title: t("addToCartSuccess", { name: product.name, quantity: quantity }) },
+      position: "top-center",
+      autoClose: 3000,
+    });
   };
 
   return (
