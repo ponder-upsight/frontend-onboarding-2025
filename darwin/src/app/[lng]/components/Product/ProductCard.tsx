@@ -5,7 +5,7 @@ import { Box, Flex, VStack } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { DeleteSmallBlack, DeleteSmallWhite, EyeOn } from "@/assets/icons";
-import { Product } from "@/data/products";
+import { Product } from "@/api/ProductApi/ProductApiTypes";
 import { useTranslation } from "@/app/i18n/client";
 import { IconButton } from "@/app/components/ui/IconButton";
 import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
@@ -26,7 +26,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
   const { isOpen, onConfirm, openModal, closeModal } = useModalStore();
 
   const handleDelete = () => {
-    openModal(() => {})
+    openModal(() => handleDeleteConfirm());
   };
 
   const handleDeleteConfirm = () => {
@@ -132,7 +132,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
       <ConfirmModal
         title={t("deleteProduct")}
         content={t("deleteProductContent")}
-        onConfirm={handleDeleteConfirm}
+        onConfirm={onConfirm}
         isOpen={isOpen}
         onClose={closeModal}
         confirmBtn={t("delete")}
