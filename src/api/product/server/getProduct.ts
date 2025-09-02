@@ -11,7 +11,10 @@ const getProduct = async ({
 }: GetProductParams): Promise<GetProductResponse> => {
   const API_PATH = `/api/v1/products/${productId}`;
 
-  const result = await serverFetch<ProductDetailItem>(API_PATH);
+  const result = await serverFetch<ProductDetailItem>(
+    API_PATH,
+    { next: { revalidate: 3600 } } // 3600초 동안 캐시
+  );
 
   if (result.isSuccess) {
     return result.data;

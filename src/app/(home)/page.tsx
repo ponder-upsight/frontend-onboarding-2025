@@ -7,13 +7,8 @@ export const metadata = {
   description: "상품 목록페이지입니다.",
 };
 
-export async function generateStaticParams() {
-  // 빌드 시점에 /1 경로의 페이지만 미리 생성하도록 지정합니다.
-  return [{ page: "1" }];
-}
-
 const HomePage = async () => {
-  const dehydratedState = await getPrefetchHydrateProductList(1);
+  const dehydratedState = await getPrefetchHydrateProductList();
   return (
     <HydrationBoundary state={dehydratedState}>
       <ProductContent />

@@ -10,7 +10,7 @@ const AppHeader = () => {
 
   const isProductsList =
     startWithPath(path, Path.PRODUCTS_LIST) || path === Path.ROOT;
-  const isProductsAdd = startWithPath(path, Path.PRODUCTS_ADD);
+  const isProductsAdd = startWithPath(path, Path.PRODUCT_ADD);
 
   return (
     <Flex
@@ -25,12 +25,12 @@ const AppHeader = () => {
         상품 관리 시스템
       </Heading>
       <Flex gap={2}>
-        <Link href={"/"}>
+        <Link href={Path.ROOT}>
           <Button variant={"toggle"} aria-selected={isProductsList} size="md">
             상품 목록
           </Button>
         </Link>
-        <Link href={"/products/add"}>
+        <Link href={Path.PRODUCT_ADD}>
           <Button variant={"toggle"} aria-selected={isProductsAdd} size="md">
             상품 등록
           </Button>

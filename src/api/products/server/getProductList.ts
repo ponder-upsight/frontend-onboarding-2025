@@ -23,7 +23,7 @@ const getProductList = async ({
   sortCode,
 }: GetProductListParams): Promise<GetProductListResponse> => {
   const params = new URLSearchParams({
-    page: String(page - 1),
+    page: String(page),
     size: String(size),
   });
 
