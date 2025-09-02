@@ -4,10 +4,10 @@ import { useState } from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { useTranslation } from "@/app/i18n/client";
-import { Product } from "@/api/ProductApi/ProductApiTypes";
+import { ProductDetails } from "@/api/product/getProduct";
 
 interface ImageGalleryProps {
-  product: Product;
+  product: ProductDetails;
   lng: string;
 }
 

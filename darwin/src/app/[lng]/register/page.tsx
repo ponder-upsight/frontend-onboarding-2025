@@ -11,7 +11,7 @@ import { Input } from "@/app/components/ui/Input";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { Box, Flex, VStack, FormControl } from "@chakra-ui/react";
 import { css } from "@emotion/react";
-import { usePostProduct } from "@/api/ProductApi/postProduct";
+import { usePostProduct } from "@/api/product/postProduct";
 
 import FileUploadSection from "./components/FileUploadSection";
 
@@ -94,9 +94,9 @@ const RegisterPage = ({ params }: PageProps) => {
         const productData = {
           name: data.name,
           description: data.description,
-          stock: data.stock,
-          imageUrl: mainImageBase64,
-          detailImageUrls: detailImagesBase64,
+          amount: data.stock,
+          thumbnail: mainImageBase64,
+          detail: detailImagesBase64,
         };
         
         await postProductMutation.mutateAsync(productData);

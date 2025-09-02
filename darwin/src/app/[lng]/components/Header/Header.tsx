@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { Button } from "@/app/components/ui/Button";
-import { useEffect } from "react";
 import { DropDown } from "@/app/components/ui/Dropdown";
 import i18next from "i18next";
 

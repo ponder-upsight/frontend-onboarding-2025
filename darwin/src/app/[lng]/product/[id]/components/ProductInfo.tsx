@@ -1,20 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Flex, VStack, HStack } from "@chakra-ui/react";
+import { Box, VStack, HStack } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { MinusGray, PlusGray } from "@/assets/icons";
-import { Product } from "@/data/products";
 import { toast } from "react-toastify";
 import { SuccessToast } from "@/app/components/ui/Toast";
 import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
 import { useModalStore } from "@/store/useModalStore";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "@/app/i18n/client";
+import { ProductDetails } from "@/api/product/getProduct";
 
 interface ProductInfoProps {
-  product: Product;
+  product: ProductDetails;
   lng: string;
 }
 

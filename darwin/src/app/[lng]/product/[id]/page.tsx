@@ -9,19 +9,19 @@ import { LeftIcon } from "@/assets/icons";
 import { useTranslation } from "@/app/i18n/client";
 import ImageGallery from "./components/ImageGallery";
 import ProductInfo from "./components/ProductInfo";
-import { useGetProduct } from "@/api/ProductApi/getProduct";
+import { useGetProduct } from "@/api/product/getProduct";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 
 type PageProps = {
   params: Promise<{
     lng: string;
-    id: number;
+    id: string;
   }>;
 };
 
 const ProductDetailPage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
-  const [productId, setProductId] = useState<number>(0);
+  const [productId, setProductId] = useState<string>("");
   const router = useRouter();
   const { data: product, isPending } = useGetProduct(productId)
   const { t } = useTranslation(lng);

@@ -7,10 +7,9 @@ import { useTranslation } from "@/app/i18n/client";
 import { Box, Grid, Flex } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import ProductCard from "./components/Product/ProductCard";
-import {Product} from "@/api/ProductApi/ProductApiTypes";
-import { useGetProducts } from "@/api/ProductApi/getProducts";
-import {useDeleteProduct} from "@/api/ProductApi/deleteProduct";
-import {LoadingSpinner} from "@/app/components/ui/LoadingSpinner";
+import { Product, useGetProducts } from "@/api/product/getProducts";
+import { useDeleteProduct } from "@/api/product/deleteProduct";
+import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 
 type PageProps = {
   params: Promise<{

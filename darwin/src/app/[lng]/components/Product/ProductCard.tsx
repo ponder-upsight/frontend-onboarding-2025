@@ -5,13 +5,13 @@ import { Box, Flex, VStack } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { DeleteSmallWhite, EyeOn } from "@/assets/icons";
-import { Product } from "@/api/ProductApi/ProductApiTypes";
 import { useTranslation } from "@/app/i18n/client";
 import { IconButton } from "@/app/components/ui/IconButton";
 import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
 import { useModalStore } from "@/store/useModalStore";
 import { toast } from "react-toastify";
 import { SuccessToast } from "@/app/components/ui/Toast";
+import { Product } from "@/api/product/getProducts";
 
 interface ProductCardProps {
   product: Product;

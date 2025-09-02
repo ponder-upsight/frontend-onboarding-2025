@@ -3,7 +3,7 @@
 /** @jsxImportSource @emotion/react */
 import { useRef, useState } from "react";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { Box, Flex, Image, Grid, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import { UploadBlue, DeleteSmallGray } from "@/assets/icons";
 import { IconButton } from "@/app/components/ui/IconButton";

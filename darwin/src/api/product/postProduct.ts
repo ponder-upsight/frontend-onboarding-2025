@@ -1,7 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { PostProductRequest } from "./ProductApiTypes";
 import apiClient from "@/api/apiClient";
+
+export interface PostProductRequest {
+    name: string;
+    description: string;
+    amount: number;
+    thumbnail: string;
+    detail: string[];
+}
 
 const postProduct = async (productData: PostProductRequest) => {
     const response = await apiClient.post(`/api/v1/products`, productData);
