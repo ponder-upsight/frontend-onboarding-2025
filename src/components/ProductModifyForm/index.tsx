@@ -42,32 +42,8 @@ const ProductAddPage = ({ initData }: ProductModifyFormProps) => {
     console.log("Form submitted:", data);
   };
 
-  console.log(errors.name);
-
   return (
     <Box width={"100%"}>
-      {/* Header */}
-      <Flex
-        as="header"
-        align="center"
-        justify="space-between"
-        px={{ base: 4, md: 8 }}
-        py={4}
-        bg="white"
-        borderBottomWidth="1px">
-        <Heading size="md" color="gray.700">
-          상품 관리 시스템
-        </Heading>
-        <HStack spacing={4}>
-          <Button variant="toggle" size="sm">
-            상품 목록
-          </Button>
-          <Button variant="toggle" aria-selected size="sm">
-            상품 등록
-          </Button>
-        </HStack>
-      </Flex>
-
       {/* Form Content */}
       <Container maxW="container.md" py={{ base: 6, md: 12 }}>
         <Box
