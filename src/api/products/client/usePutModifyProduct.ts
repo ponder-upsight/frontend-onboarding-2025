@@ -12,7 +12,7 @@ interface PutCreateProductBody {
   newDetailImages: File[]; // array of binary strings
 }
 
-const putCreateProduct = async (newProduct: PutCreateProductBody) => {
+const putModifyProduct = async (newProduct: PutCreateProductBody) => {
   const formData = new FormData();
   formData.append("name", newProduct.name);
   formData.append("description", newProduct.description);
@@ -31,11 +31,11 @@ const putCreateProduct = async (newProduct: PutCreateProductBody) => {
   const response = await publicAxiosInstance.post("/products", formData, {});
   return response.data;
 };
-export const usePutCreateProduct = () => {
+export const usePutModifyProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (newProduct: PutCreateProductBody) =>
-      putCreateProduct(newProduct),
+      putModifyProduct(newProduct),
     onSuccess: () => {
       // 상품 생성 성공 시, 상품 목록 캐시를 무효화하여 최신 데이터로 갱신
       queryClient.invalidateQueries({ queryKey: [QueryKeys.PRODUCTS] });
@@ -43,4 +43,4 @@ export const usePutCreateProduct = () => {
   });
 };
 
-export default usePutCreateProduct;
+export default usePutModifyProduct;
