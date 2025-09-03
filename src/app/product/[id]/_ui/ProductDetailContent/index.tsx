@@ -21,6 +21,7 @@ import { formattedDotDate } from "@/util/dateUtil";
 import Link from "next/link";
 import useGetProduct from "@/api/products/client/useGetProduct";
 import useDeleteProduct from "@/api/products/client/useDeleteProduct";
+import useCartStore from "@/lib/zustand/useCartStore";
 
 interface ProductDetailContentProps {
   productId: string;
@@ -29,6 +30,7 @@ interface ProductDetailContentProps {
 const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
   const { data: product } = useGetProduct(productId);
   const { mutate: deleteProduct } = useDeleteProduct();
+  const { addItem } = useCartStore();
 
   if (!product) {
     return (
@@ -182,7 +184,17 @@ const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
                 <Button variant={"toggle"} aria-selected size="md" flex={1}>
                   주문하기
                 </Button>
-                <Button variant={"toggle"} size="md" flex={1}>
+                <Button
+                  onClick={() => {
+                    addItem({
+                      productId,
+                      quantity: 1,
+                    });
+                    alert("장바구니에 상품이 추가되었습니다.");
+                  }}
+                  variant={"toggle"}
+                  size="md"
+                  flex={1}>
                   장바구니
                 </Button>
               </HStack>

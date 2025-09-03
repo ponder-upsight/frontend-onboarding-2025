@@ -1,5 +1,6 @@
 "use client";
 
+import useCartStore from "@/lib/zustand/useCartStore";
 import { Path, startWithPath } from "@/util/path";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import Link from "next/link";
@@ -7,10 +8,12 @@ import { usePathname } from "next/navigation";
 
 const AppHeader = () => {
   const path = usePathname();
+  const { items } = useCartStore();
 
   const isProductsList =
     startWithPath(path, Path.PRODUCTS_LIST) || path === Path.ROOT;
   const isProductsAdd = startWithPath(path, Path.PRODUCT_ADD);
+  const isCartPage = startWithPath(path, "/cart");
 
   return (
     <Flex
@@ -35,6 +38,14 @@ const AppHeader = () => {
             상품 등록
           </Button>
         </Link>
+        <Button
+          aria-selected={isCartPage}
+          as={Link}
+          href={Path.CART}
+          variant="toggle"
+          size="md">
+          장바구니 ({items.length})
+        </Button>
       </Flex>
     </Flex>
   );

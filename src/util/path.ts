@@ -3,6 +3,7 @@ export const Path = {
   PRODUCTS_LIST: `/product-list`,
   PRODUCT_DETAIL: `/product`,
   PRODUCT_ADD: "/product/add",
+  CART: "/cart",
 };
 
 export const startWithPath = (currentPath: string, targetPath: string) => {

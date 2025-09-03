@@ -4,10 +4,16 @@ import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 
 interface PostPurchaseProductProps {
   productId: string;
+  quantity: number;
 }
 
-const postPurchaseProduct = async ({ productId }: PostPurchaseProductProps) => {
-  const response = await publicAxiosInstance.delete(`/products/${productId}`);
+const postPurchaseProduct = async ({
+  productId,
+  quantity,
+}: PostPurchaseProductProps) => {
+  const response = await publicAxiosInstance.post(`/products/${productId}`, {
+    quantity,
+  });
   return response.data;
 };
 export const usePostPurchaseProduct = () => {
