@@ -53,7 +53,7 @@ const ProductInfo = ({ product, lng }: ProductInfoProps) => {
   };
 
   return (
-    <VStack spacing="24px" align="stretch">
+    <VStack spacing="24px" align="stretch" mb="16px">
       <Box>
         <TypoGraph variant="headline01" color="gray.900" mb="8px">
           {product.name}

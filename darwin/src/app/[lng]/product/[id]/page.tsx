@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Flex, Grid } from "@chakra-ui/react";
+import {Box, Flex, Grid, VStack} from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { LeftIcon } from "@/assets/icons";
@@ -81,10 +81,32 @@ const ProductDetailPage = ({ params }: PageProps) => {
           {t("backToList")}
         </Button>
 
-        <Grid templateColumns="1fr 1fr" gap="40px" bg="white" borderRadius="8px" p="32px">
-          <ImageGallery product={product} lng={lng} />
-          <ProductInfo product={product} lng={lng} />
-        </Grid>
+        <Box
+            display={{ base: "block", md: "flex" }}
+            w="100%"
+            gap="40px"
+            bg="white"
+            borderRadius="8px"
+            p="32px"
+        >
+            <Box
+              flex="1"
+            >
+              <ProductInfo
+                product={product}
+                lng={lng}
+              />
+            </Box>
+
+            <Box
+              flex="1"
+            >
+              <ImageGallery
+                product={product}
+                lng={lng}
+              />
+            </Box>
+        </Box>
       </Box>
     </Box>
   );

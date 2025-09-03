@@ -57,14 +57,16 @@ export const Button = {
     }),
 
     secondary: (props: StyleFunctionProps) => ({
-      bg: mode("blue.900", "blue.900")(props),
-      color: "white",
+      bg: mode("white", "white")(props),
+      borderColor: mode("gray.700", "gray.700")(props),
+      border: '1px solid',
+      color: "blue.900",
       _hover: {
-        bg: mode("blue.700", "blue.700")(props),
+        bg: mode("gray.400", "gray.400")(props),
       },
       _selected: {
-        bg: "white",
-        color: "gray.400",
+        bg: "gray.400",
+        color: "blue.900",
       },
       _active: {
         bg: mode("blue.800", "blue.800")(props),
