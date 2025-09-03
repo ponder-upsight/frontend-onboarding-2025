@@ -1,60 +1,20 @@
 "use client";
 
 import { Box, Button, Container, Heading, VStack } from "@chakra-ui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import React from "react";
-import { productSchema, ProductFormValues } from "@/lib/react-hook-form/schema";
-import usePostCreateProduct from "@/api/products/client/usePostCreateProduct";
 import ContolledInputProvider from "@/lib/react-hook-form/ContolledInputProvider";
 import ControlledNumberInput from "@/lib/react-hook-form/ControlledNumberInput";
 import { Input, Textarea } from "@chakra-ui/react";
 import ImagePreview from "@/lib/react-hook-form/ImagePreview";
+import useProductAddForm from "./_hooks/useProdcutAddForm";
 
 const ProductAddForm = () => {
-  const { mutate: postCreateProduct } = usePostCreateProduct();
-
-  const methods = useForm<ProductFormValues>({
-    resolver: zodResolver(productSchema),
-    mode: "onChange",
-    defaultValues: {
-      name: "",
-      description: "",
-      amount: 0,
-      thumbnail: undefined,
-      detail: undefined,
-    },
-  });
-
+  const { onSubmit, methods } = useProductAddForm();
   const {
     handleSubmit,
-    setError,
-    clearErrors,
-    formState: { isValid, isSubmitting },
+    formState: { isSubmitting, isValid },
   } = methods;
-
-  const onSubmit = (data: ProductFormValues) => {
-    // 썸네일이 필수
-    if (!data.thumbnail || data.thumbnail.length === 0) {
-      setError("thumbnail", {
-        type: "manual",
-        message: "메인 이미지를 선택해주세요.",
-      });
-      return;
-    }
-
-    clearErrors("thumbnail");
-
-    const addApiData = {
-      name: data.name,
-      description: data.description,
-      amount: data.amount,
-      thumbnail: data.thumbnail[0],
-      detail: data.detail ? Array.from(data.detail) : [],
-    };
-
-    postCreateProduct(addApiData);
-  };
 
   return (
     <Box width={"100%"}>

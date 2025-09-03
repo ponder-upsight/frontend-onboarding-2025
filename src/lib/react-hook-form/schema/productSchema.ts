@@ -1,11 +1,13 @@
 import { z } from "zod";
-import { MAX_DETAIL_IMAGES, MAX_FILE_SIZE } from "./constant";
-import { ACCEPTED_IMAGE_TYPES } from "./schema";
+import {
+  ACCEPTED_IMAGE_TYPES,
+  MAX_DETAIL_IMAGES,
+  MAX_FILE_SIZE,
+} from "./constant";
 
-export type ProductModifyFormValues = z.infer<typeof productModifySchema>;
+export type ProductFormValues = z.infer<typeof productSchema>;
 
-// 수정 모드용 schema (썸네일이 선택사항)
-export const productModifySchema = z.object({
+export const productSchema = z.object({
   name: z
     .string({ message: "상품명을 입력해주세요." })
     .min(1, "상품명은 필수입니다."),
@@ -15,27 +17,25 @@ export const productModifySchema = z.object({
   amount: z
     .number({ message: "재고수량을 입력해주세요." })
     .min(0, "재고는 0 이상이어야 합니다."),
-  deletedImageUrls: z.array(z.string()),
 
   thumbnail: z
-    .custom<FileList>((files) => !files || files instanceof FileList, {
-      message: "메인 이미지 파일을 확인해주세요.",
+    .custom<FileList>((files) => files instanceof FileList, {
+      message: "메인 이미지를 선택해주세요.",
     })
     .refine(
-      (files) => !files || files.length === 1,
-      "메인 이미지는 1개만 선택할 수 있습니다."
+      (files) => files?.length === 1,
+      "메인 이미지는 1개 등록해야 합니다."
     )
     .refine(
-      (files) => !files || files[0]?.size <= MAX_FILE_SIZE,
+      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
       `메인 이미지의 최대 파일 크기는 5MB입니다.`
     )
     .refine(
-      (files) => !files || ACCEPTED_IMAGE_TYPES.includes(files[0]?.type),
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       "지원되지 않는 파일 형식입니다. " + ACCEPTED_IMAGE_TYPES.join(",")
-    )
-    .optional(),
+    ),
   detail: z
-    .custom<FileList>((files) => !files || files instanceof FileList, {
+    .custom<FileList>((files) => files instanceof FileList, {
       message: "상세 이미지 파일을 확인해주세요.",
     })
     .refine(
@@ -54,15 +54,13 @@ export const productModifySchema = z.object({
           ACCEPTED_IMAGE_TYPES.includes(file.type)
         ),
       "지원되지 않는 파일 형식입니다."
-    )
-    .optional(),
+    ),
 });
 
-export const productModifySchemaKey = {
+export const productSchemaKey = {
   name: "name",
   description: "description",
   amount: "amount",
-  deletedImageUrls: "deletedImageUrls",
   thumbnail: "thumbnail",
   detail: "detail",
 };

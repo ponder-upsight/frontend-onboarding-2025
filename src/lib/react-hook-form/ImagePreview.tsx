@@ -1,4 +1,10 @@
-import { Controller, useController, useFormContext } from "react-hook-form";
+import {
+  Controller,
+  useController,
+  useFormContext,
+  FieldValues,
+  FieldPath,
+} from "react-hook-form";
 import {
   Box,
   Image,
@@ -9,49 +15,40 @@ import {
   CloseButton,
   Text,
 } from "@chakra-ui/react";
-import {
-  ProductFormValues,
-  ProductModifyFormValues,
-} from "@/lib/react-hook-form/schema";
 import FileUpload from "@/lib/react-hook-form/FileUpload";
 
-// 공통 폼 타입 (생성용과 수정용 모두 지원)
-type CommonFormType = ProductFormValues | ProductModifyFormValues;
-
-interface ImagePreviewProps {
-  name: string;
+interface ImagePreviewProps<T extends FieldValues = FieldValues> {
+  name: FieldPath<T>;
   label: string;
   multiple?: boolean;
-  existingImageUrls?: string[]; // 기존 이미지 URL들
-  deletedImageUrlsFieldName?: "deletedImageUrls"; // 삭제된 이미지 URL들 필드명 (수정 모드에서만 사용)
+  existingImageUrls?: string[];
+  deletedImageUrlsFieldName?: FieldPath<T>;
 }
 
-const ImagePreview = ({
+const ImagePreview = <T extends FieldValues = FieldValues>({
   name,
   label,
   multiple = false,
   existingImageUrls = [],
   deletedImageUrlsFieldName,
-}: ImagePreviewProps) => {
+}: ImagePreviewProps<T>) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<CommonFormType>();
+  } = useFormContext<T>();
 
-  // React Hook 조건부 호출 문제 해결: 항상 호출하되 필요할 때만 사용
   const deletedImagesController = useController({
-    name: (deletedImageUrlsFieldName ||
-      "deletedImageUrls") as "deletedImageUrls",
+    name: deletedImageUrlsFieldName || ("" as FieldPath<T>),
     control,
-    defaultValue: [],
+    defaultValue: [] as unknown as T[FieldPath<T>],
+    disabled: !deletedImageUrlsFieldName,
   });
 
-  const deletedImageUrls = deletedImageUrlsFieldName
-    ? deletedImagesController.field.value || []
+  const deletedImageUrls: string[] = deletedImageUrlsFieldName
+    ? deletedImagesController?.field.value || []
     : [];
-
   const setDeletedImageUrls = deletedImageUrlsFieldName
-    ? deletedImagesController.field.onChange
+    ? deletedImagesController?.field.onChange
     : null;
 
   const handleRemoveExistingImage = (url: string) => {
@@ -65,7 +62,7 @@ const ImagePreview = ({
     (url) => !deletedImageUrls.includes(url)
   );
 
-  const error = errors[name]?.message as string;
+  const error = errors[name]?.message as string | undefined;
 
   return (
     <Controller
@@ -172,7 +169,7 @@ const ImagePreview = ({
 
             {/* 새로 선택한 이미지들 표시 */}
             {previews.length === 0 ? (
-              <FileUpload name={name} multiple={multiple} />
+              <FileUpload<T> name={name} multiple={multiple} />
             ) : multiple ? (
               <Box>
                 <Text fontSize="sm" color="gray.600" mb={2}>
@@ -204,7 +201,7 @@ const ImagePreview = ({
                     </Box>
                   ))}
                 </SimpleGrid>
-                <FileUpload name={name} multiple={multiple} />
+                <FileUpload<T> name={name} multiple={multiple} />
               </Box>
             ) : (
               <Box>
@@ -231,7 +228,7 @@ const ImagePreview = ({
                     onClick={removeAllNewImages}
                   />
                 </Box>
-                <FileUpload name={name} multiple={multiple} />
+                <FileUpload<T> name={name} multiple={multiple} />
               </Box>
             )}
             <FormErrorMessage>{error}</FormErrorMessage>

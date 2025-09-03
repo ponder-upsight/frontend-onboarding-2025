@@ -9,7 +9,10 @@ import ControlledNumberInput from "@/lib/react-hook-form/ControlledNumberInput";
 import { Input, Textarea } from "@chakra-ui/react";
 import ImagePreview from "@/lib/react-hook-form/ImagePreview";
 import useProductModifyForm from "./_hooks/useProuctModifyForm";
-import { productSchemaKey } from "@/lib/react-hook-form/productSchema";
+import {
+  ProductModifyFormValues,
+  productModifySchemaKey,
+} from "@/lib/react-hook-form/schema/productModifySchema";
 
 interface ProductEditFormProps {
   productId: string;
@@ -41,7 +44,7 @@ const ProductModifyForm = ({ productId }: ProductEditFormProps) => {
 
                 {/* 상품명 */}
                 <ContolledInputProvider
-                  name={productSchemaKey.name}
+                  name={productModifySchemaKey.name}
                   label="상품명">
                   <Input
                     placeholder="상품명을 입력해주세요"
@@ -52,7 +55,7 @@ const ProductModifyForm = ({ productId }: ProductEditFormProps) => {
 
                 {/* 상품 설명*/}
                 <ContolledInputProvider
-                  name={productSchemaKey.description}
+                  name={productModifySchemaKey.description}
                   label="상품 설명">
                   <Textarea
                     placeholder="상품 설명을 입력해주세요"
@@ -63,13 +66,15 @@ const ProductModifyForm = ({ productId }: ProductEditFormProps) => {
 
                 {/* 재고 수량*/}
                 <ControlledNumberInput
-                  name={productSchemaKey.amount}
+                  name={productModifySchemaKey.amount}
                   label="재고 수량"
                 />
 
                 {/* 메인 이미지 */}
-                <ImagePreview
-                  name={productSchemaKey.thumbnail}
+                <ImagePreview<ProductModifyFormValues>
+                  name={
+                    productModifySchemaKey.thumbnail as keyof ProductModifyFormValues
+                  }
                   label="메인 이미지 (변경하려면 새로 선택)"
                   multiple={false}
                   existingImageUrls={thumbnailUrl ? [thumbnailUrl] : []}
@@ -77,8 +82,10 @@ const ProductModifyForm = ({ productId }: ProductEditFormProps) => {
                 />
 
                 {/* 상세 이미지 */}
-                <ImagePreview
-                  name={productSchemaKey.detail}
+                <ImagePreview<ProductModifyFormValues>
+                  name={
+                    productModifySchemaKey.detail as keyof ProductModifyFormValues
+                  }
                   label="상세 이미지 (추가하려면 선택)"
                   multiple={true}
                   existingImageUrls={detailFileUrls || []}
