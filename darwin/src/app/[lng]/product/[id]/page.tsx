@@ -93,6 +93,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
               flex="1"
             >
               <ProductInfo
+                id={productId}
                 product={product}
                 lng={lng}
               />
