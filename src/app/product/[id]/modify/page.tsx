@@ -11,7 +11,9 @@ interface PageProps {
 
 const ProductModifyPage = async ({ params }: PageProps) => {
   const { id } = await params;
-  const dehydrateProduct = await getPrefetchHydrateProduct(id);
+  const dehydrateProduct = await getPrefetchHydrateProduct({
+    productId: id,
+  });
 
   if (!dehydrateProduct) {
     return (

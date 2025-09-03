@@ -3,7 +3,7 @@
 import { Box, Button, Container, Heading, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   productModifySchema,
   ProductModifyFormValues,

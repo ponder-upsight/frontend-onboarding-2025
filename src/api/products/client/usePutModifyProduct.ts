@@ -53,7 +53,12 @@ export const usePutModifyProduct = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  return useMutation({
+  return useMutation<
+    unknown,
+    unknown,
+    PutCreateProductProps,
+    { previousProduct?: unknown; previousProductList?: unknown }
+  >({
     mutationFn: (newProduct: PutCreateProductProps) =>
       putModifyProduct(newProduct),
 
@@ -113,7 +118,11 @@ export const usePutModifyProduct = () => {
 
       return { previousProduct, previousProductList };
     },
-
+    onSuccess: (data, variables) => {
+      const { productId } = variables;
+      // 성공 시 추가 작업이 필요하면 여기에 작성
+      revalidateTags([QueryKeys.PRODUCTS, `${QueryKeys.PRODUCT}-${productId}`]);
+    },
     // 에러 시 롤백
     onError: (err, variables, context) => {
       if (context?.previousProduct) {
@@ -133,17 +142,14 @@ export const usePutModifyProduct = () => {
     onSettled: (data, error, variables) => {
       const { productId } = variables;
 
-      // 백그라운드에서 ISR 페이지 revalidation
-
       // // 백그라운드에서 서버 데이터 재검증
-      // queryClient.invalidateQueries({
-      //   queryKey: [QueryKeys.PRODUCT, productId],
-      // });
-      // queryClient.invalidateQueries({
-      //   queryKey: [QueryKeys.PRODUCTS],
-      // });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.PRODUCT, productId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.PRODUCTS],
+      });
 
-      revalidateTags([QueryKeys.PRODUCTS, `${QueryKeys.PRODUCT}-${productId}`]);
       // 낙관적으로 즉시 페이지 이동
     },
   });

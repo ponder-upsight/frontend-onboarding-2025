@@ -28,8 +28,15 @@ interface ProductDetailContentProps {
 const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
   const { data: product } = useGetProduct(productId);
 
-  const { name, description, stock, thumbnailUrl, detailFileUrls } =
-    product || {};
+  if (!product) {
+    return (
+      <Container centerContent p={8}>
+        <Text>상품을 찾을 수 없습니다.</Text>
+      </Container>
+    );
+  }
+
+  const { name, description, stock, thumbnailUrl, detailFileUrls } = product;
 
   return (
     <Container maxW="container.xl" p={{ base: 4, md: 8 }}>
@@ -68,7 +75,7 @@ const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
                     width: 500,
                     height: 500,
                     priority: true,
-                    src: thumbnailUrl || "",
+                    src: thumbnailUrl,
                     alt: name || "상품 이미지",
                   }}
                   images={[thumbnailUrl, ...(detailFileUrls || [])].filter(

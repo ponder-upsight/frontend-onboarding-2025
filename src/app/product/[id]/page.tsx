@@ -35,11 +35,10 @@ const ProductDetailPage = async ({ params, searchParams }: PageProps) => {
   // 수정 후 리다이렉트인지 확인
   const skipPrefetch = searchParams?.updated === "true";
 
-  let dehydratedState = null;
-
-  if (!skipPrefetch) {
-    dehydratedState = await getPrefetchHydrateProduct(id);
-  }
+  const dehydratedState = await getPrefetchHydrateProduct({
+    productId: id,
+    enable: !skipPrefetch,
+  });
 
   if (!skipPrefetch && !dehydratedState) {
     return (

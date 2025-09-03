@@ -3,16 +3,18 @@ import { dehydrate } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import getProduct from "./getProduct";
 
-const getPrefetchHydrateProduct = async (productId: string) => {
+type GetPrefetchHydrateProductProps = {
+  productId: string;
+  enable?: boolean; // 기본값은 true
+};
+const getPrefetchHydrateProduct = async ({
+  productId,
+  enable = true,
+}: GetPrefetchHydrateProductProps) => {
   const queryClient = getQueryClient();
 
-  // 먼저 캐시에 데이터가 있는지 확인
-  const existingData = queryClient.getQueryData([QueryKeys.PRODUCT, productId]);
-
-  console.log("existingData", productId, existingData);
-
-  // 캐시에 데이터가 없을 때만 prefetch
-  if (!existingData) {
+  // enable이 ture일때만 프리페치
+  if (enable) {
     await queryClient.prefetchQuery({
       queryKey: [QueryKeys.PRODUCT, productId],
       queryFn: () => getProduct({ productId }),
