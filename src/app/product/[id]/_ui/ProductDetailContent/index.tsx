@@ -20,6 +20,7 @@ import ImageViewrPanel from "@/components/ImageViewrPanel";
 import { formattedDotDate } from "@/util/dateUtil";
 import Link from "next/link";
 import useGetProduct from "@/api/products/client/useGetProduct";
+import useDeleteProduct from "@/api/products/client/useDeleteProduct";
 
 interface ProductDetailContentProps {
   productId: string;
@@ -27,6 +28,7 @@ interface ProductDetailContentProps {
 
 const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
   const { data: product } = useGetProduct(productId);
+  const { mutate: deleteProduct } = useDeleteProduct();
 
   if (!product) {
     return (
@@ -42,14 +44,25 @@ const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
     <Container maxW="container.xl" p={{ base: 4, md: 8 }}>
       <Flex mb={6} justify="space-between" align="center">
         <RouterBackButton url="/" text={`\u2190 상품 목록으로 돌아가기`} />
-        <Button
-          as={Link}
-          href={`/product/${productId}/modify`}
-          size="sm"
-          variant={"toggle"}
-          aria-selected>
-          수정하기
-        </Button>
+        <Flex gap={2} ml={2}>
+          <Button
+            as={Link}
+            href={`/product/${productId}/modify`}
+            size="sm"
+            variant={"toggle"}
+            aria-selected>
+            수정하기
+          </Button>
+          <Button
+            onClick={() => {
+              if (!confirm("정말로 이 상품을 삭제하시겠습니까?")) return;
+              deleteProduct({ productId });
+            }}
+            size="sm"
+            variant={"toggle"}>
+            삭제하기
+          </Button>
+        </Flex>
       </Flex>
 
       <Grid

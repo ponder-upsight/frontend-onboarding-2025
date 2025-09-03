@@ -141,7 +141,6 @@ export const usePutModifyProduct = () => {
 
     onSettled: (data, error, variables) => {
       const { productId } = variables;
-
       // // 백그라운드에서 서버 데이터 재검증
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PRODUCT, productId],
@@ -149,8 +148,6 @@ export const usePutModifyProduct = () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PRODUCTS],
       });
-
-      // 낙관적으로 즉시 페이지 이동
     },
   });
 };

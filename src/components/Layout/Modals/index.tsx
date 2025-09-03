@@ -1,10 +1,12 @@
+import FetchingSpinner from "./ui/FetchingSpinner";
 import ImageDetailViewersModal from "./ui/ImageDetailViewersModal";
 
 const Modals = () => {
   return (
-    <div>
+    <>
       <ImageDetailViewersModal />
-    </div>
+      <FetchingSpinner />
+    </>
   );
 };
 export default Modals;

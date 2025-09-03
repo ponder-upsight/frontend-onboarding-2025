@@ -12,6 +12,8 @@ import { Input, Textarea } from "@chakra-ui/react";
 import ImagePreview from "@/lib/react-hook-form/ImagePreview";
 
 const ProductAddForm = () => {
+  const { mutate: postCreateProduct } = usePostCreateProduct();
+
   const methods = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     mode: "onChange",
@@ -30,8 +32,6 @@ const ProductAddForm = () => {
     clearErrors,
     formState: { isValid, isSubmitting },
   } = methods;
-
-  const { mutate: postCreateProduct } = usePostCreateProduct();
 
   const onSubmit = (data: ProductFormValues) => {
     // 썸네일이 필수
