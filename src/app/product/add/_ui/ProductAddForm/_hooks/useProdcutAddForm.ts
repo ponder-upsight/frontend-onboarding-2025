@@ -6,7 +6,12 @@ import {
 } from "@/lib/react-hook-form/schema/productSchema";
 import usePostCreateProduct from "@/api/products/client/usePostCreateProduct";
 
-const useProductAddForm = () => {
+interface UseProductAddFormReturn {
+  methods: ReturnType<typeof useForm<ProductFormValues>>;
+  onSubmit: (data: ProductFormValues) => void;
+}
+
+const useProductAddForm = (): UseProductAddFormReturn => {
   const { mutate: postCreateProduct } = usePostCreateProduct();
 
   const methods = useForm<ProductFormValues>({

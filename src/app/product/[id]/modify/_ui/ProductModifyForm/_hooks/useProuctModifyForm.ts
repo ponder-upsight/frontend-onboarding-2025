@@ -4,7 +4,7 @@ import usePutModifyProduct from "@/api/products/client/usePutModifyProduct";
 import {
   ProductModifyFormValues,
   productModifySchema,
-} from "@/lib/react-hook-form/productModifySchema";
+} from "@/lib/react-hook-form/schema/productModifySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
