@@ -1,5 +1,6 @@
-import { ButtonProps, Tag } from "@chakra-ui/react";
 import { ReactNode } from "react";
+
+import { ButtonProps, Tag } from "@chakra-ui/react";
 
 interface ChipProps extends Omit<ButtonProps, "lefticon"> {
   variant?: "primary" | "outlined" | "neutral" | "assistive";

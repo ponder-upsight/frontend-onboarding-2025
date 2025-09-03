@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
+
 import { Box, Flex, VStack } from "@chakra-ui/react";
-import { Button } from "@/app/components/ui/Button";
-import { TypoGraph } from "@/app/components/ui/Typography";
-import { DeleteSmallWhite, EyeOn } from "@/assets/icons";
-import { IconButton } from "@/app/components/ui/IconButton";
-import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
+
 import { Product } from "@/api/product/getProducts";
+
+import { useProductCard } from "@/app/[lng]/components/Product/useProductCard";
+import { Button } from "@/app/components/ui/Button";
+import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
+import { IconButton } from "@/app/components/ui/IconButton";
+import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
-import {useProductCard} from "@/app/[lng]/components/Product/useProductCard";
+
+import { DeleteSmallWhite, EyeOn } from "@/assets/icons";
 
 interface ProductCardProps {
   product: Product;
@@ -19,12 +23,12 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, onDetailClick, onDeleteClick }: ProductCardProps) => {
   const [imageError, setImageError] = useState(false);
-  const { t } = useI18n()
+  const { t } = useI18n();
   const { deleteConfirmModalStore, handleDelete } = useProductCard({
     product,
     onDetailClick,
     onDeleteClick,
-  })
+  });
 
   return (
     <Box
@@ -50,7 +54,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick }: ProductCardProps
           bg="rgba(0, 0, 0, 0.5)"
           onClick={handleDelete}
           leftIcon={<DeleteSmallWhite />}
-          _hover = {{ bg: "rgba(0, 0, 0, 0.7)" }}
+          _hover={{ bg: "rgba(0, 0, 0, 0.7)" }}
         />
         {imageError ? (
           <Box
@@ -84,12 +88,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick }: ProductCardProps
           {product.productName}
         </TypoGraph>
 
-        <TypoGraph
-          variant="body02"
-          color="gray.700"
-          noOfLines={2}
-          minH="44px"
-        >
+        <TypoGraph variant="body02" color="gray.700" noOfLines={2} minH="44px">
           {product.productName}
         </TypoGraph>
 

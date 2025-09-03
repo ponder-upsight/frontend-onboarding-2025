@@ -22,7 +22,7 @@ export const AnimatedToastWrapper = ({ children, data }: AnimatedToastWrapperPro
   const controls = useAnimation();
   useEffect(() => {
     controls.start("shake");
-  }, [data?.requestId]);
+  }, [data?.requestId, controls]);
 
   return (
     <motion.div variants={shakeVariant} animate={controls}>

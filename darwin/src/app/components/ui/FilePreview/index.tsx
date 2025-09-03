@@ -1,10 +1,15 @@
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import Pdf from "react-pdf-js";
 
-import { LeftIcon, MinusBlack, PlusBlack, RightIcon } from "@/assets/icons";
-import { useBlobWithCookie } from "@/hooks/usePdfBlobWithCookie";
-import { downloadImage } from "@/utils/downloadImageFromURL";
+import Image from "next/image";
+
 import { Box, Flex, Text } from "@chakra-ui/react";
+
+import { useBlobWithCookie } from "@/hooks/usePdfBlobWithCookie";
+
+import { LeftIcon, MinusBlack, PlusBlack, RightIcon } from "@/assets/icons";
+
+import { downloadImage } from "@/utils/downloadImageFromURL";
 
 import { IconButton } from "../IconButton";
 import { TypoGraph } from "../Typography";
@@ -123,10 +128,10 @@ export const FilePreview = ({
     if (!blobUrl) return <Text>{t("not-allowed-file")}</Text>;
     if (fileType.startsWith("image/")) {
       return (
-        <img
+        <Image
           src={blobUrl}
           alt="Preview"
-          width="auto"
+          width={400}
           height={600}
           style={{ minWidth: "400px", width: "auto", height: "600px" }}
         />

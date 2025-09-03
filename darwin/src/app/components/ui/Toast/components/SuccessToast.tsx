@@ -1,9 +1,16 @@
-import { DeleteSmallWhite } from "@/assets/icons";
 import { Flex } from "@chakra-ui/react";
+
+import { DeleteSmallWhite } from "@/assets/icons";
 
 import { TypoGraph } from "../../Typography";
 
-export const SuccessToast = ({ data, closeToast }: any) => {
+export const SuccessToast = ({
+  data,
+  closeToast,
+}: {
+  data: { title: string };
+  closeToast: () => void;
+}) => {
   return (
     <Flex
       bg="#212A4A"

@@ -46,5 +46,6 @@
   "deleteProductSuccess": "Product deleted successfully",
   "deleteProduct": "Delete Product",
   "deleteProductContent": "Are you sure you want to delete this product?",
-  "delete": "Delete"
+  "delete": "Delete",
+  "addImage": "Add New Image"
 }

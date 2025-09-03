@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import { Box, Flex, VStack } from "@chakra-ui/react";
+
+import { useImageGallery } from "@/app/[lng]/product/[id]/components/ImageGallery/useImageGallery";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
-import { useImageGallery } from "@/app/[lng]/product/[id]/components/ImageGallery/useImageGallery";
 
 interface ImageGalleryProps {
   images: {
@@ -13,13 +15,11 @@ interface ImageGalleryProps {
   }[];
 }
 
-const ImageGallery = ({
-  images,
-}: ImageGalleryProps) => {
+const ImageGallery = ({ images }: ImageGalleryProps) => {
   const [imageError, setImageError] = useState(false);
   const { t } = useI18n();
   const { currentImage, changeCurrentImage } = useImageGallery({
-    images
+    images,
   });
 
   return (

@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { Box, VStack, HStack } from "@chakra-ui/react";
-import { Button } from "@/app/components/ui/Button";
-import { TypoGraph } from "@/app/components/ui/Typography";
-import { MinusGray, PlusGray } from "@/assets/icons";
-import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
+import { Box, HStack, VStack } from "@chakra-ui/react";
+
 import { ProductDetails } from "@/api/product/getProduct";
-import {useI18n} from "@/app/i18n/I18nProvider";
-import {useProductInfo} from "@/app/[lng]/product/[id]/components/ProductInfo/useProductInfo";
+
+import { useProductInfo } from "@/app/[lng]/product/[id]/components/ProductInfo/useProductInfo";
+import { Button } from "@/app/components/ui/Button";
+import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
+import { TypoGraph } from "@/app/components/ui/Typography";
+import { useI18n } from "@/app/i18n/I18nProvider";
+
+import { MinusGray, PlusGray } from "@/assets/icons";
 
 interface ProductInfoProps {
   id: string;
@@ -26,7 +28,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
   } = useProductInfo({
     id,
     productDetails,
-  })
+  });
 
   return (
     <VStack spacing="24px" align="stretch" mb="16px">
@@ -112,20 +114,10 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
           </Box>
 
           <VStack spacing="12px" align="stretch">
-            <Button
-              variant="primary"
-              size="lg"
-              w="100%"
-              onClick={handleOrder}
-            >
+            <Button variant="primary" size="lg" w="100%" onClick={handleOrder}>
               {t("order")}
             </Button>
-            <Button
-              variant="outlined"
-              size="lg"
-              w="100%"
-              onClick={handleAddToCart}
-            >
+            <Button variant="outlined" size="lg" w="100%" onClick={handleAddToCart}>
               {t("addToCart")}
             </Button>
           </VStack>
@@ -141,14 +133,14 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
       )}
 
       <ConfirmModal
-         title={t("order")}
-         content={t("orderConfirm", { name: productDetails.name, quantity: quantity })}
-         isOpen={orderConfirmModalStore.isOpen}
-         onClose={orderConfirmModalStore.closeModal}
-         confirmBtn={t("order")}
-         closeBtn={t("cancel")}
-         onConfirm={orderConfirmModalStore.onConfirm}
-       />
+        title={t("order")}
+        content={t("orderConfirm", { name: productDetails.name, quantity: quantity })}
+        isOpen={orderConfirmModalStore.isOpen}
+        onClose={orderConfirmModalStore.closeModal}
+        confirmBtn={t("order")}
+        closeBtn={t("cancel")}
+        onConfirm={orderConfirmModalStore.onConfirm}
+      />
     </VStack>
   );
 };

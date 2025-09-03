@@ -1,22 +1,24 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import {
-  Flex,
   Box,
   Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
   DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+  Flex,
   VStack,
 } from "@chakra-ui/react";
-import { TypoGraph } from "@/app/components/ui/Typography";
+
+import { useHeader } from "@/app/[lng]/components/Header/useHeader";
 import { Button } from "@/app/components/ui/Button";
 import { DropDown } from "@/app/components/ui/Dropdown";
+import { Hamburger } from "@/app/components/ui/Hamburger";
+import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
-import {Hamburger} from "@/app/components/ui/Hamburger";
-import {useHeader} from "@/app/[lng]/components/Header/useHeader";
 
 const LANGUAGE_ITEMS = [
   { label: "한국어", value: "ko" },
@@ -26,11 +28,8 @@ const LANGUAGE_ITEMS = [
 const Header = () => {
   const router = useRouter();
   const { t, lng } = useI18n();
-  const {
-    languageDropdownDisclosure,
-    mobileMenuDisclosure,
-    handleLngOptionClick,
-  } = useHeader()
+  const { languageDropdownDisclosure, mobileMenuDisclosure, handleLngOptionClick } =
+    useHeader();
 
   return (
     <>
@@ -69,11 +68,7 @@ const Header = () => {
             gap="8px"
             bg="#fff"
           >
-            <Button
-              variant="primary"
-              w="100px"
-              onClick={() => router.push(`/${lng}`)}
-            >
+            <Button variant="primary" w="100px" onClick={() => router.push(`/${lng}`)}>
               {t("products")}
             </Button>
             <Button
@@ -110,9 +105,9 @@ const Header = () => {
       </Flex>
 
       <Drawer
-          isOpen={mobileMenuDisclosure.isOpen}
-          placement="right"
-          onClose={mobileMenuDisclosure.onClose}
+        isOpen={mobileMenuDisclosure.isOpen}
+        placement="right"
+        onClose={mobileMenuDisclosure.onClose}
       >
         <DrawerOverlay />
         <DrawerContent pt="32px">

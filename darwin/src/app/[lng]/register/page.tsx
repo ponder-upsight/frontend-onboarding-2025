@@ -3,18 +3,20 @@
 /** @jsxImportSource @emotion/react */
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+
 import { useRouter } from "next/navigation";
 
-import { useTranslation } from "@/app/i18n/client";
+import { Box, Flex, FormControl, VStack } from "@chakra-ui/react";
+import { css } from "@emotion/react";
+
+import { usePostProduct } from "@/api/product/postProduct";
+
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { Box, Flex, VStack, FormControl } from "@chakra-ui/react";
-import { css } from "@emotion/react";
-import { usePostProduct } from "@/api/product/postProduct";
+import { useI18n } from "@/app/i18n/I18nProvider";
 
 import FileUploadSection from "../components/File/FileUploadSection";
-import {useI18n} from "@/app/i18n/I18nProvider";
 
 interface ProductFormValues {
   name: string;
@@ -54,12 +56,12 @@ const RegisterPage = () => {
   useEffect(() => {
     register("mainImage", { required: t("imageRequired") });
     register("detailImages");
-  }, [register]);
+  }, [register, t]);
 
   const onSubmit = useCallback(
     async (data: ProductFormValues) => {
       setIsSubmitting(true);
-      
+
       try {
         const productData = {
           name: data.name,
@@ -68,7 +70,7 @@ const RegisterPage = () => {
           thumbnail: mainImages.length > 0 ? mainImages[0] : null,
           detail: detailImages,
         };
-        
+
         await postProductMutation.mutateAsync(productData);
         router.push(`/${lng}`);
       } catch (error) {
@@ -80,17 +82,23 @@ const RegisterPage = () => {
     [lng, router, mainImages, detailImages, postProductMutation]
   );
 
-  const handleMainImageChange = useCallback((files: File[]) => {
-    setMainImages(files);
-    setValue("mainImage", files.length > 0);
-    trigger("mainImage");
-  }, [setValue, trigger]);
+  const handleMainImageChange = useCallback(
+    (files: File[]) => {
+      setMainImages(files);
+      setValue("mainImage", files.length > 0);
+      trigger("mainImage");
+    },
+    [setValue, trigger]
+  );
 
-  const handleDetailImagesChange = useCallback((files: File[]) => {
-    setDetailImages(files);
-    setValue("detailImages", files.length > 0);
-    trigger("detailImages");
-  }, [setValue, trigger]);
+  const handleDetailImagesChange = useCallback(
+    (files: File[]) => {
+      setDetailImages(files);
+      setValue("detailImages", files.length > 0);
+      trigger("detailImages");
+    },
+    [setValue, trigger]
+  );
 
   return (
     <Box minH="100vh" bg="gray.50" pt="128px">
@@ -133,9 +141,9 @@ const RegisterPage = () => {
                   {t("stockQuantity")}
                 </TypoGraph>
                 <Input
-                  {...register("stock", { 
+                  {...register("stock", {
                     required: t("required"),
-                    min: { value: 0, message: t("stockRequired") }
+                    min: { value: 0, message: t("stockRequired") },
                   })}
                   type="number"
                   placeholder="0"

@@ -1,21 +1,23 @@
-"use client"
+"use client";
 
-import { ReactNode, useState } from "react"
-import theme from "@/theme"
-import { ChakraProvider } from "@chakra-ui/react"
+import { ReactNode, useState } from "react";
+
+import theme from "@/theme";
+import { ChakraProvider } from "@chakra-ui/react";
 import {
+  DehydratedState,
   HydrationBoundary,
   MutationCache,
   QueryClient,
   QueryClientProvider,
-  DehydratedState,
-} from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { showErrorToast } from "./components/ui/Toast"
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import { showErrorToast } from "./components/ui/Toast";
 
 interface ProvidersProps {
-  children: ReactNode
-  dehydratedState?: DehydratedState
+  children: ReactNode;
+  dehydratedState?: DehydratedState;
 }
 
 export const QueryProviders = ({ children, dehydratedState }: ProvidersProps) => {
@@ -23,11 +25,11 @@ export const QueryProviders = ({ children, dehydratedState }: ProvidersProps) =>
     () =>
       new QueryClient({
         mutationCache: new MutationCache({
-          onError: (error: any, vars, ctx, mutation) => {
-            if (mutation.meta?.skipGlobalError) return
+          onError: (error: unknown, vars, ctx, mutation) => {
+            if (mutation.meta?.skipGlobalError) return;
 
-            const apiError = error?.response?.data || error
-            showErrorToast(apiError)
+            const apiError = error?.response?.data || error;
+            showErrorToast(apiError);
           },
         }),
         defaultOptions: {
@@ -36,16 +38,16 @@ export const QueryProviders = ({ children, dehydratedState }: ProvidersProps) =>
           },
         },
       })
-  )
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
-  )
-}
+  );
+};
 
 export const ChakraLayoutProvider = ({ children }: { children: ReactNode }) => {
-  return <ChakraProvider theme={theme}>{children}</ChakraProvider>
-}
+  return <ChakraProvider theme={theme}>{children}</ChakraProvider>;
+};

@@ -1,4 +1,3 @@
-import { DeleteSmallGray } from "@/assets/icons";
 import {
   Box,
   Modal as ChakraModal,
@@ -9,6 +8,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+
+import { DeleteSmallGray } from "@/assets/icons";
 
 import { Chip } from "../Chip";
 import { IconButton } from "../IconButton";

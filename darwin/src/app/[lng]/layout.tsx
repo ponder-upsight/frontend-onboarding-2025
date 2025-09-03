@@ -1,28 +1,31 @@
-"use client"
+"use client";
 
-import { ReactNode, use } from "react"
-import dynamic from "next/dynamic"
-import { Global } from "@emotion/react"
-import { dir } from "i18next"
-import { toastStyles } from "../components/ui/Toast/toastStyles"
-import I18nProvider from "../i18n/I18nProvider"
-import { ChakraLayoutProvider, QueryProviders } from "../providers"
-import Header from "./components/Header/Header"
+import { ReactNode, use } from "react";
+
+import dynamic from "next/dynamic";
+
+import { Global } from "@emotion/react";
+import { dir } from "i18next";
+
+import { toastStyles } from "../components/ui/Toast/toastStyles";
+import I18nProvider from "../i18n/I18nProvider";
+import { ChakraLayoutProvider, QueryProviders } from "../providers";
+import Header from "./components/Header/Header";
 
 interface LayoutProps {
-  children: ReactNode
+  children: ReactNode;
   params: Promise<{
-    lng: string
-  }>
+    lng: string;
+  }>;
 }
 
 const DynamicToastContainer = dynamic(
   () => import("react-toastify").then((mod) => mod.ToastContainer),
   { ssr: false }
-)
+);
 
 const Layout = ({ children, params }: LayoutProps) => {
-  const { lng } = use(params)
+  const { lng } = use(params);
   return (
     <div dir={dir(lng)} style={{ height: "100%", position: "static", zIndex: 99 }}>
       <Global styles={toastStyles} />
@@ -36,7 +39,7 @@ const Layout = ({ children, params }: LayoutProps) => {
         </ChakraLayoutProvider>
       </QueryProviders>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

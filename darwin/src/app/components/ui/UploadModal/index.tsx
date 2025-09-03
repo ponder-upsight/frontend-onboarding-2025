@@ -1,9 +1,6 @@
 import { useRef } from "react";
 import { toast } from "react-toastify";
 
-import { DeleteSmallGray, PlusBigGray, PlusBlack } from "@/assets/icons";
-import { runValidations } from "@/utils/validators/runValidations";
-import { FileValidationRule } from "@/utils/validators/types";
 import {
   Box,
   Flex,
@@ -17,6 +14,11 @@ import {
 } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import { TFunction } from "i18next";
+
+import { DeleteSmallGray, PlusBigGray, PlusBlack } from "@/assets/icons";
+
+import { runValidations } from "@/utils/validators/runValidations";
+import { FileValidationRule } from "@/utils/validators/types";
 
 import { Button } from "../Button";
 import { IconButton } from "../IconButton";
@@ -80,7 +82,7 @@ const UploadModal = ({
     for (const file of selectedFiles) {
       const errors = await runValidations(file, validationRules || []);
       if (errors.length > 0) {
-        errors.forEach((err) =>
+        errors.forEach(() =>
           toast(ErrorToast, {
             data: {
               title: "파일 업로드 실패",

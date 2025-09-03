@@ -5,6 +5,10 @@ import { useMemo, useRef, useState } from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { Locale, isSameDay } from "date-fns";
+import { enUS, es, ja, ko } from "date-fns/locale";
+
 import {
   CalendarBlack,
   DeleteSmallGray,
@@ -13,9 +17,6 @@ import {
   RightDouble,
   RightIcon,
 } from "@/assets/icons";
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { Locale, isSameDay } from "date-fns";
-import { enUS, es, ja, ko } from "date-fns/locale";
 
 import { Button } from "../Button";
 import { IconButton } from "../IconButton";

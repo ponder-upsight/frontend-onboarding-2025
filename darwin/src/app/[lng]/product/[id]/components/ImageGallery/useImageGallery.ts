@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 
 export const useImageGallery = ({
   images,
@@ -12,10 +12,10 @@ export const useImageGallery = ({
 
   const changeCurrentImage = (index: number) => {
     setSelectedImageIndex(index);
-  }
+  };
 
   return {
     currentImage: images[selectedImageIndex],
     changeCurrentImage,
-  }
-}
+  };
+};

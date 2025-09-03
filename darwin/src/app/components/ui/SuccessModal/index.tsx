@@ -1,7 +1,7 @@
 import {
   Box,
-  Flex,
   Modal as ChakraModal,
+  Flex,
   ModalContent,
   ModalOverlay,
   Spacer,

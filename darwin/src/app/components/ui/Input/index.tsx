@@ -14,7 +14,7 @@ interface CustomInputProps extends InputProps {
   leftElement?: ReactNode;
   rightElement?: ReactNode;
   errorText?: string;
-  containerProps?: any;
+  containerProps?: Record<string, unknown>;
   height?: string; // 기본값 주기 위함
   hasError?: boolean;
   setHasError?: (hasError: boolean) => void;

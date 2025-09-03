@@ -1,9 +1,11 @@
 import { forwardRef } from "react";
 
-import { TypoGraph, TypoGraphProps } from "../Typography";
-import { text } from "@/theme/foundations/text";
 import { ButtonProps } from "@chakra-ui/react";
 import { Button as ChakraButton } from "@chakra-ui/react";
+
+import { text } from "@/theme/foundations/text";
+
+import { TypoGraph, TypoGraphProps } from "../Typography";
 
 interface CustomButtonProps extends ButtonProps {
   variant?:

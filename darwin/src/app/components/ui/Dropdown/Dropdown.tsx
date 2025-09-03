@@ -1,7 +1,8 @@
 import { FC } from "react";
 
-import { DownGray, UpGray } from "@/assets/icons";
 import { Flex, Menu, MenuButton, MenuList } from "@chakra-ui/react";
+
+import { DownGray, UpGray } from "@/assets/icons";
 
 import { TypoGraph } from "../Typography";
 import { DropDownItem } from "./DropdownItem";

@@ -1,11 +1,15 @@
-import {useState} from "react";
-import {useModalStore} from "@/store/useModalStore";
-import {useOrderProduct} from "@/api/product/orderProduct";
-import {toast} from "react-toastify";
-import {SuccessToast} from "@/app/components/ui/Toast";
-import {useRouter} from "next/navigation";
-import {useI18n} from "@/app/i18n/I18nProvider";
-import {ProductDetails} from "@/api/product/getProduct";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
+import { useRouter } from "next/navigation";
+
+import { ProductDetails } from "@/api/product/getProduct";
+import { useOrderProduct } from "@/api/product/orderProduct";
+
+import { SuccessToast } from "@/app/components/ui/Toast";
+import { useI18n } from "@/app/i18n/I18nProvider";
+
+import { useModalStore } from "@/store/useModalStore";
 
 export const useProductInfo = ({
   id,
@@ -14,9 +18,9 @@ export const useProductInfo = ({
   id: string;
   productDetails: ProductDetails;
 }) => {
-  const { t, lng } = useI18n()
+  const { t, lng } = useI18n();
   const router = useRouter();
-  const [ quantity, setQuantity ] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const orderConfirmModalStore = useModalStore();
   const { mutate } = useOrderProduct(id);
 
@@ -55,5 +59,5 @@ export const useProductInfo = ({
     handleOrder,
     handleAddToCart,
     quantity,
-  }
-}
+  };
+};

@@ -1,7 +1,7 @@
+import theme from "@/theme";
 import { TextProps } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/react";
 
-import theme from "@/theme";
 import { text } from "@/theme/foundations/text";
 
 export interface TypoGraphProps extends Omit<TextProps, "borderRadius"> {

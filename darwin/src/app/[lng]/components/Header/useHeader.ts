@@ -1,8 +1,9 @@
-import {useDisclosure} from "@chakra-ui/react";
-import {useI18n} from "@/app/i18n/I18nProvider";
+import { useDisclosure } from "@chakra-ui/react";
+
+import { useI18n } from "@/app/i18n/I18nProvider";
 
 export const useHeader = () => {
-  const { changeLanguage } = useI18n()
+  const { changeLanguage } = useI18n();
   const languageDropdownDisclosure = useDisclosure();
   const mobileMenuDisclosure = useDisclosure();
 
@@ -15,5 +16,5 @@ export const useHeader = () => {
     languageDropdownDisclosure,
     mobileMenuDisclosure,
     handleLngOptionClick,
-  }
-}
+  };
+};

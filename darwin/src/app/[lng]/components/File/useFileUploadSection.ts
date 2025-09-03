@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useEffect, useState } from "react";
 
 export const useFileUploadSection = ({
   fileInputRef,
@@ -24,14 +24,17 @@ export const useFileUploadSection = ({
     const files = e.target.files;
     if (!files) return;
 
+    const newFiles = Array.from(files);
+    let updatedFiles: File[];
+
     if (multiple) {
-      const newFiles = Array.from(files);
-      onFileChange([...selectedFiles, ...newFiles]);
-      setSelectedFiles([...selectedFiles, ...newFiles]);
+      updatedFiles = [...selectedFiles, ...newFiles];
     } else {
-      onFileChange([files[0]]);
+      updatedFiles = [newFiles[0]];
     }
 
+    setSelectedFiles(updatedFiles);
+    onFileChange(updatedFiles);
     e.target.value = "";
   };
 
@@ -52,19 +55,28 @@ export const useFileUploadSection = ({
     const files = e.dataTransfer.files;
     if (!files.length) return;
 
+    const newFiles = Array.from(files).filter((file) => file.type.startsWith("image/"));
+    if (!newFiles.length) return;
+
+    let updatedFiles: File[];
+
     if (multiple) {
-      const newFiles = Array.from(files);
-      onFileChange([...selectedFiles, ...newFiles]);
+      updatedFiles = [...selectedFiles, ...newFiles];
     } else {
-      onFileChange([files[0]]);
+      updatedFiles = [newFiles[0]];
     }
+
+    setSelectedFiles(updatedFiles);
+    onFileChange(updatedFiles);
   };
 
   const handleRemoveFile = (index: number) => {
+    const newFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(newFiles);
+
     if (onFileRemove) {
       onFileRemove(index);
     } else {
-      const newFiles = selectedFiles.filter((_, i) => i !== index);
       onFileChange(newFiles);
     }
   };
@@ -72,6 +84,15 @@ export const useFileUploadSection = ({
   const createImagePreview = (file: File) => {
     return URL.createObjectURL(file);
   };
+
+  useEffect(() => {
+    return () => {
+      selectedFiles.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        URL.revokeObjectURL(url);
+      });
+    };
+  }, [selectedFiles]);
 
   return {
     isDragOver,
@@ -83,5 +104,5 @@ export const useFileUploadSection = ({
     handleRemoveFile,
     handleFileSelect,
     createImagePreview,
-  }
-}
+  };
+};

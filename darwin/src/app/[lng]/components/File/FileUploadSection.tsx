@@ -1,14 +1,17 @@
 "use client";
 
 /** @jsxImportSource @emotion/react */
-import { useRef, useState } from "react";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { useRef } from "react";
+
 import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { css } from "@emotion/react";
-import { UploadBlue, DeleteSmallGray } from "@/assets/icons";
+
+import { useFileUploadSection } from "@/app/[lng]/components/File/useFileUploadSection";
 import { IconButton } from "@/app/components/ui/IconButton";
-import {useI18n} from "@/app/i18n/I18nProvider";
-import {useFileUploadSection} from "@/app/[lng]/components/File/useFileUploadSection";
+import { TypoGraph } from "@/app/components/ui/Typography";
+import { useI18n } from "@/app/i18n/I18nProvider";
+
+import { DeleteSmallGray, UploadBlue } from "@/assets/icons";
 
 interface FileUploadSectionProps {
   title: string;
@@ -46,7 +49,7 @@ const FileUploadSection = ({
     onFileChange,
     onFileRemove,
     multiple,
-  })
+  });
 
   const renderFilePreview = () => {
     if (selectedFiles.length === 0) {
@@ -58,13 +61,7 @@ const FileUploadSection = ({
           onDrop={handleDrop}
           onClick={handleClick}
         >
-          <Flex
-            direction="column"
-            align="center"
-            justify="center"
-            h="120px"
-            gap="8px"
-          >
+          <Flex direction="column" align="center" justify="center" h="120px" gap="8px">
             <UploadBlue />
             <TypoGraph variant="label01" color="blue.700">
               {buttonText}
@@ -144,7 +141,7 @@ const FileUploadSection = ({
             cursor="pointer"
             onClick={(e) => handleClick(e)}
           >
-            추가
+            {t("addImage")}
           </TypoGraph>
         </Box>
       </Box>
@@ -164,7 +161,7 @@ const FileUploadSection = ({
           opacity: 0,
           width: 0,
           height: 0,
-          overflow: "hidden"
+          overflow: "hidden",
         }}
       />
 
@@ -194,12 +191,12 @@ const uploadContainer = (isDragOver: boolean, hasError: boolean = false) => css`
 
   &:hover {
     border-color: ${hasError ? "#FF5356" : "#435CB0"};
-    background-color: #F2F4FC;
+    background-color: #f2f4fc;
   }
 `;
 
 const imagePreviewContainer = css`
-  border: 2px solid #EAECF1;
+  border: 2px solid #eaecf1;
   border-radius: 8px;
   position: relative;
   overflow: hidden;

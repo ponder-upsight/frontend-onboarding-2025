@@ -59,7 +59,7 @@ export const Button = {
     secondary: (props: StyleFunctionProps) => ({
       bg: mode("white", "white")(props),
       borderColor: mode("gray.700", "gray.700")(props),
-      border: '1px solid',
+      border: "1px solid",
       color: "blue.900",
       _hover: {
         bg: mode("gray.400", "gray.400")(props),
@@ -74,7 +74,7 @@ export const Button = {
       _disabled: disabledStyle(),
     }),
 
-    neutral: (props: StyleFunctionProps) => ({
+    neutral: () => ({
       bg: "white",
       color: "gray.900",
       _hover: {
@@ -95,7 +95,7 @@ export const Button = {
       _disabled: disabledStyle("white", "gray.400"),
     }),
 
-    assistive: (props: StyleFunctionProps) => ({
+    assistive: () => ({
       bg: "gray.300",
       color: "gray.900",
       _hover: {
