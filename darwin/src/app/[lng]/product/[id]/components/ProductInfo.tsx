@@ -10,22 +10,21 @@ import { SuccessToast } from "@/app/components/ui/Toast";
 import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
 import { useModalStore } from "@/store/useModalStore";
 import { useRouter } from "next/navigation";
-import { useTranslation } from "@/app/i18n/client";
 import { ProductDetails } from "@/api/product/getProduct";
 import { useOrderProduct } from "@/api/product/orderProduct";
+import {useI18n} from "@/app/i18n/I18nProvider";
 
 interface ProductInfoProps {
   id: string;
   product: ProductDetails;
-  lng: string;
 }
 
-const ProductInfo = ({ id, product, lng }: ProductInfoProps) => {
+const ProductInfo = ({ id, product }: ProductInfoProps) => {
   const [ quantity, setQuantity ] = useState(1);
   const { onConfirm, isOpen, openModal, closeModal } = useModalStore();
   const { mutate } = useOrderProduct(id);
   const router = useRouter();
-  const { t } = useTranslation(lng);
+  const { t, lng } = useI18n();
 
   const handleQuantityChange = (change: number) => {
     const newQuantity = quantity + change;

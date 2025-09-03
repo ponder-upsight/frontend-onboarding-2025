@@ -3,7 +3,6 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from "react";
 
-import { useTranslation } from "@/app/i18n/client";
 import { Box, Grid, Flex } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import ProductCard from "./components/Product/ProductCard";
@@ -11,6 +10,7 @@ import { Product, useGetProducts } from "@/api/product/getProducts";
 import { useDeleteProduct } from "@/api/product/deleteProduct";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import { useRouter } from "next/navigation";
+import { useI18n } from "@/app/i18n/I18nProvider";
 
 type PageProps = {
   params: Promise<{
@@ -20,7 +20,7 @@ type PageProps = {
 
 const HomePage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
-  const { t } = useTranslation(lng);
+  const { t } = useI18n();
   const router = useRouter();
   const { data: products, isPending } = useGetProducts();
   const { mutate } = useDeleteProduct()

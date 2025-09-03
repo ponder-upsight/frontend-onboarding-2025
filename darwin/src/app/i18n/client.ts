@@ -29,10 +29,12 @@ export function useTranslation(lng: string, ns?: string, options?: any) {
     i18n.changeLanguage(lng)
   } else {
     const [activeLng, setActiveLng] = useState(i18n.resolvedLanguage)
+
     useEffect(() => {
       if (activeLng === i18n.resolvedLanguage) return
       setActiveLng(i18n.resolvedLanguage)
     }, [activeLng, i18n.resolvedLanguage])
+
     useEffect(() => {
       if (!lng || i18n.resolvedLanguage === lng) return
       i18n.changeLanguage(lng)

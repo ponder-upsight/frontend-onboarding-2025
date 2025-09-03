@@ -13,7 +13,8 @@ import { Box, Flex, VStack, FormControl } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import { usePostProduct } from "@/api/product/postProduct";
 
-import FileUploadSection from "./components/FileUploadSection";
+import FileUploadSection from "../components/File/FileUploadSection";
+import {useI18n} from "@/app/i18n/I18nProvider";
 
 interface ProductFormValues {
   name: string;
@@ -31,15 +32,8 @@ const INITIAL_FORM: ProductFormValues = {
   detailImages: false,
 };
 
-type PageProps = {
-  params: Promise<{
-    lng: string;
-  }>;
-};
-
-const RegisterPage = ({ params }: PageProps) => {
-  const [lng, setLng] = useState<string>("");
-  const { t, i18n, ready } = useTranslation(lng);
+const RegisterPage = () => {
+  const { t, lng } = useI18n();
   const router = useRouter();
   const postProductMutation = usePostProduct();
 
@@ -56,12 +50,6 @@ const RegisterPage = ({ params }: PageProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mainImages, setMainImages] = useState<File[]>([]);
   const [detailImages, setDetailImages] = useState<File[]>([]);
-
-  useEffect(() => {
-    params.then((resolvedParams) => {
-      setLng(resolvedParams.lng);
-    });
-  }, [params]);
 
   useEffect(() => {
     register("mainImage", { required: t("imageRequired") });
@@ -103,10 +91,6 @@ const RegisterPage = ({ params }: PageProps) => {
     setValue("detailImages", files.length > 0);
     trigger("detailImages");
   }, [setValue, trigger]);
-
-  if (!ready || !lng) {
-    return <Box minH="100vh" bg="gray.50" pt="128px" />;
-  }
 
   return (
     <Box minH="100vh" bg="gray.50" pt="128px">
@@ -171,7 +155,6 @@ const RegisterPage = ({ params }: PageProps) => {
                   multiple={false}
                   hasError={!!errors.mainImage}
                   errorText={errors.mainImage?.message}
-                  lng={lng}
                 />
               </FormControl>
 
@@ -185,7 +168,6 @@ const RegisterPage = ({ params }: PageProps) => {
                   multiple={true}
                   hasError={!!errors.detailImages}
                   errorText={errors.detailImages?.message}
-                  lng={lng}
                 />
               </FormControl>
 

@@ -29,8 +29,8 @@ const Layout = ({ children, params }: LayoutProps) => {
       <DynamicToastContainer closeButton={false} autoClose={false} />
       <QueryProviders>
         <ChakraLayoutProvider>
-          <Header />
           <I18nProvider lng={lng}>
+            <Header />
             {children}
           </I18nProvider>
         </ChakraLayoutProvider>

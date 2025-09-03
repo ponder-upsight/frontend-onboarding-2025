@@ -2,33 +2,30 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {Box, Flex, Grid, VStack} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { LeftIcon } from "@/assets/icons";
-import { useTranslation } from "@/app/i18n/client";
 import ImageGallery from "./components/ImageGallery";
 import ProductInfo from "./components/ProductInfo";
 import { useGetProduct } from "@/api/product/getProduct";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
+import {useI18n} from "@/app/i18n/I18nProvider";
 
 type PageProps = {
   params: Promise<{
-    lng: string;
     id: string;
   }>;
 };
 
 const ProductDetailPage = ({ params }: PageProps) => {
-  const [lng, setLng] = useState<string>("");
   const [productId, setProductId] = useState<string>("");
   const router = useRouter();
   const { data: product, isPending } = useGetProduct(productId)
-  const { t } = useTranslation(lng);
+  const { t, lng } = useI18n();
 
   useEffect(() => {
     params.then((resolvedParams) => {
-      setLng(resolvedParams.lng);
       setProductId(resolvedParams.id);
     });
   }, [params]);
@@ -95,7 +92,6 @@ const ProductDetailPage = ({ params }: PageProps) => {
               <ProductInfo
                 id={productId}
                 product={product}
-                lng={lng}
               />
             </Box>
 
@@ -104,7 +100,6 @@ const ProductDetailPage = ({ params }: PageProps) => {
             >
               <ImageGallery
                 product={product}
-                lng={lng}
               />
             </Box>
         </Box>

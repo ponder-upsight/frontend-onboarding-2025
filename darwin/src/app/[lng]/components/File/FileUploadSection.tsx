@@ -8,6 +8,7 @@ import { css } from "@emotion/react";
 import { UploadBlue, DeleteSmallGray } from "@/assets/icons";
 import { IconButton } from "@/app/components/ui/IconButton";
 import { useTranslation } from "@/app/i18n/client";
+import {useI18n} from "@/app/i18n/I18nProvider";
 
 interface FileUploadSectionProps {
   title: string;
@@ -18,7 +19,6 @@ interface FileUploadSectionProps {
   selectedFiles?: File[];
   hasError?: boolean;
   errorText?: string;
-  lng: string;
 }
 
 const FileUploadSection = ({
@@ -30,11 +30,10 @@ const FileUploadSection = ({
   selectedFiles = [],
   hasError = false,
   errorText = "",
-  lng,
 }: FileUploadSectionProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  const { t } = useTranslation(lng);
+  const { t } = useI18n();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

@@ -18,6 +18,7 @@ import { TypoGraph } from "@/app/components/ui/Typography";
 import { Button } from "@/app/components/ui/Button";
 import { DropDown } from "@/app/components/ui/Dropdown";
 import i18next from "i18next";
+import {useI18n} from "@/app/i18n/I18nProvider";
 
 const LANGUAGE_ITEMS = [
   { label: "한국어", value: "ko" },
@@ -30,7 +31,7 @@ const Header = () => {
   const pathnameArray = pathname.split("/");
 
   const lng = pathnameArray[1];
-  const { t } = useTranslation(lng);
+  const { t } = useI18n();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isMobileMenuOpen,

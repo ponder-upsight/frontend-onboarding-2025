@@ -3,18 +3,17 @@
 import { useState } from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { useTranslation } from "@/app/i18n/client";
 import { ProductDetails } from "@/api/product/getProduct";
+import { useI18n } from "@/app/i18n/I18nProvider";
 
 interface ImageGalleryProps {
   product: ProductDetails;
-  lng: string;
 }
 
-const ImageGallery = ({ product, lng }: ImageGalleryProps) => {
+const ImageGallery = ({ product }: ImageGalleryProps) => {
   const [imageError, setImageError] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const { t } = useTranslation(lng);
+  const { t } = useI18n();
   const images = [product.thumbnailUrl, ...product.detailFileUrls];
 
   return (
