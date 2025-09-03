@@ -32,7 +32,7 @@ const ProductInfo = ({ product, lng }: ProductInfoProps) => {
   };
 
   const handleOrder = () => {
-    openModal(() => {});
+    openModal(handleOrderConfirm);
   };
 
   const handleOrderConfirm = () => {
@@ -171,7 +171,7 @@ const ProductInfo = ({ product, lng }: ProductInfoProps) => {
          onClose={closeModal}
          confirmBtn={t("order")}
          closeBtn={t("cancel")}
-         onConfirm={handleOrderConfirm}
+         onConfirm={onConfirm}
        />
     </VStack>
   );

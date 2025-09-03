@@ -23,11 +23,11 @@ const Header = () => {
   const pathnameArray = pathname.split("/");
 
   const lng = pathnameArray[1];
-  const { t, i18n } = useTranslation(lng);
+  const { t } = useTranslation(lng);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLngOptionClick = async (value: string) => {
-    i18next.changeLanguage(value);
+    await i18next.changeLanguage(value);
     router.push(window.location.href.replace(`/${lng}`, `/${value}`));
     onClose();
   };

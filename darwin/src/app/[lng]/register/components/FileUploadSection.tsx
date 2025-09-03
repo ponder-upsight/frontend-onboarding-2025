@@ -12,7 +12,7 @@ import { useTranslation } from "@/app/i18n/client";
 interface FileUploadSectionProps {
   title: string;
   buttonText: string;
-  onFileChange: (files: any) => void;
+  onFileChange: (files: File[]) => void;
   onFileRemove?: (index: number) => void;
   multiple?: boolean;
   selectedFiles?: File[];

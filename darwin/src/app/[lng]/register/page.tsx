@@ -73,30 +73,12 @@ const RegisterPage = ({ params }: PageProps) => {
       setIsSubmitting(true);
       
       try {
-        const mainImageBase64 = mainImages.length > 0 
-          ? await new Promise<string>((resolve) => {
-              const reader = new FileReader();
-              reader.onload = () => resolve(reader.result as string);
-              reader.readAsDataURL(mainImages[0]);
-            })
-          : "";
-        
-        const detailImagesBase64 = await Promise.all(
-          detailImages.map(file => 
-            new Promise<string>((resolve) => {
-              const reader = new FileReader();
-              reader.onload = () => resolve(reader.result as string);
-              reader.readAsDataURL(file);
-            })
-          )
-        );
-        
         const productData = {
           name: data.name,
           description: data.description,
           amount: data.stock,
-          thumbnail: mainImageBase64,
-          detail: detailImagesBase64,
+          thumbnail: mainImages.length > 0 ? mainImages[0] : null,
+          detail: detailImages,
         };
         
         await postProductMutation.mutateAsync(productData);

@@ -10,6 +10,7 @@ import ProductCard from "./components/Product/ProductCard";
 import { Product, useGetProducts } from "@/api/product/getProducts";
 import { useDeleteProduct } from "@/api/product/deleteProduct";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
+import { useRouter } from "next/navigation";
 
 type PageProps = {
   params: Promise<{
@@ -20,11 +21,12 @@ type PageProps = {
 const HomePage = ({ params }: PageProps) => {
   const [lng, setLng] = useState<string>("");
   const { t } = useTranslation(lng);
+  const router = useRouter();
   const { data: products, isPending } = useGetProducts();
   const { mutate } = useDeleteProduct()
 
   const handleProductDetail = (product: Product) => {
-    window.location.href = `/${lng}/product/${product.id}`;
+    router.push(`product/${product.id}`);
   };
 
   const handleDeleteProduct = (product: Product) => {
