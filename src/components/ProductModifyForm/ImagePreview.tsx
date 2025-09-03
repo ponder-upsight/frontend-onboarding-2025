@@ -7,6 +7,7 @@ import {
   FormErrorMessage,
   SimpleGrid,
   CloseButton,
+  Text,
 } from "@chakra-ui/react";
 import { ProductFormValues } from "@/lib/react-hook-form/schema";
 import FileUpload from "@/lib/react-hook-form/FileUpload";
@@ -18,8 +19,8 @@ interface ImagePreviewProps {
   label: string;
   error?: string;
   multiple?: boolean;
-  onRemoveFile?: (index: number) => void;
-  onRemoveAllFiles?: () => void;
+  existingImageUrls?: string[]; // 기존 이미지 URL들
+  onRemoveExistingImage?: (url: string) => void; // 기존 이미지 삭제 콜백
 }
 
 const ImagePreview = ({
@@ -28,6 +29,8 @@ const ImagePreview = ({
   label,
   error,
   multiple = false,
+  existingImageUrls = [],
+  onRemoveExistingImage,
 }: ImagePreviewProps) => {
   const [previews, setPreviews] = useState<string[]>([]);
   const watchedFiles = useWatch({ control, name });
@@ -48,6 +51,65 @@ const ImagePreview = ({
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel fontSize="sm">{label}</FormLabel>
+
+      {/* 기존 이미지들 표시 */}
+      {existingImageUrls.length > 0 && (
+        <Box mb={4}>
+          <Text fontSize="sm" color="gray.600" mb={2}>
+            현재 이미지:
+          </Text>
+          {multiple ? (
+            <SimpleGrid columns={{ base: 2, sm: 3, md: 4 }} spacing={4} mb={2}>
+              {existingImageUrls.map((url, index) => (
+                <Box key={`existing-${index}`} position="relative">
+                  <Image
+                    src={url}
+                    alt={`현재 ${label} ${index}`}
+                    borderRadius="md"
+                    boxSize="150px"
+                    objectFit="cover"
+                  />
+                  {onRemoveExistingImage && (
+                    <CloseButton
+                      position="absolute"
+                      top="2"
+                      right="2"
+                      size="sm"
+                      bg="red.500"
+                      color="white"
+                      _hover={{ bg: "red.600" }}
+                      onClick={() => onRemoveExistingImage(url)}
+                    />
+                  )}
+                </Box>
+              ))}
+            </SimpleGrid>
+          ) : (
+            <Box position="relative" display="inline-block" mb={2}>
+              <Image
+                src={existingImageUrls[0]}
+                alt={`현재 ${label}`}
+                borderRadius="md"
+                boxSize="150px"
+                objectFit="cover"
+              />
+              {onRemoveExistingImage && (
+                <CloseButton
+                  position="absolute"
+                  top="2"
+                  right="2"
+                  size="sm"
+                  bg="red.500"
+                  color="white"
+                  _hover={{ bg: "red.600" }}
+                  onClick={() => onRemoveExistingImage(existingImageUrls[0])}
+                />
+              )}
+            </Box>
+          )}
+        </Box>
+      )}
+
       {previews.length === 0 ? (
         <FileUpload name={name} control={control} multiple={multiple} />
       ) : multiple ? (

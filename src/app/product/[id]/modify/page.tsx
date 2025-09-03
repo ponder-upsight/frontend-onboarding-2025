@@ -25,7 +25,7 @@ const ProductModifyPage = async ({ params }: PageProps) => {
 
   return (
     <ProductModifyForm
-      initData={{ name, description, stock, thumbnailUrl, detailFileUrls }}
+      initData={{ id, name, description, stock, thumbnailUrl, detailFileUrls }}
     />
   );
 };

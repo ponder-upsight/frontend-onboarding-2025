@@ -21,50 +21,87 @@ import { productSchema, ProductFormValues } from "@/lib/react-hook-form/schema";
 import ImagePreview from "./ImagePreview";
 import usePostCreateProduct from "@/api/products/client/usePostCreateProduct";
 import { ProductDetailItem } from "@/types/products";
+import usePutCreateProduct from "@/api/products/client/usePutCreateProduct";
 
 interface ProductModifyFormProps {
-  isAddPage?: boolean; // 추가 페이지인지 여부
-  initData?: ProductDetailItem;
+  initData?: ProductDetailItem & { id: string };
 }
 
-const ProductModifyForm = ({
-  initData,
-  isAddPage = false,
-}: ProductModifyFormProps) => {
+const ProductModifyForm = ({ initData }: ProductModifyFormProps) => {
+  const isAddPage = !initData; // initData가 없으면 추가 페이지로 간주
+  // 수정 모드에서 schema validation을 우회하기 위한 더미 파일
+  const createDummyFileList = () => {
+    if (typeof window === "undefined") return undefined;
+
+    const dummyFile = new File([""], "dummy.jpg", { type: "image/jpeg" });
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(dummyFile);
+    return dataTransfer.files;
+  };
+
   const {
     handleSubmit,
     control,
     formState: { errors, isSubmitting, isValid },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
+    mode: "onChange", // 실시간 검증을 위해 추가
     defaultValues: {
       name: initData?.name || "",
       description: initData?.description || "",
-      amount: initData?.stock, // 가격 필드 추가
-      thumbnail: undefined,
-      detail: undefined,
+      amount: initData?.stock || 0, // stock 필드를 amount로 매핑
+      thumbnail: isAddPage ? undefined : createDummyFileList(), // 수정 모드에서는 더미 파일
+      detail: undefined, // 파일은 항상 새로 선택해야 함
     },
   });
 
   const { mutate: postCreateProduct } = usePostCreateProduct();
+  const { mutate: putCreateProduct } = usePutCreateProduct();
 
   const onSubmit = (data: ProductFormValues) => {
-    // 필수 검증
-    if (!data.thumbnail || data.thumbnail.length === 0) {
-      alert("메인 이미지를 선택해주세요.");
-      return;
+    if (isAddPage) {
+      // 추가 모드: 썸네일이 필수
+      if (!data.thumbnail || data.thumbnail.length === 0) {
+        alert("메인 이미지를 선택해주세요.");
+        return;
+      }
+
+      // 추가 API 데이터 형식
+      const addApiData = {
+        name: data.name,
+        description: data.description,
+        amount: data.amount,
+        thumbnail: data.thumbnail[0],
+        detail: data.detail ? Array.from(data.detail) : [],
+      };
+
+      postCreateProduct(addApiData);
+    } else {
+      // 수정 모드: initData가 있어야 함
+      if (!initData?.id) {
+        alert("수정할 상품 정보가 없습니다.");
+        return;
+      }
+
+      // 수정 모드에서는 더미 파일이 아닌 실제 새 파일이 선택되었는지 확인
+      const hasNewThumbnail =
+        data.thumbnail &&
+        data.thumbnail.length > 0 &&
+        data.thumbnail[0].name !== "dummy.jpg";
+
+      // 수정 API 데이터 형식
+      const modifyApiData = {
+        productId: initData.id,
+        name: data.name,
+        description: data.description,
+        stock: data.amount,
+        deletedImageIds: [], // 삭제된 이미지 ID들 (추후 구현)
+        newThumbnail: hasNewThumbnail ? data.thumbnail[0] : new File([], ""), // 빈 파일이면 변경하지 않음
+        newDetailImages: data.detail ? Array.from(data.detail) : [], // 새 상세 이미지들
+      };
+
+      putCreateProduct(modifyApiData);
     }
-
-    // FormData를 API 형식에 맞게 변환
-    const apiData = {
-      name: data.name,
-      description: data.description,
-      amount: data.amount,
-      thumbnail: data.thumbnail[0], // FileList에서 첫 번째 파일
-      detail: data.detail ? Array.from(data.detail) : [], // FileList를 File 배열로 변환
-    };
-
-    postCreateProduct(apiData);
   };
 
   return (
@@ -80,7 +117,7 @@ const ProductModifyForm = ({
           <form onSubmit={handleSubmit(onSubmit)}>
             <VStack spacing={6} align="stretch">
               <Heading size="md" color="primary.500">
-                새 상품 등록
+                {isAddPage ? "새 상품 등록" : "상품 수정"}
               </Heading>
               <FormControl isInvalid={!!errors.name}>
                 <FormLabel fontSize="sm">상품명</FormLabel>
@@ -142,16 +179,32 @@ const ProductModifyForm = ({
               <ImagePreview
                 control={control}
                 name="thumbnail"
-                label="메인 이미지"
+                label={
+                  isAddPage
+                    ? "메인 이미지"
+                    : "메인 이미지 (변경하려면 새로 선택)"
+                }
                 error={errors.thumbnail?.message as string}
                 multiple={false}
+                existingImageUrls={
+                  !isAddPage && initData?.thumbnailUrl
+                    ? [initData.thumbnailUrl]
+                    : []
+                }
               />
               <ImagePreview
                 control={control}
                 name="detail"
-                label="상세 이미지"
+                label={
+                  isAddPage ? "상세 이미지" : "상세 이미지 (추가하려면 선택)"
+                }
                 error={errors.detail?.message as string}
                 multiple={true}
+                existingImageUrls={
+                  !isAddPage && initData?.detailFileUrls
+                    ? initData.detailFileUrls
+                    : []
+                }
               />{" "}
               <Button
                 mt={8}
@@ -163,7 +216,7 @@ const ProductModifyForm = ({
                 type="submit"
                 size="lg"
                 w="full">
-                상품 등록
+                {isAddPage ? "상품 등록" : "상품 수정"}
               </Button>
             </VStack>
           </form>

@@ -78,16 +78,6 @@ export const useGetProductDetail = (productId: string) =>
 /**
  * 새 상품을 생성하기 위한 훅
  */
-export const useCreateProduct = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (newProduct: ProductCreateData) => createProduct(newProduct),
-    onSuccess: () => {
-      // 상품 생성 성공 시, 상품 목록 캐시를 무효화하여 최신 데이터로 갱신
-      queryClient.invalidateQueries({ queryKey: productQueryKeys.lists() });
-    },
-  });
-};
 
 /**
  * 기존 상품 정보를 수정하기 위한 훅

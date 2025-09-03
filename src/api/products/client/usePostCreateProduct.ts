@@ -14,10 +14,10 @@ const postCreateProduct = async (newProduct: ProductCreateData) => {
   const formData = new FormData();
   formData.append("name", newProduct.name);
   formData.append("description", newProduct.description);
-  formData.append("price", newProduct.amount.toString());
+  formData.append("amount", newProduct.amount.toString());
   formData.append("thumbnail", newProduct.thumbnail);
   newProduct.detail.forEach((file) => {
-    formData.append("detailImages", file);
+    formData.append("detail", file);
   });
 
   const response = await publicAxiosInstance.post("/products", formData, {});
