@@ -6,6 +6,7 @@ import {
   FormLabel,
   FormErrorMessage,
   SimpleGrid,
+  CloseButton,
 } from "@chakra-ui/react";
 import { ProductFormValues } from "@/lib/react-hook-form/schema";
 import FileUpload from "@/lib/react-hook-form/FileUpload";
@@ -17,7 +18,8 @@ interface ImagePreviewProps {
   label: string;
   error?: string;
   multiple?: boolean;
-  maxImages?: number;
+  onRemoveFile?: (index: number) => void;
+  onRemoveAllFiles?: () => void;
 }
 
 const ImagePreview = ({
@@ -32,24 +34,16 @@ const ImagePreview = ({
 
   useEffect(() => {
     if (watchedFiles && watchedFiles.length > 0) {
-      if (multiple) {
-        // 다중 이미지의 경우
-        const objectUrls = Array.from(watchedFiles).map((file) =>
-          URL.createObjectURL(file)
-        );
-        setPreviews(objectUrls);
-        return () => objectUrls.forEach((url) => URL.revokeObjectURL(url));
-      } else {
-        // 단일 이미지의 경우
-        const file = watchedFiles[0];
-        const objectUrl = URL.createObjectURL(file);
-        setPreviews([objectUrl]);
-        return () => URL.revokeObjectURL(objectUrl);
-      }
+      const objectUrls = Array.from(watchedFiles).map((file) =>
+        URL.createObjectURL(file as File)
+      );
+      setPreviews(objectUrls);
+
+      return () => objectUrls.forEach((url) => URL.revokeObjectURL(url));
     } else {
       setPreviews([]);
     }
-  }, [watchedFiles, multiple]);
+  }, [watchedFiles]);
 
   return (
     <FormControl isInvalid={!!error}>
@@ -60,28 +54,57 @@ const ImagePreview = ({
         <Box>
           <SimpleGrid columns={{ base: 2, sm: 3, md: 4 }} spacing={4} mb={2}>
             {previews.map((src, index) => (
-              <Image
-                key={index}
-                src={src}
-                alt={`${label} preview ${index}`}
-                borderRadius="md"
-                boxSize="150px"
-                objectFit="cover"
-              />
+              <Box key={index} position="relative">
+                <Image
+                  src={src}
+                  alt={`${label} preview ${index}`}
+                  borderRadius="md"
+                  boxSize="150px"
+                  objectFit="cover"
+                />
+                <CloseButton
+                  position="absolute"
+                  top="2"
+                  right="2"
+                  size="sm"
+                  bg="red.500"
+                  color="white"
+                  _hover={{ bg: "red.600" }}
+                  onClick={() => {
+                    // 이미지 삭제 로직을 부모 컴포넌트에서 처리하도록 콜백 전달
+                    console.log(`Remove image at index ${index}`);
+                  }}
+                />
+              </Box>
             ))}
           </SimpleGrid>
           <FileUpload name={name} control={control} multiple={multiple} />
         </Box>
       ) : (
         <Box>
-          <Image
-            src={previews[0]}
-            alt={`${label} preview`}
-            borderRadius="md"
-            boxSize="150px"
-            objectFit="cover"
-            mb={2}
-          />
+          <Box position="relative" display="inline-block">
+            <Image
+              src={previews[0]}
+              alt={`${label} preview`}
+              borderRadius="md"
+              boxSize="150px"
+              objectFit="cover"
+              mb={2}
+            />
+            <CloseButton
+              position="absolute"
+              top="2"
+              right="2"
+              size="sm"
+              bg="red.500"
+              color="white"
+              _hover={{ bg: "red.600" }}
+              onClick={() => {
+                // 단일 이미지 삭제 로직을 부모 컴포넌트에서 처리하도록 콜백 전달
+                console.log("Remove single image");
+              }}
+            />
+          </Box>
           <FileUpload name={name} control={control} multiple={multiple} />
         </Box>
       )}

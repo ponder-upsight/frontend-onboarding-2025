@@ -6,9 +6,8 @@ interface ProductCreateData {
   name: string;
   description: string;
   amount: number;
-  stock: number;
-  thumbnail: File; // 단일 파일
-  detail: File[]; // 여러 개 파일
+  thumbnail: File; // string($binary)
+  detail: File[]; // array of binary strings
 }
 
 const postCreateProduct = async (newProduct: ProductCreateData) => {
@@ -16,7 +15,6 @@ const postCreateProduct = async (newProduct: ProductCreateData) => {
   formData.append("name", newProduct.name);
   formData.append("description", newProduct.description);
   formData.append("price", newProduct.amount.toString());
-  formData.append("stock", newProduct.stock.toString());
   formData.append("thumbnail", newProduct.thumbnail);
   newProduct.detail.forEach((file) => {
     formData.append("detailImages", file);

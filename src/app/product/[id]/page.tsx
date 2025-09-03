@@ -12,10 +12,12 @@ import {
   Card,
   CardBody,
   Tag,
+  Flex,
 } from "@chakra-ui/react";
 import RouterBackButton from "@/components/RouterBackButton.tsx";
 import ImageViewrPanel from "@/components/ImageViewrPanel";
 import { formattedDotDate } from "@/util/dateUtil";
+import Link from "next/link";
 
 export const revalidate = 3600;
 
@@ -48,13 +50,21 @@ const ProductDetailPage = async ({ params }: PageProps) => {
 
   return (
     <Container maxW="container.xl" p={{ base: 4, md: 8 }}>
-      <Box mb={6}>
+      <Flex mb={6} justify="space-between" align="center">
         <RouterBackButton
-          url="/product-list"
-          defaultParam="1"
+          url=""
+          defaultParam=""
           text={`\u2190 상품 목록으로 돌아가기`}
         />
-      </Box>
+        <Button
+          as={Link}
+          href={`/product/${id}/modify`}
+          size="sm"
+          variant={"toggle"}
+          aria-selected>
+          수정하기
+        </Button>
+      </Flex>
 
       <Grid
         templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}

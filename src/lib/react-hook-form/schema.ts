@@ -19,11 +19,9 @@ export const productSchema = z.object({
     .string({ message: "상품 설명을 입력해주세요." })
     .min(1, "상품 설명은 필수입니다."),
   amount: z
-    .number({ message: "가격을 입력해주세요." })
-    .min(0, "가격은 0 이상이어야 합니다."),
-  stock: z
-    .number({ message: "재고 수량을 입력해주세요." })
+    .number({ message: "재고수량을 입력해주세요." })
     .min(0, "재고는 0 이상이어야 합니다."),
+
   thumbnail: z
     .custom<FileList>((files) => files instanceof FileList, {
       message: "메인 이미지를 선택해주세요.",

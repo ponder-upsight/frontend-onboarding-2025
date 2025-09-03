@@ -1,5 +1,5 @@
 import { Controller, Control } from "react-hook-form";
-import { Box, Input, Text, VStack, Icon } from "@chakra-ui/react";
+import { Box, Input, Text, VStack } from "@chakra-ui/react";
 import { useRef } from "react";
 import { ACCEPTED_IMAGE_TYPES } from "@/lib/react-hook-form/schema";
 import { ProductFormValues } from "@/lib/react-hook-form/schema";
@@ -18,7 +18,8 @@ const FileUpload = ({ name, control, multiple = false }: FileUploadProps) => {
       name={name}
       control={control}
       render={({ field: { onChange, value } }) => {
-        const fileCount = value?.length || 0;
+        const files = value as FileList | undefined;
+        const fileCount = files?.length || 0;
         const label = multiple
           ? fileCount > 0
             ? "이미지 추가"
@@ -28,9 +29,9 @@ const FileUpload = ({ name, control, multiple = false }: FileUploadProps) => {
         const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const newFiles = e.target.files;
           if (newFiles && newFiles.length > 0) {
-            if (multiple && value && value.length > 0) {
+            if (multiple && files && files.length > 0) {
               // 기존 파일에 새 파일 추가
-              const combinedFiles = Array.from(value).concat(
+              const combinedFiles = Array.from(files).concat(
                 Array.from(newFiles)
               );
               const dataTransfer = new DataTransfer();
@@ -54,7 +55,6 @@ const FileUpload = ({ name, control, multiple = false }: FileUploadProps) => {
             onClick={() => inputRef.current?.click()}
             _hover={{ borderColor: "blue.500" }}>
             <VStack>
-              <Icon boxSize={8} color="gray.500" />
               <Text color="blue.500" fontWeight="medium">
                 {fileCount > 0
                   ? `${fileCount}개의 파일 선택됨${

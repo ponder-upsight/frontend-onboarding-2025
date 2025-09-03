@@ -27,7 +27,7 @@ interface ProductModifyFormProps {
   initData?: ProductDetailItem;
 }
 
-const ProductAddPage = ({
+const ProductModifyForm = ({
   initData,
   isAddPage = false,
 }: ProductModifyFormProps) => {
@@ -40,8 +40,7 @@ const ProductAddPage = ({
     defaultValues: {
       name: initData?.name || "",
       description: initData?.description || "",
-      amount: 0, // 가격 필드 추가
-      stock: initData?.stock || 0,
+      amount: initData?.stock, // 가격 필드 추가
       thumbnail: undefined,
       detail: undefined,
     },
@@ -61,7 +60,6 @@ const ProductAddPage = ({
       name: data.name,
       description: data.description,
       amount: data.amount,
-      stock: data.stock,
       thumbnail: data.thumbnail[0], // FileList에서 첫 번째 파일
       detail: data.detail ? Array.from(data.detail) : [], // FileList를 File 배열로 변환
     };
@@ -119,7 +117,7 @@ const ProductAddPage = ({
                 </FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={!!errors.amount}>
-                <FormLabel fontSize="sm">가격</FormLabel>
+                <FormLabel fontSize="sm">재고</FormLabel>
                 <Controller
                   name="amount"
                   control={control}
@@ -140,29 +138,6 @@ const ProductAddPage = ({
                   )}
                 />
                 <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={!!errors.stock}>
-                <FormLabel fontSize="sm">재고량</FormLabel>
-                <Controller
-                  name="stock"
-                  control={control}
-                  render={({ field: { onChange, value, ...field } }) => (
-                    <NumberInput
-                      {...field}
-                      value={value?.toString() || ""}
-                      onChange={(valueString) =>
-                        onChange(Number(valueString) || 0)
-                      }
-                      min={0}>
-                      <NumberInputField
-                        placeholder="0"
-                        bg="gray.100"
-                        border="none"
-                      />
-                    </NumberInput>
-                  )}
-                />
-                <FormErrorMessage>{errors.stock?.message}</FormErrorMessage>
               </FormControl>
               <ImagePreview
                 control={control}
@@ -198,4 +173,4 @@ const ProductAddPage = ({
   );
 };
 
-export default ProductAddPage;
+export default ProductModifyForm;
