@@ -21,7 +21,7 @@ import { productSchema, ProductFormValues } from "@/lib/react-hook-form/schema";
 import ImagePreview from "./ImagePreview";
 import usePostCreateProduct from "@/api/products/client/usePostCreateProduct";
 import { ProductDetailItem } from "@/types/products";
-import usePutCreateProduct from "@/api/products/client/usePutCreateProduct";
+import usePutModifyProduct from "@/api/products/client/usePutModifyProduct";
 
 interface ProductModifyFormProps {
   initData?: ProductDetailItem & { id: string };
@@ -56,7 +56,7 @@ const ProductModifyForm = ({ initData }: ProductModifyFormProps) => {
   });
 
   const { mutate: postCreateProduct } = usePostCreateProduct();
-  const { mutate: putCreateProduct } = usePutCreateProduct();
+  const { mutate: putModifyProduct } = usePutModifyProduct();
 
   const onSubmit = (data: ProductFormValues) => {
     if (isAddPage) {
@@ -100,7 +100,7 @@ const ProductModifyForm = ({ initData }: ProductModifyFormProps) => {
         newDetailImages: data.detail ? Array.from(data.detail) : [], // 새 상세 이미지들
       };
 
-      putCreateProduct(modifyApiData);
+      putModifyProduct(modifyApiData);
     }
   };
 

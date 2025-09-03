@@ -13,6 +13,7 @@ const ProductContent = () => {
   const {
     data: productList = [],
     isLoading,
+    isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
   } = useGetProductListInfinite();
@@ -36,26 +37,37 @@ const ProductContent = () => {
       </Text>
 
       {/* product Cards */}
-      {isLoading ? (
-        <Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={4}>
-          {Array.from({ length: 9 }).map((_, idx) => (
-            <ProductCardSkeleton key={idx} />
-          ))}
-        </Grid>
-      ) : (
-        <Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={4}>
-          {productList.map((product: ProductListItem, index) => {
-            const isLast = index === productList.length - 1;
-            return (
-              <ProductCard
-                observeRef={isLast ? lastElementRef : undefined}
-                key={product.id}
-                product={product}
-              />
-            );
-          })}
-        </Grid>
-      )}
+      <Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={4}>
+        {/* 초기 로딩 중일 때만 스켈레톤만 표시 */}
+        {isLoading && productList.length === 0 && (
+          <>
+            {Array.from({ length: 9 }).map((_, idx) => (
+              <ProductCardSkeleton key={`initial-skeleton-${idx}`} />
+            ))}
+          </>
+        )}
+
+        {/* 기존 상품 카드들 */}
+        {productList.map((product: ProductListItem, index) => {
+          const isLast = index === productList.length - 1;
+          return (
+            <ProductCard
+              observeRef={isLast ? lastElementRef : undefined}
+              key={product.id}
+              product={product}
+            />
+          );
+        })}
+
+        {/* 다음 페이지 로딩 중일 때 추가 스켈레톤 */}
+        {isFetchingNextPage && (
+          <>
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <ProductCardSkeleton key={`loading-skeleton-${idx}`} />
+            ))}
+          </>
+        )}
+      </Grid>
     </Flex>
   );
 };

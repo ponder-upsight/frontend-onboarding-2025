@@ -81,7 +81,13 @@ const ProductDetailPage = async ({ params }: PageProps) => {
                 overflow="hidden">
                 <ImageViewrPanel
                   imageProps={{
-                    fill: true,
+                    style: {
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    },
+                    width: 500,
+                    height: 500,
                     priority: true,
                     src: thumbnailUrl,
                     alt: name,
