@@ -3,26 +3,30 @@
 import { Box, Button, Container, Heading, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   productModifySchema,
   ProductModifyFormValues,
 } from "@/lib/react-hook-form/schema";
 
-import { ProductDetailItem } from "@/types/products";
 import usePutModifyProduct from "@/api/products/client/usePutModifyProduct";
 import ContolledInputProvider from "@/lib/react-hook-form/ContolledInputProvider";
 import ControlledNumberInput from "@/lib/react-hook-form/ControlledNumberInput";
 import { Input, Textarea } from "@chakra-ui/react";
 import ImagePreview from "@/lib/react-hook-form/ImagePreview";
+import useGetProduct from "@/api/products/client/useGetProduct";
 
 interface ProductEditFormProps {
-  initData: ProductDetailItem & { id: string };
+  productId: string;
 }
 
-const ProductModifyForm = ({ initData }: ProductEditFormProps) => {
+const ProductModifyForm = ({ productId }: ProductEditFormProps) => {
   // 삭제된 이미지 URL들을 추적하는 state
   const [deletedImageUrls, setDeletedImageUrls] = useState<string[]>([]);
+
+  const { data: product } = useGetProduct(productId);
+  const { name, description, stock, thumbnailUrl, detailFileUrls } =
+    product || {};
 
   // 기존 이미지 삭제 핸들러
   const handleRemoveExistingImage = (url: string) => {
@@ -33,9 +37,9 @@ const ProductModifyForm = ({ initData }: ProductEditFormProps) => {
     resolver: zodResolver(productModifySchema),
     mode: "onChange",
     defaultValues: {
-      name: initData.name || "",
-      description: initData.description || "",
-      amount: initData.stock || 0,
+      name,
+      description,
+      amount: stock,
       thumbnail: undefined,
       detail: undefined,
     },
@@ -54,7 +58,7 @@ const ProductModifyForm = ({ initData }: ProductEditFormProps) => {
 
     // 수정 API 데이터 형식
     const modifyApiData = {
-      productId: initData.id,
+      productId,
       name: data.name,
       description: data.description,
       stock: data.amount,
@@ -110,9 +114,8 @@ const ProductModifyForm = ({ initData }: ProductEditFormProps) => {
                   label="메인 이미지 (변경하려면 새로 선택)"
                   multiple={false}
                   existingImageUrls={
-                    initData?.thumbnailUrl &&
-                    !deletedImageUrls.includes(initData.thumbnailUrl)
-                      ? [initData.thumbnailUrl]
+                    thumbnailUrl && !deletedImageUrls.includes(thumbnailUrl)
+                      ? [thumbnailUrl]
                       : []
                   }
                   onRemoveExistingImage={handleRemoveExistingImage}
@@ -124,8 +127,8 @@ const ProductModifyForm = ({ initData }: ProductEditFormProps) => {
                   label="상세 이미지 (추가하려면 선택)"
                   multiple={true}
                   existingImageUrls={
-                    initData?.detailFileUrls
-                      ? initData.detailFileUrls.filter(
+                    detailFileUrls
+                      ? detailFileUrls.filter(
                           (url) => !deletedImageUrls.includes(url)
                         )
                       : []
@@ -136,10 +139,10 @@ const ProductModifyForm = ({ initData }: ProductEditFormProps) => {
                 <Button
                   mt={8}
                   color="white"
-                  bg={isValid ? "primary.500" : "gray.400"}
-                  _hover={{ bg: isValid ? "primary.600" : "" }}
+                  bg={isDirty || isValid ? "primary.500" : "gray.400"}
+                  _hover={{ bg: isValid || isDirty ? "primary.600" : "" }}
                   isLoading={isSubmitting}
-                  isDisabled={!isValid}
+                  isDisabled={!isValid || !isDirty}
                   type="submit"
                   size="lg"
                   w="full">

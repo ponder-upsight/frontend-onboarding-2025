@@ -21,11 +21,11 @@ import { formattedDotDate } from "@/util/dateUtil";
 import Link from "next/link";
 import useGetProduct from "@/api/products/client/useGetProduct";
 
-interface ProductContentProps {
+interface ProductDetailContentProps {
   productId: string;
 }
 
-const ProductContent = ({ productId }: ProductContentProps) => {
+const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
   const { data: product } = useGetProduct(productId);
 
   const { name, description, stock, thumbnailUrl, detailFileUrls } =
@@ -174,4 +174,4 @@ const ProductContent = ({ productId }: ProductContentProps) => {
   );
 };
 
-export default ProductContent;
+export default ProductDetailContent;

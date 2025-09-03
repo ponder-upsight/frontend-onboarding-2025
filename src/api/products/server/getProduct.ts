@@ -1,5 +1,6 @@
 import { ProductDetailItem } from "@/types/products"; // ProductDetail 타입을 정의해야 합니다.
 import serverFetch from "@/util/fetchUtil/serverFetch";
+import { QueryKeys } from "../QueryKeys";
 
 interface GetProductParams {
   productId: string;
@@ -16,7 +17,7 @@ const getProduct = async ({
     {
       next: {
         revalidate: 3600,
-        tags: [`products-${productId}`], // 개별 상품 태그
+        tags: [`${QueryKeys.PRODUCT}-${productId}`], // 개별 상품 태그
       },
     } // 3600초 동안 캐시
   );

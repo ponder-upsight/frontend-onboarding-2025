@@ -8,7 +8,7 @@ import ProductCardSkeleton from "./_ui/ProudctCard/skeleton";
 import useGetProductListInfinite from "@/api/products/client/useGetInfinityProductList";
 import useInfinityScroll from "@/util/hooks/useInfinityScroll";
 
-const ProductContent = () => {
+const ProductListContent = () => {
   // get product list
   const {
     data: productList = [],
@@ -71,4 +71,4 @@ const ProductContent = () => {
     </Flex>
   );
 };
-export default ProductContent;
+export default ProductListContent;

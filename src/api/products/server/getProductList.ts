@@ -1,5 +1,6 @@
 import { ProductListItem } from "@/types/products";
 import serverFetch from "@/util/fetchUtil/serverFetch"; // serverFetch 경로에 맞게 수정해주세요
+import { QueryKeys } from "../QueryKeys";
 
 // API 응답의 실제 데이터 구조를 정의합니다.
 type GetProductListResponse = {
@@ -39,7 +40,7 @@ const getProductList = async ({
     {
       next: {
         revalidate: 3600,
-        tags: [`products-list`], // 개별 상품 태그
+        tags: [QueryKeys.PRODUCTS], // 개별 상품 태그
       },
     } // 3600초 동안 캐시
   );

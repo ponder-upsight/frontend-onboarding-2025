@@ -1,5 +1,5 @@
 import getPrefetchHydrateProductList from "@/api/products/server/getPrefetchHydrateProductList";
-import ProductContent from "./_ui/ProductContent";
+import ProductListContent from "./_ui/ProductListContent";
 import { HydrationBoundary } from "@tanstack/react-query";
 
 export const metadata = {
@@ -11,7 +11,7 @@ const HomePage = async () => {
   const dehydratedState = await getPrefetchHydrateProductList();
   return (
     <HydrationBoundary state={dehydratedState}>
-      <ProductContent />
+      <ProductListContent />
     </HydrationBoundary>
   );
 };

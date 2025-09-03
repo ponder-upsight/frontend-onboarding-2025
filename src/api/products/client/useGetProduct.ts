@@ -15,7 +15,7 @@ const useGetProduct = (productId: string) => {
     // 쿼리 함수에 인자로 받은 page를 전달
     queryFn: () => getProduct({ productId }),
 
-    staleTime: 1000 * 60 * 5, // 5분
+    staleTime: 1000 * 60 * 5, // 5분ㄱ
   });
 };
 
