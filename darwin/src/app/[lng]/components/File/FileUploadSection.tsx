@@ -7,8 +7,8 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import { UploadBlue, DeleteSmallGray } from "@/assets/icons";
 import { IconButton } from "@/app/components/ui/IconButton";
-import { useTranslation } from "@/app/i18n/client";
 import {useI18n} from "@/app/i18n/I18nProvider";
+import {useFileUploadSection} from "@/app/[lng]/components/File/useFileUploadSection";
 
 interface FileUploadSectionProps {
   title: string;
@@ -16,7 +16,6 @@ interface FileUploadSectionProps {
   onFileChange: (files: File[]) => void;
   onFileRemove?: (index: number) => void;
   multiple?: boolean;
-  selectedFiles?: File[];
   hasError?: boolean;
   errorText?: string;
 }
@@ -27,71 +26,27 @@ const FileUploadSection = ({
   onFileChange,
   onFileRemove,
   multiple = false,
-  selectedFiles = [],
   hasError = false,
   errorText = "",
 }: FileUploadSectionProps) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragOver, setIsDragOver] = useState(false);
   const { t } = useI18n();
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-
-    if (multiple) {
-      const newFiles = Array.from(files);
-      onFileChange([...selectedFiles, ...newFiles]);
-    } else {
-      onFileChange([files[0]]);
-    }
-    
-    e.target.value = "";
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    
-    const files = e.dataTransfer.files;
-    if (!files.length) return;
-
-    if (multiple) {
-      const newFiles = Array.from(files);
-      onFileChange([...selectedFiles, ...newFiles]);
-    } else {
-      onFileChange([files[0]]);
-    }
-  };
-
-  const handleClick = (e?: React.MouseEvent) => {
-    e?.preventDefault();
-    e?.stopPropagation();
-    fileInputRef.current?.click();
-  };
-
-  const handleRemoveFile = (index: number) => {
-    if (onFileRemove) {
-      onFileRemove(index);
-    } else {
-      const newFiles = selectedFiles.filter((_, i) => i !== index);
-      onFileChange(newFiles);
-    }
-  };
-
-  const createImagePreview = (file: File) => {
-    return URL.createObjectURL(file);
-  };
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const {
+    isDragOver,
+    selectedFiles,
+    handleClick,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleRemoveFile,
+    handleFileSelect,
+    createImagePreview,
+  } = useFileUploadSection({
+    fileInputRef,
+    onFileChange,
+    onFileRemove,
+    multiple,
+  })
 
   const renderFilePreview = () => {
     if (selectedFiles.length === 0) {
@@ -204,7 +159,7 @@ const FileUploadSection = ({
         accept="image/*"
         multiple={multiple}
         onChange={handleFileSelect}
-        style={{ 
+        style={{
           position: "absolute",
           opacity: 0,
           width: 0,
@@ -212,13 +167,13 @@ const FileUploadSection = ({
           overflow: "hidden"
         }}
       />
-      
+
       <TypoGraph variant="body01" mb="8px" color="gray.900">
         {title}
       </TypoGraph>
-      
+
       {renderFilePreview()}
-      
+
       {hasError && (
         <Text fontSize="15px" color="red.500" textAlign="left" mt="4px">
           {errorText}
@@ -236,7 +191,7 @@ const uploadContainer = (isDragOver: boolean, hasError: boolean = false) => css`
   cursor: pointer;
   background-color: ${isDragOver ? "#F2F4FC" : "#FAFAFA"};
   transition: all 0.2s ease-in-out;
-  
+
   &:hover {
     border-color: ${hasError ? "#FF5356" : "#435CB0"};
     background-color: #F2F4FC;

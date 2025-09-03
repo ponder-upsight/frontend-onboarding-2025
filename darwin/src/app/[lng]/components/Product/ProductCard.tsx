@@ -5,39 +5,26 @@ import { Box, Flex, VStack } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { DeleteSmallWhite, EyeOn } from "@/assets/icons";
-import { useTranslation } from "@/app/i18n/client";
 import { IconButton } from "@/app/components/ui/IconButton";
 import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
-import { useModalStore } from "@/store/useModalStore";
-import { toast } from "react-toastify";
-import { SuccessToast } from "@/app/components/ui/Toast";
 import { Product } from "@/api/product/getProducts";
+import { useI18n } from "@/app/i18n/I18nProvider";
+import {useProductCard} from "@/app/[lng]/components/Product/useProductCard";
 
 interface ProductCardProps {
   product: Product;
   onDetailClick: (product: Product) => void;
   onDeleteClick: (product: Product) => void;
-  lng: string;
 }
 
-const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCardProps) => {
+const ProductCard = ({ product, onDetailClick, onDeleteClick }: ProductCardProps) => {
   const [imageError, setImageError] = useState(false);
-  const { t } = useTranslation(lng);
-  const { isOpen, onConfirm, openModal, closeModal } = useModalStore();
-
-  const handleDelete = () => {
-    openModal(() => handleDeleteConfirm());
-  };
-
-  const handleDeleteConfirm = () => {
-    onDeleteClick(product);
-
-    toast(SuccessToast, {
-      data: { title: t("deleteProductSuccess") },
-      position: "top-center",
-      autoClose: 3000,
-    });
-  };
+  const { t } = useI18n()
+  const { deleteConfirmModalStore, handleDelete } = useProductCard({
+    product,
+    onDetailClick,
+    onDeleteClick,
+  })
 
   return (
     <Box
@@ -91,21 +78,21 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
           />
         )}
       </Box>
-      
+
       <VStack spacing="12px" p="20px" align="stretch">
         <TypoGraph variant="headline03" color="gray.900">
           {product.productName}
         </TypoGraph>
-        
-        <TypoGraph 
-          variant="body02" 
+
+        <TypoGraph
+          variant="body02"
           color="gray.700"
           noOfLines={2}
           minH="44px"
         >
           {product.productName}
         </TypoGraph>
-        
+
         <Flex justify="space-between" align="center">
           <TypoGraph variant="label05" color="gray.600">
             {t("stock", { count: product.stock })}
@@ -114,7 +101,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
             {product.productName}
           </TypoGraph>
         </Flex>
-        
+
         <Button
           variant="outlined"
           size="sm"
@@ -132,9 +119,9 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick, lng }: ProductCard
       <ConfirmModal
         title={t("deleteProduct")}
         content={t("deleteProductContent")}
-        onConfirm={onConfirm}
-        isOpen={isOpen}
-        onClose={closeModal}
+        onConfirm={deleteConfirmModalStore.onConfirm}
+        isOpen={deleteConfirmModalStore.isOpen}
+        onClose={deleteConfirmModalStore.closeModal}
         confirmBtn={t("delete")}
         closeBtn={t("cancel")}
       />

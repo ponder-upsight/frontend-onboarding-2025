@@ -1,24 +1,22 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useTranslation } from "@/app/i18n/client";
+import { useRouter } from "next/navigation";
 import {
   Flex,
   Box,
-  useDisclosure,
   Drawer,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  DrawerHeader,
   DrawerBody,
   VStack,
 } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { Button } from "@/app/components/ui/Button";
 import { DropDown } from "@/app/components/ui/Dropdown";
-import i18next from "i18next";
-import {useI18n} from "@/app/i18n/I18nProvider";
+import { useI18n } from "@/app/i18n/I18nProvider";
+import {Hamburger} from "@/app/components/ui/Hamburger";
+import {useHeader} from "@/app/[lng]/components/Header/useHeader";
 
 const LANGUAGE_ITEMS = [
   { label: "한국어", value: "ko" },
@@ -27,42 +25,12 @@ const LANGUAGE_ITEMS = [
 
 const Header = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const pathnameArray = pathname.split("/");
-
-  const lng = pathnameArray[1];
-  const { t } = useI18n();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { t, lng } = useI18n();
   const {
-    isOpen: isMobileMenuOpen,
-    onOpen: onMobileMenuOpen,
-    onClose: onMobileMenuClose,
-  } = useDisclosure();
-
-  const handleLngOptionClick = async (value: string) => {
-    await i18next.changeLanguage(value);
-    router.push(window.location.href.replace(`/${lng}`, `/${value}`));
-    onClose();
-  };
-
-  const HamburgerIcon = () => (
-    <Box
-      as="button"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-around"
-      width="24px"
-      height="18px"
-      bg="transparent"
-      border="none"
-      cursor="pointer"
-      onClick={onMobileMenuOpen}
-    >
-      <Box height="2px" bg="gray.800" />
-      <Box height="2px" bg="gray.800" />
-      <Box height="2px" bg="gray.800" />
-    </Box>
-  );
+    languageDropdownDisclosure,
+    mobileMenuDisclosure,
+    handleLngOptionClick,
+  } = useHeader()
 
   return (
     <>
@@ -92,7 +60,7 @@ const Header = () => {
           outline={0}
         >
           <TypoGraph variant="title03">{t("title")}</TypoGraph>
-          
+
           <Flex
             display={{ base: "none", md: "flex" }}
             width="320px"
@@ -104,22 +72,22 @@ const Header = () => {
             <Button
               variant="primary"
               w="100px"
-              onClick={() => router.push(`/${pathnameArray[1]}`)}
+              onClick={() => router.push(`/${lng}`)}
             >
               {t("products")}
             </Button>
             <Button
               variant="secondary"
               w="100px"
-              onClick={() => router.push(`/${pathnameArray[1]}/register`)}
+              onClick={() => router.push(`/${lng}/register`)}
             >
               {t("productRegistration")}
             </Button>
 
             <DropDown
-              isOpen={isOpen}
-              onClose={onClose}
-              onOpen={onOpen}
+              isOpen={languageDropdownDisclosure.isOpen}
+              onClose={languageDropdownDisclosure.onClose}
+              onOpen={languageDropdownDisclosure.onOpen}
               selectedValue={LANGUAGE_ITEMS.find((item) => item.value === lng)?.value}
               displayText={LANGUAGE_ITEMS.find((item) => item.value === lng)?.label}
               onSelect={handleLngOptionClick}
@@ -136,12 +104,16 @@ const Header = () => {
           </Flex>
 
           <Box display={{ base: "block", md: "none" }}>
-            <HamburgerIcon />
+            <Hamburger onClick={mobileMenuDisclosure.onOpen} />
           </Box>
         </Flex>
       </Flex>
 
-      <Drawer isOpen={isMobileMenuOpen} placement="right" onClose={onMobileMenuClose}>
+      <Drawer
+          isOpen={mobileMenuDisclosure.isOpen}
+          placement="right"
+          onClose={mobileMenuDisclosure.onClose}
+      >
         <DrawerOverlay />
         <DrawerContent pt="32px">
           <DrawerCloseButton />
@@ -151,8 +123,8 @@ const Header = () => {
                 variant="primary"
                 w="100%"
                 onClick={() => {
-                  router.push(`/${pathnameArray[1]}`);
-                  onMobileMenuClose();
+                  router.push(`/${lng}`);
+                  mobileMenuDisclosure.onClose();
                 }}
               >
                 {t("products")}
@@ -161,23 +133,23 @@ const Header = () => {
                 variant="secondary"
                 w="100%"
                 onClick={() => {
-                  router.push(`/${pathnameArray[1]}/register`);
-                  onMobileMenuClose();
+                  router.push(`/${lng}/register`);
+                  mobileMenuDisclosure.onClose();
                 }}
               >
                 {t("productRegistration")}
               </Button>
-              
+
               <Box pt={4}>
                 <DropDown
-                  isOpen={isOpen}
-                  onClose={onClose}
-                  onOpen={onOpen}
+                  isOpen={languageDropdownDisclosure.isOpen}
+                  onClose={languageDropdownDisclosure.onClose}
+                  onOpen={languageDropdownDisclosure.onOpen}
                   selectedValue={LANGUAGE_ITEMS.find((item) => item.value === lng)?.value}
                   displayText={LANGUAGE_ITEMS.find((item) => item.value === lng)?.label}
                   onSelect={(value) => {
                     handleLngOptionClick(value);
-                    onMobileMenuClose();
+                    mobileMenuDisclosure.onClose();
                   }}
                   matchWidth={false}
                   variant="outline"

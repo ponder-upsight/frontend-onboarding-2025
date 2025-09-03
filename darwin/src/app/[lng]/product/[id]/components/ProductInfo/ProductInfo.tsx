@@ -5,64 +5,37 @@ import { Box, VStack, HStack } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { MinusGray, PlusGray } from "@/assets/icons";
-import { toast } from "react-toastify";
-import { SuccessToast } from "@/app/components/ui/Toast";
 import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
-import { useModalStore } from "@/store/useModalStore";
-import { useRouter } from "next/navigation";
 import { ProductDetails } from "@/api/product/getProduct";
-import { useOrderProduct } from "@/api/product/orderProduct";
 import {useI18n} from "@/app/i18n/I18nProvider";
+import {useProductInfo} from "@/app/[lng]/product/[id]/components/ProductInfo/useProductInfo";
 
 interface ProductInfoProps {
   id: string;
-  product: ProductDetails;
+  productDetails: ProductDetails;
 }
 
-const ProductInfo = ({ id, product }: ProductInfoProps) => {
-  const [ quantity, setQuantity ] = useState(1);
-  const { onConfirm, isOpen, openModal, closeModal } = useModalStore();
-  const { mutate } = useOrderProduct(id);
-  const router = useRouter();
-  const { t, lng } = useI18n();
-
-  const handleQuantityChange = (change: number) => {
-    const newQuantity = quantity + change;
-    if (newQuantity >= 1 && newQuantity <= product.stock) {
-      setQuantity(newQuantity);
-    }
-  };
-
-  const handleOrder = () => {
-    openModal(handleOrderConfirm);
-  };
-
-  const handleOrderConfirm = async () => {
-    await mutate({ quantity });
-    toast(SuccessToast, {
-      data: { title: t("orderComplete") },
-      position: "top-center",
-      autoClose: 3000,
-    });
-    router.push(`/${lng}`);
-  };
-
-  const handleAddToCart = () => {
-    toast(SuccessToast, {
-      data: { title: t("addToCartSuccess", { name: product.name, quantity }) },
-      position: "top-center",
-      autoClose: 3000,
-    });
-  };
+const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
+  const { t } = useI18n();
+  const {
+    orderConfirmModalStore,
+    quantity,
+    handleOrder,
+    handleQuantityChange,
+    handleAddToCart,
+  } = useProductInfo({
+    id,
+    productDetails,
+  })
 
   return (
     <VStack spacing="24px" align="stretch" mb="16px">
       <Box>
         <TypoGraph variant="headline01" color="gray.900" mb="8px">
-          {product.name}
+          {productDetails.name}
         </TypoGraph>
         <TypoGraph variant="label05" color="gray.600">
-          {product.createdAt}
+          {productDetails.createdAt}
         </TypoGraph>
       </Box>
 
@@ -71,7 +44,7 @@ const ProductInfo = ({ id, product }: ProductInfoProps) => {
           {t("productDescription")}
         </TypoGraph>
         <TypoGraph variant="body02" color="gray.700" lineHeight="1.6">
-          {product.description}
+          {productDetails.description}
         </TypoGraph>
       </Box>
 
@@ -81,12 +54,12 @@ const ProductInfo = ({ id, product }: ProductInfoProps) => {
         </TypoGraph>
         <Box bg="gray.900" p="12px" borderRadius="4px" width="128px" textAlign="center">
           <TypoGraph variant="label03" color="white">
-            {t("stock", { count: product.stock })}
+            {t("stock", { count: productDetails.stock })}
           </TypoGraph>
         </Box>
       </Box>
 
-      {product.stock > 0 && (
+      {productDetails.stock > 0 && (
         <>
           <Box>
             <TypoGraph variant="headline03" color="gray.800" mb="12px">
@@ -130,7 +103,7 @@ const ProductInfo = ({ id, product }: ProductInfoProps) => {
                 borderRadius="0 4px 4px 0"
                 borderLeft="none"
                 onClick={() => handleQuantityChange(1)}
-                isDisabled={quantity >= product.stock}
+                isDisabled={quantity >= productDetails.stock}
                 useTypography={false}
               >
                 <PlusGray />
@@ -159,7 +132,7 @@ const ProductInfo = ({ id, product }: ProductInfoProps) => {
         </>
       )}
 
-      {product.stock === 0 && (
+      {productDetails.stock === 0 && (
         <Box bg="gray.100" p="16px" borderRadius="8px" textAlign="center">
           <TypoGraph variant="label03" color="gray.600">
             {t("outOfStock")}
@@ -169,12 +142,12 @@ const ProductInfo = ({ id, product }: ProductInfoProps) => {
 
       <ConfirmModal
          title={t("order")}
-         content={t("orderConfirm", { name: product.name, quantity: quantity })}
-         isOpen={isOpen}
-         onClose={closeModal}
+         content={t("orderConfirm", { name: productDetails.name, quantity: quantity })}
+         isOpen={orderConfirmModalStore.isOpen}
+         onClose={orderConfirmModalStore.closeModal}
          confirmBtn={t("order")}
          closeBtn={t("cancel")}
-         onConfirm={onConfirm}
+         onConfirm={orderConfirmModalStore.onConfirm}
        />
     </VStack>
   );

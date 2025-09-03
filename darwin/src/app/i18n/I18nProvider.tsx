@@ -1,25 +1,37 @@
 'use client'
 
-import {createContext, ReactNode, useContext} from 'react'
-import { TFunction } from 'i18next'
+import { createContext, ReactNode, useCallback, useContext } from 'react'
+import i18next, { TFunction } from 'i18next'
 import { useTranslation } from './client'
+import { useRouter } from "next/navigation";
 
 interface I18nContextProps {
-    lng: string
-    t: TFunction
+  lng: string
+  t: TFunction
+  changeLanguage: (newLanguage: string) => Promise<void>
 }
 
 interface I18nProviderProps {
-    lng: string
-    children: ReactNode
+  lng: string
+  children: ReactNode
 }
 
 export const I18nContext = createContext<I18nContextProps | undefined>(undefined)
 
 export default function I18nProvider({ lng, children }: I18nProviderProps) {
   const { t } = useTranslation(lng)
-  
-  return <I18nContext.Provider value={{ lng, t }}>
+  const router = useRouter()
+
+  const changeLanguage = useCallback(async (newLanguage: string) => {
+    if (newLanguage === lng) {
+      return;
+    }
+
+    await i18next.changeLanguage(newLanguage);
+    router.push(window.location.href.replace(`/${lng}`, `/${newLanguage}`));
+  }, [lng, router]);
+
+  return <I18nContext.Provider value={{ lng, t, changeLanguage }}>
       {children}
   </I18nContext.Provider>
 }

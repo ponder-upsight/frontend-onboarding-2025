@@ -12,14 +12,7 @@ import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
-type PageProps = {
-  params: Promise<{
-    lng: string;
-  }>;
-};
-
-const HomePage = ({ params }: PageProps) => {
-  const [lng, setLng] = useState<string>("");
+const HomePage = () => {
   const { t } = useI18n();
   const router = useRouter();
   const { data: products, isPending } = useGetProducts();
@@ -32,12 +25,6 @@ const HomePage = ({ params }: PageProps) => {
   const handleDeleteProduct = (product: Product) => {
     mutate(product.id);
   };
-
-  useEffect(() => {
-    params.then((resolvedParams) => {
-      setLng(resolvedParams.lng);
-    });
-  }, [params]);
 
   if (isPending) {
     return (
@@ -68,7 +55,7 @@ const HomePage = ({ params }: PageProps) => {
             {t("totalProducts", { count: products?.length })}
           </TypoGraph>
         </Flex>
-        
+
         <Grid
           templateColumns="repeat(auto-fill, minmax(320px, 1fr))"
           gap="24px"
@@ -80,7 +67,6 @@ const HomePage = ({ params }: PageProps) => {
               product={product}
               onDetailClick={handleProductDetail}
               onDeleteClick={handleDeleteProduct}
-              lng={lng}
             />
           ))}
         </Grid>

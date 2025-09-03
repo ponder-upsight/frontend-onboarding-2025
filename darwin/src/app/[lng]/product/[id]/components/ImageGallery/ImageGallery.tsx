@@ -3,18 +3,24 @@
 import { useState } from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 import { TypoGraph } from "@/app/components/ui/Typography";
-import { ProductDetails } from "@/api/product/getProduct";
 import { useI18n } from "@/app/i18n/I18nProvider";
+import { useImageGallery } from "@/app/[lng]/product/[id]/components/ImageGallery/useImageGallery";
 
 interface ImageGalleryProps {
-  product: ProductDetails;
+  images: {
+    url: string;
+    name: string;
+  }[];
 }
 
-const ImageGallery = ({ product }: ImageGalleryProps) => {
+const ImageGallery = ({
+  images,
+}: ImageGalleryProps) => {
   const [imageError, setImageError] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { t } = useI18n();
-  const images = [product.thumbnailUrl, ...product.detailFileUrls];
+  const { currentImage, changeCurrentImage } = useImageGallery({
+    images
+  });
 
   return (
     <VStack spacing="16px" align="stretch">
@@ -44,8 +50,8 @@ const ImageGallery = ({ product }: ImageGalleryProps) => {
         ) : (
           <Box
             as="img"
-            src={images[selectedImageIndex]}
-            alt={product.name}
+            src={currentImage.url}
+            alt={currentImage.name}
             maxH="380px"
             maxW="100%"
             objectFit="contain"
@@ -59,31 +65,31 @@ const ImageGallery = ({ product }: ImageGalleryProps) => {
           {t("detailImage")}
         </TypoGraph>
         <Flex gap="8px">
-          {images.map((imageUrl, index) => (
+          {images.map((image, index) => (
             <Box
               key={index}
               w="80px"
               h="80px"
               bg="gray.100"
               borderRadius="4px"
-              border={selectedImageIndex === index ? "2px solid" : "1px solid"}
-              borderColor={selectedImageIndex === index ? "blue.500" : "gray.300"}
+              border={currentImage.url === image.url ? "2px solid" : "1px solid"}
+              borderColor={currentImage.url === image.url ? "blue.500" : "gray.300"}
               display="flex"
               alignItems="center"
               justifyContent="center"
               cursor="pointer"
               overflow="hidden"
-              onClick={() => setSelectedImageIndex(index)}
+              onClick={() => changeCurrentImage(index)}
             >
               <Box
                 as="img"
-                src={imageUrl}
-                alt={`${product.name} ${index + 1}`}
+                src={image.url}
+                alt={`${image.name} ${index + 1}`}
                 maxH="70px"
                 maxW="70px"
                 objectFit="contain"
                 onError={() => {
-                  if (index === selectedImageIndex) {
+                  if (currentImage.url === image.url) {
                     setImageError(true);
                   }
                 }}

@@ -6,8 +6,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import { Button } from "@/app/components/ui/Button";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { LeftIcon } from "@/assets/icons";
-import ImageGallery from "./components/ImageGallery";
-import ProductInfo from "./components/ProductInfo";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
+import ProductInfo from "./components/ProductInfo/ProductInfo";
 import { useGetProduct } from "@/api/product/getProduct";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import {useI18n} from "@/app/i18n/I18nProvider";
@@ -91,7 +91,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
             >
               <ProductInfo
                 id={productId}
-                product={product}
+                productDetails={product}
               />
             </Box>
 
@@ -99,7 +99,12 @@ const ProductDetailPage = ({ params }: PageProps) => {
               flex="1"
             >
               <ImageGallery
-                product={product}
+                images={
+                  [product.thumbnailUrl, ...product.detailFileUrls].map((url) => ({
+                    url,
+                    name: product.name,
+                  }))
+                }
               />
             </Box>
         </Box>
