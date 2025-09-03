@@ -13,7 +13,12 @@ const getProduct = async ({
 
   const result = await serverFetch<ProductDetailItem>(
     API_PATH,
-    { next: { revalidate: 3600 } } // 3600초 동안 캐시
+    {
+      next: {
+        revalidate: 3600,
+        tags: [`products-${productId}`], // 개별 상품 태그
+      },
+    } // 3600초 동안 캐시
   );
 
   if (result.isSuccess) {

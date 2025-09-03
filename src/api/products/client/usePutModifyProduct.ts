@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 import { useRouter } from "next/navigation";
+import revaildateTags from "@/app/api/revalidate";
 
 interface PutCreateProductProps {
   productId: string;
@@ -54,11 +55,16 @@ export const usePutModifyProduct = () => {
   return useMutation({
     mutationFn: (newProduct: PutCreateProductProps) =>
       putModifyProduct(newProduct),
-    onSuccess: (response, variables) => {
+    onSuccess: async (response, variables) => {
       const { productId } = variables;
-      // 상품 수정 성공 시, 상품 목록 캐시를 무효화하여 최신 데이터로 갱신
+
+      revaildateTags(["products-list", `product-${productId}`]);
+
       queryClient.invalidateQueries({
-        queryKey: [QueryKeys.PRODUCTS, productId],
+        queryKey: [QueryKeys.PRODUCT, productId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.PRODUCTS],
       });
       // variables에서 productId를 가져와서 해당 상품 페이지로 이동
       router.push(`/product/${productId}`);

@@ -2,9 +2,9 @@ import { ProductListItem } from "@/types/products";
 import serverFetch from "@/util/fetchUtil/serverFetch"; // serverFetch 경로에 맞게 수정해주세요
 
 // API 응답의 실제 데이터 구조를 정의합니다.
-interface GetProductListResponse {
+type GetProductListResponse = {
   pageResult: ProductListItem[];
-}
+} | null;
 
 // 함수에 전달될 파라미터 타입을 정의합니다.
 interface GetProductListParams {
@@ -34,18 +34,22 @@ const getProductList = async ({
   const API_PATH = `/products?${params.toString()}`;
 
   // serverFetch를 호출하고, 예상되는 응답 데이터 타입을 제네릭으로 전달합니다.
-  const result = await serverFetch<GetProductListResponse>(API_PATH);
+  const result = await serverFetch<GetProductListResponse>(
+    API_PATH,
+    {
+      next: {
+        revalidate: 3600,
+        tags: [`products-list`], // 개별 상품 태그
+      },
+    } // 3600초 동안 캐시
+  );
 
   // serverFetch가 반환한 결과를 처리합니다.
   if (result.isSuccess) {
     // 성공 시, API 데이터를 우리가 사용하려는 형태로 변환하여 반환합니다.
-    return {
-      pageResult: result.data.pageResult,
-    };
+    return result.data;
   } else {
-    // 실패 시, 에러를 던져서 호출부(예: React Query)에서 처리하도록 합니다.
-    console.error("API Error:", result.status, result.error);
-    throw new Error(result.error || "Failed to fetch product list");
+    return null;
   }
 };
 
