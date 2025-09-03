@@ -1,21 +1,15 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Container,
-  Heading,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Container, Heading, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import React from "react";
 import { productSchema, ProductFormValues } from "@/lib/react-hook-form/schema";
-import ImagePreview from "../ProductModifyForm/ImagePreview";
 import usePostCreateProduct from "@/api/products/client/usePostCreateProduct";
 import ContolledInputProvider from "@/lib/react-hook-form/ContolledInputProvider";
 import ControlledNumberInput from "@/lib/react-hook-form/ControlledNumberInput";
 import { Input, Textarea } from "@chakra-ui/react";
+import ImagePreview from "@/lib/react-hook-form/ImagePreview";
 
 const ProductAddForm = () => {
   const methods = useForm<ProductFormValues>({
@@ -77,7 +71,7 @@ const ProductAddForm = () => {
                 <Heading size="md" color="primary.500">
                   새 상품 등록
                 </Heading>
-                
+
                 {/* 상품명 */}
                 <ContolledInputProvider name="name" label="상품명">
                   <Input
@@ -86,7 +80,7 @@ const ProductAddForm = () => {
                     border="none"
                   />
                 </ContolledInputProvider>
-                
+
                 {/* 상품 설명*/}
                 <ContolledInputProvider name="description" label="상품 설명">
                   <Textarea
@@ -95,7 +89,7 @@ const ProductAddForm = () => {
                     border="none"
                   />
                 </ContolledInputProvider>
-                
+
                 {/* 재고 수량*/}
                 <ControlledNumberInput name="amount" label="재고 수량" />
 
@@ -105,7 +99,7 @@ const ProductAddForm = () => {
                   label="메인 이미지"
                   multiple={false}
                 />
-                
+
                 {/* 상세 이미지 */}
                 <ImagePreview
                   name="detail"

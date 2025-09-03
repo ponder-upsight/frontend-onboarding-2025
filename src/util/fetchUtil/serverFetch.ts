@@ -43,7 +43,7 @@ async function serverFetch<T = unknown>(
   }
 
   try {
-    const response = await fetch(`${BASE}${url}`, {
+    const response = await fetch(`${BASE}/api/v1${url}`, {
       ...init,
       headers: reqHeaders,
       body: requestBody,

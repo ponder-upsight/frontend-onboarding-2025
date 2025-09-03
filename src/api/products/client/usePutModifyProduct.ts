@@ -54,9 +54,13 @@ export const usePutModifyProduct = () => {
   return useMutation({
     mutationFn: (newProduct: PutCreateProductProps) =>
       putModifyProduct(newProduct),
-    onSuccess: ({ productId }) => {
-      // 상품 생성 성공 시, 상품 목록 캐시를 무효화하여 최신 데이터로 갱신
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.PRODUCTS] });
+    onSuccess: (response, variables) => {
+      const { productId } = variables;
+      // 상품 수정 성공 시, 상품 목록 캐시를 무효화하여 최신 데이터로 갱신
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.PRODUCTS, productId],
+      });
+      // variables에서 productId를 가져와서 해당 상품 페이지로 이동
       router.push(`/product/${productId}`);
     },
   });

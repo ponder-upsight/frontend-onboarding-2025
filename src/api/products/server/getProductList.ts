@@ -31,7 +31,7 @@ const getProductList = async ({
   if (description) params.append("description", description);
   if (sortCode) params.append("sortCode", sortCode);
 
-  const API_PATH = `/api/v1/products?${params.toString()}`;
+  const API_PATH = `/products?${params.toString()}`;
 
   // serverFetch를 호출하고, 예상되는 응답 데이터 타입을 제네릭으로 전달합니다.
   const result = await serverFetch<GetProductListResponse>(API_PATH);

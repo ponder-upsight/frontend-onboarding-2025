@@ -1,5 +1,5 @@
 import getProduct from "@/api/products/server/getProduct";
-import ProductEditForm from "@/components/ProductEditForm";
+import ProductModifyForm from "@/components/ProductModifyForm";
 import { Container, Text } from "@chakra-ui/react";
 
 export const revalidate = 3600;
@@ -22,7 +22,7 @@ const ProductModifyPage = async ({ params }: PageProps) => {
     );
   }
 
-  return <ProductEditForm initData={{ id, ...product }} />;
+  return <ProductModifyForm initData={{ id, ...product }} />;
 };
 
 export default ProductModifyPage;

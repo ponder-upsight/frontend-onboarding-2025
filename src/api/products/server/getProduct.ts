@@ -9,7 +9,7 @@ type GetProductResponse = ProductDetailItem | null;
 const getProduct = async ({
   productId,
 }: GetProductParams): Promise<GetProductResponse> => {
-  const API_PATH = `/api/v1/products/${productId}`;
+  const API_PATH = `/products/${productId}`;
 
   const result = await serverFetch<ProductDetailItem>(
     API_PATH,
