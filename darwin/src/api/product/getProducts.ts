@@ -1,24 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-
 import apiClient from "@/api/apiClient";
 
-export interface Product {
+interface GetProductsApiResponse {
   id: string;
   productName: string;
   thumbnailUrl: string;
   stock: number;
 }
 
-const getProducts = async () => {
+export const getProductsApi = async (): Promise<GetProductsApiResponse[]> => {
   const response = await apiClient.get(`/api/v1/products`);
   return response.data.pageResult;
-};
-
-export const useGetProducts = () => {
-  return useQuery<Product[]>({
-    queryKey: ["products"],
-    queryFn: () => {
-      return getProducts();
-    },
-  });
 };

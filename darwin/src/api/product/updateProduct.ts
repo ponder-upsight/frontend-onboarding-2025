@@ -1,8 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import apiClient from "@/api/apiClient";
 
-export interface PutProductRequest {
+interface UpdateProductApiRequest {
   name: string;
   description: string;
   stock: number;
@@ -11,7 +9,7 @@ export interface PutProductRequest {
   newDetailImages: File[];
 }
 
-const putProduct = (productId: number) => async (productData: PutProductRequest) => {
+export const updateProductApi = async (productId: string, productData: UpdateProductApiRequest) => {
   const formData = new FormData();
   formData.append("name", productData.name);
   formData.append("description", productData.description);
@@ -35,18 +33,4 @@ const putProduct = (productId: number) => async (productData: PutProductRequest)
     },
   });
   return response.data;
-};
-
-export const usePutProduct = (productId: number) => {
-  const queryClient = useQueryClient();
-
-  return useMutation<null, Error, PutProductRequest>({
-    mutationFn: putProduct(productId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products", productId],
-      });
-    },
-    onError: () => {},
-  });
 };

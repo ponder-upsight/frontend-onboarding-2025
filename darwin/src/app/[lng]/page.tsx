@@ -5,30 +5,30 @@ import { useRouter } from "next/navigation";
 
 import { Box, Flex, Grid } from "@chakra-ui/react";
 
-import { useDeleteProduct } from "@/api/product/deleteProduct";
-import { Product, useGetProducts } from "@/api/product/getProducts";
-
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import ProductCard from "./components/Product/ProductCard";
+import {useProduct} from "@/domain/product/useProduct";
+import {Product} from "@/domain/product/Product";
 
 const HomePage = () => {
   const { t } = useI18n();
   const router = useRouter();
-  const { data: products, isPending } = useGetProducts();
-  const { mutate } = useDeleteProduct();
+  const { useDeleteProduct, useGetProducts } = useProduct()
+  const deleteProduct = useDeleteProduct()
+  const getProducts = useGetProducts()
 
   const handleProductDetail = (product: Product) => {
     router.push(`product/${product.id}`);
   };
 
   const handleDeleteProduct = (product: Product) => {
-    mutate(product.id);
+    deleteProduct.mutate(product.id!);
   };
 
-  if (isPending) {
+  if (getProducts.isPending) {
     return (
       <Box minH="100vh" bg="gray.50" pt="128px">
         <Box maxW="1200px" mx="auto" p="32px">
@@ -51,12 +51,12 @@ const HomePage = () => {
             {t("productList")}
           </TypoGraph>
           <TypoGraph variant="body02" color="gray.700">
-            {t("totalProducts", { count: products?.length })}
+            {t("totalProducts", { count: getProducts.data?.length })}
           </TypoGraph>
         </Flex>
 
         <Grid templateColumns="repeat(auto-fill, minmax(320px, 1fr))" gap="24px" w="100%">
-          {products?.map((product) => (
+          {getProducts.data?.map((product) => (
             <ProductCard
               key={product.id}
               product={product}

@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 
 import { Box, Flex } from "@chakra-ui/react";
 
-import { useGetProduct } from "@/api/product/getProduct";
-
 import { Button } from "@/app/components/ui/Button";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import { TypoGraph } from "@/app/components/ui/Typography";
@@ -17,6 +15,7 @@ import { LeftIcon } from "@/assets/icons";
 
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ProductInfo from "./components/ProductInfo/ProductInfo";
+import {useProduct} from "@/domain/product/useProduct";
 
 type PageProps = {
   params: Promise<{
@@ -27,7 +26,8 @@ type PageProps = {
 const ProductDetailPage = ({ params }: PageProps) => {
   const [productId, setProductId] = useState<string>("");
   const router = useRouter();
-  const { data: product, isPending } = useGetProduct(productId);
+  const { useGetProductDetails } = useProduct();
+  const getProductDetails = useGetProductDetails(productId);
   const { t, lng } = useI18n();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
     router.push(`/${lng}`);
   };
 
-  if (isPending) {
+  if (getProductDetails.isPending) {
     return (
       <Box minH="100vh" bg="gray.50" pt="128px">
         <Box maxW="1200px" mx="auto" p="32px">
@@ -55,7 +55,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
     );
   }
 
-  if (!product) {
+  if (!getProductDetails.data) {
     return (
       <Box minH="100vh" bg="gray.50" pt="128px">
         <Box maxW="1200px" mx="auto" p="32px">
@@ -90,14 +90,17 @@ const ProductDetailPage = ({ params }: PageProps) => {
           p="32px"
         >
           <Box flex="1">
-            <ProductInfo id={productId} productDetails={product} />
+            <ProductInfo id={productId} productDetails={getProductDetails.data} />
           </Box>
 
           <Box flex="1">
             <ImageGallery
-              images={[product.thumbnailUrl, ...product.detailFileUrls].map((url) => ({
+              images={[
+                getProductDetails.data.thumbnailUrl,
+                ...getProductDetails.data.detailImagesUrl
+              ].map((url) => ({
                 url,
-                name: product.name,
+                name: getProductDetails.data.name,
               }))}
             />
           </Box>

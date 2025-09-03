@@ -4,8 +4,6 @@ import { useState } from "react";
 
 import { Box, Flex, VStack } from "@chakra-ui/react";
 
-import { Product } from "@/api/product/getProducts";
-
 import { useProductCard } from "@/app/[lng]/components/Product/useProductCard";
 import { Button } from "@/app/components/ui/Button";
 import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
@@ -14,6 +12,7 @@ import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { DeleteSmallWhite, EyeOn } from "@/assets/icons";
+import {Product} from "@/domain/product/Product";
 
 interface ProductCardProps {
   product: Product;
@@ -74,7 +73,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick }: ProductCardProps
           <Box
             as="img"
             src={product.thumbnailUrl}
-            alt={product.productName}
+            alt={product.name}
             maxH="160px"
             maxW="160px"
             objectFit="contain"
@@ -85,19 +84,19 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick }: ProductCardProps
 
       <VStack spacing="12px" p="20px" align="stretch">
         <TypoGraph variant="headline03" color="gray.900">
-          {product.productName}
+          {product.name}
         </TypoGraph>
 
         <TypoGraph variant="body02" color="gray.700" noOfLines={2} minH="44px">
-          {product.productName}
+          {product.name}
         </TypoGraph>
 
         <Flex justify="space-between" align="center">
           <TypoGraph variant="label05" color="gray.600">
-            {t("stock", { count: product.stock })}
+            {t("stock", { count: product.stockQuantity })}
           </TypoGraph>
           <TypoGraph variant="label06" color="gray.500">
-            {product.productName}
+            {product.name}
           </TypoGraph>
         </Flex>
 

@@ -1,8 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import apiClient from "@/api/apiClient";
 
-export interface PostProductRequest {
+interface CreateProductApiRequest {
   name: string;
   description: string;
   amount: number;
@@ -10,7 +8,7 @@ export interface PostProductRequest {
   detail: File[];
 }
 
-const postProduct = async (productData: PostProductRequest) => {
+export const createProductApi = async (productData: CreateProductApiRequest) => {
   const formData = new FormData();
   formData.append("name", productData.name);
   formData.append("description", productData.description);
@@ -32,16 +30,4 @@ const postProduct = async (productData: PostProductRequest) => {
   return response.data;
 };
 
-export const usePostProduct = () => {
-  const queryClient = useQueryClient();
 
-  return useMutation<null, Error, PostProductRequest>({
-    mutationFn: postProduct,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
-    },
-    onError: () => {},
-  });
-};

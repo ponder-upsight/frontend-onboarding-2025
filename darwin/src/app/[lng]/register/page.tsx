@@ -9,35 +9,35 @@ import { useRouter } from "next/navigation";
 import { Box, Flex, FormControl, VStack } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
-import { usePostProduct } from "@/api/product/postProduct";
-
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import FileUploadSection from "../components/File/FileUploadSection";
+import {useProduct} from "@/domain/product/useProduct";
 
 interface ProductFormValues {
   name: string;
   description: string;
-  stock: number;
-  mainImage: boolean;
-  detailImages: boolean;
+  stockQuantity: number;
+  isThumbnailUploaded: boolean;
+  isDetailImagesUploaded: boolean;
 }
 
 const INITIAL_FORM: ProductFormValues = {
   name: "",
   description: "",
-  stock: 0,
-  mainImage: false,
-  detailImages: false,
+  stockQuantity: 0,
+  isThumbnailUploaded: false,
+  isDetailImagesUploaded: false,
 };
 
 const RegisterPage = () => {
   const { t, lng } = useI18n();
   const router = useRouter();
-  const postProductMutation = usePostProduct();
+  const { useCreateProduct } = useProduct();
+  const createProduct = useCreateProduct();
 
   const {
     register,
@@ -50,12 +50,12 @@ const RegisterPage = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [mainImages, setMainImages] = useState<File[]>([]);
+  const [thumbnailImage, setThumbnailImage] = useState<File[]>([]);
   const [detailImages, setDetailImages] = useState<File[]>([]);
 
   useEffect(() => {
-    register("mainImage", { required: t("imageRequired") });
-    register("detailImages");
+    register("isThumbnailUploaded", { required: t("imageRequired") });
+    register("isDetailImagesUploaded", { required: t("imageRequired") });
   }, [register, t]);
 
   const onSubmit = useCallback(
@@ -63,15 +63,13 @@ const RegisterPage = () => {
       setIsSubmitting(true);
 
       try {
-        const productData = {
+        await createProduct.mutateAsync({
           name: data.name,
           description: data.description,
-          amount: data.stock,
-          thumbnail: mainImages.length > 0 ? mainImages[0] : null,
-          detail: detailImages,
-        };
-
-        await postProductMutation.mutateAsync(productData);
+          stockQuantity: data.stockQuantity,
+          thumbnailImage: thumbnailImage[0],
+          detailImages: detailImages,
+        });
         router.push(`/${lng}`);
       } catch (error) {
         console.error("Product registration failed:", error);
@@ -79,14 +77,14 @@ const RegisterPage = () => {
         setIsSubmitting(false);
       }
     },
-    [lng, router, mainImages, detailImages, postProductMutation]
+    [lng, router, thumbnailImage, detailImages, createProduct]
   );
 
   const handleMainImageChange = useCallback(
     (files: File[]) => {
-      setMainImages(files);
-      setValue("mainImage", files.length > 0);
-      trigger("mainImage");
+      setThumbnailImage(files);
+      setValue("isThumbnailUploaded", files.length > 0);
+      trigger("isThumbnailUploaded");
     },
     [setValue, trigger]
   );
@@ -94,8 +92,8 @@ const RegisterPage = () => {
   const handleDetailImagesChange = useCallback(
     (files: File[]) => {
       setDetailImages(files);
-      setValue("detailImages", files.length > 0);
-      trigger("detailImages");
+      setValue("isDetailImagesUploaded", files.length > 0);
+      trigger("isDetailImagesUploaded");
     },
     [setValue, trigger]
   );
@@ -141,41 +139,39 @@ const RegisterPage = () => {
                   {t("stockQuantity")}
                 </TypoGraph>
                 <Input
-                  {...register("stock", {
+                  {...register("stockQuantity", {
                     required: t("required"),
                     min: { value: 0, message: t("stockRequired") },
                   })}
                   type="number"
                   placeholder="0"
-                  hasError={!!errors.stock}
-                  errorText={errors.stock?.message}
+                  hasError={!!errors.stockQuantity}
+                  errorText={errors.stockQuantity?.message}
                   height="48px"
                 />
               </FormControl>
 
               <FormControl>
                 <FileUploadSection
-                  {...register("mainImage", { required: t("imageRequired") })}
+                  {...register("isThumbnailUploaded", { required: t("imageRequired") })}
                   title={t("productImage")}
                   buttonText={t("imageUpload")}
                   onFileChange={handleMainImageChange}
-                  selectedFiles={mainImages}
                   multiple={false}
-                  hasError={!!errors.mainImage}
-                  errorText={errors.mainImage?.message}
+                  hasError={!!errors.isThumbnailUploaded}
+                  errorText={errors.isThumbnailUploaded?.message}
                 />
               </FormControl>
 
               <FormControl>
                 <FileUploadSection
-                  {...register("detailImages", { required: t("imageRequired") })}
+                  {...register("isDetailImagesUploaded", { required: t("imageRequired") })}
                   title={t("detailImage")}
                   buttonText={t("imageUpload")}
                   onFileChange={handleDetailImagesChange}
-                  selectedFiles={detailImages}
                   multiple={true}
-                  hasError={!!errors.detailImages}
-                  errorText={errors.detailImages?.message}
+                  hasError={!!errors.isDetailImagesUploaded}
+                  errorText={errors.isDetailImagesUploaded?.message}
                 />
               </FormControl>
 

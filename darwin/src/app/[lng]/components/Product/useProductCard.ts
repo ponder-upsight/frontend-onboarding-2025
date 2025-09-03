@@ -1,11 +1,10 @@
 import { toast } from "react-toastify";
 
-import { Product } from "@/api/product/getProducts";
-
 import { SuccessToast } from "@/app/components/ui/Toast";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { useModalStore } from "@/store/useModalStore";
+import {Product} from "@/domain/product/Product";
 
 export const useProductCard = ({
   product,

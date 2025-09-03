@@ -2,8 +2,6 @@
 
 import { Box, HStack, VStack } from "@chakra-ui/react";
 
-import { ProductDetails } from "@/api/product/getProduct";
-
 import { useProductInfo } from "@/app/[lng]/product/[id]/components/ProductInfo/useProductInfo";
 import { Button } from "@/app/components/ui/Button";
 import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
@@ -11,6 +9,7 @@ import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { MinusGray, PlusGray } from "@/assets/icons";
+import {ProductDetails} from "@/domain/product/ProductDetails";
 
 interface ProductInfoProps {
   id: string;
@@ -21,7 +20,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
   const { t } = useI18n();
   const {
     orderConfirmModalStore,
-    quantity,
+    stockQuantity,
     handleOrder,
     handleQuantityChange,
     handleAddToCart,
@@ -56,12 +55,12 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
         </TypoGraph>
         <Box bg="gray.900" p="12px" borderRadius="4px" width="128px" textAlign="center">
           <TypoGraph variant="label03" color="white">
-            {t("stock", { count: productDetails.stock })}
+            {t("stock", { count: productDetails.stockQuantity })}
           </TypoGraph>
         </Box>
       </Box>
 
-      {productDetails.stock > 0 && (
+      {productDetails.stockQuantity > 0 && (
         <>
           <Box>
             <TypoGraph variant="headline03" color="gray.800" mb="12px">
@@ -77,7 +76,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
                 borderRadius="4px 0 0 4px"
                 borderRight="none"
                 onClick={() => handleQuantityChange(-1)}
-                isDisabled={quantity <= 1}
+                isDisabled={stockQuantity <= 1}
                 useTypography={false}
               >
                 <MinusGray />
@@ -93,7 +92,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
                 bg="white"
               >
                 <TypoGraph variant="label03" color="gray.900">
-                  {quantity}
+                  {stockQuantity}
                 </TypoGraph>
               </Box>
               <Button
@@ -105,7 +104,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
                 borderRadius="0 4px 4px 0"
                 borderLeft="none"
                 onClick={() => handleQuantityChange(1)}
-                isDisabled={quantity >= productDetails.stock}
+                isDisabled={stockQuantity >= productDetails.stockQuantity}
                 useTypography={false}
               >
                 <PlusGray />
@@ -124,7 +123,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
         </>
       )}
 
-      {productDetails.stock === 0 && (
+      {productDetails.stockQuantity === 0 && (
         <Box bg="gray.100" p="16px" borderRadius="8px" textAlign="center">
           <TypoGraph variant="label03" color="gray.600">
             {t("outOfStock")}
@@ -134,7 +133,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
 
       <ConfirmModal
         title={t("order")}
-        content={t("orderConfirm", { name: productDetails.name, quantity: quantity })}
+        content={t("orderConfirm", { name: productDetails.name, quantity: stockQuantity })}
         isOpen={orderConfirmModalStore.isOpen}
         onClose={orderConfirmModalStore.closeModal}
         confirmBtn={t("order")}
