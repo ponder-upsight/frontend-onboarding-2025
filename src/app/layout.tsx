@@ -1,9 +1,9 @@
 import ChakraLayoutProvider from "@/lib/theme";
 import "./globals.css";
-import AppHeader from "@/components/AppHeader";
-import LayoutProvider from "@/lib/layout";
+import AppHeader from "@/components/Layout/AppHeader";
+import LayoutProvider from "@/components/Layout/LayoutProvider";
 import QueryProvider from "@/lib/react-query";
-import Modals from "@/components/Modals";
+import Modals from "@/components/Layout/Modals";
 
 export default function RootLayout({
   children,

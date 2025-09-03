@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 import { useRouter } from "next/navigation";
-import revaildateTags from "@/app/api/revalidate";
+import revalidateTags from "@/app/api/revalidate";
 
 interface PutCreateProductProps {
   productId: string;
@@ -58,14 +58,16 @@ export const usePutModifyProduct = () => {
     onSuccess: async (response, variables) => {
       const { productId } = variables;
 
-      revaildateTags(["products-list", `product-${productId}`]);
-
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PRODUCT, productId],
       });
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PRODUCTS],
       });
+
+      // ISR 페이지 revalidation을 위해 태그 무효화
+      await revalidateTags(["products-list", `product-${productId}`]);
+
       // variables에서 productId를 가져와서 해당 상품 페이지로 이동
       router.push(`/product/${productId}`);
     },

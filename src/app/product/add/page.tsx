@@ -1,4 +1,4 @@
-import ProductAddForm from "@/components/ProductAddForm";
+import ProductAddForm from "@/app/product/add/_ui/ProductAddForm";
 import { Flex } from "@chakra-ui/react";
 
 const ProductAdd = () => {

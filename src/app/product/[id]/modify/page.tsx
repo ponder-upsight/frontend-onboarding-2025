@@ -1,5 +1,5 @@
 import getProduct from "@/api/products/server/getProduct";
-import ProductModifyForm from "@/components/ProductModifyForm";
+import ProductModifyForm from "@/app/product/[id]/modify/_ui/ProductModifyForm";
 import { Container, Text } from "@chakra-ui/react";
 
 export const revalidate = 3600;
