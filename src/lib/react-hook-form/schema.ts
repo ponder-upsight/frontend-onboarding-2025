@@ -5,6 +5,16 @@ export const ACCEPTED_IMAGE_TYPES = ["image/jpeg"];
 const MAX_DETAIL_IMAGES = 10;
 
 export type ProductFormValues = z.infer<typeof productSchema>;
+export type ProductModifyFormValues = z.infer<typeof productModifySchema>;
+
+// 통합 타입 (조건부로 thumbnail이 optional)
+export type ProductFormData = {
+  name: string;
+  description: string;
+  amount: number;
+  thumbnail?: FileList;
+  detail?: FileList;
+};
 
 export const productSchema = z.object({
   name: z
@@ -31,7 +41,7 @@ export const productSchema = z.object({
     )
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      "지원되지 않는 파일 형식입니다. (jpeg)"
+      "지원되지 않는 파일 형식입니다. " + ACCEPTED_IMAGE_TYPES.join(",")
     ),
   detail: z
     .custom<FileList>((files) => files instanceof FileList, {
@@ -82,7 +92,7 @@ export const productModifySchema = z.object({
     )
     .refine(
       (files) => !files || ACCEPTED_IMAGE_TYPES.includes(files[0]?.type),
-      "지원되지 않는 파일 형식입니다. (jpeg, jpg, png, webp)"
+      "지원되지 않는 파일 형식입니다. " + ACCEPTED_IMAGE_TYPES.join(",")
     )
     .optional(),
   detail: z

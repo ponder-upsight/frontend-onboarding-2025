@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 
-interface ProductCreateData {
+interface ProductCreateProps {
   name: string;
   description: string;
   amount: number;
@@ -10,7 +10,7 @@ interface ProductCreateData {
   detail: File[]; // array of binary strings
 }
 
-const postCreateProduct = async (newProduct: ProductCreateData) => {
+const postCreateProduct = async (newProduct: ProductCreateProps) => {
   const formData = new FormData();
   formData.append("name", newProduct.name);
   formData.append("description", newProduct.description);
@@ -28,7 +28,7 @@ const postCreateProduct = async (newProduct: ProductCreateData) => {
 export const usePostCreateProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newProduct: ProductCreateData) =>
+    mutationFn: (newProduct: ProductCreateProps) =>
       postCreateProduct(newProduct),
     onSuccess: () => {
       // 상품 생성 성공 시, 상품 목록 캐시를 무효화하여 최신 데이터로 갱신

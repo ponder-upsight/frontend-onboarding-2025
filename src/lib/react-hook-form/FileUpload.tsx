@@ -1,4 +1,4 @@
-import { Controller, Control } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { Box, Input, Text, VStack } from "@chakra-ui/react";
 import { useRef } from "react";
 import { ACCEPTED_IMAGE_TYPES } from "@/lib/react-hook-form/schema";
@@ -6,12 +6,12 @@ import { ProductFormValues } from "@/lib/react-hook-form/schema";
 
 interface FileUploadProps {
   name: "thumbnail" | "detail";
-  control: Control<ProductFormValues>;
   multiple?: boolean;
 }
 
-const FileUpload = ({ name, control, multiple = false }: FileUploadProps) => {
+const FileUpload = ({ name, multiple = false }: FileUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { control } = useFormContext<ProductFormValues>();
 
   return (
     <Controller

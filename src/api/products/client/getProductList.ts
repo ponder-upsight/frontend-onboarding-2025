@@ -2,7 +2,7 @@ import { ProductListItem } from "@/types/products";
 import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 
 // 함수에 전달될 파라미터 타입
-interface GetProductListParams {
+interface GetProductListProps {
   page: number;
   size: number;
 }
@@ -15,7 +15,7 @@ interface GetProductListResponse {
 const getProductList = async ({
   page,
   size,
-}: GetProductListParams): Promise<GetProductListResponse> => {
+}: GetProductListProps): Promise<GetProductListResponse> => {
   const response = await publicAxiosInstance.get<GetProductListResponse>(
     "/products", // baseURL 이후의 경로만 입력
     {

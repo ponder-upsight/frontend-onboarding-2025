@@ -4,7 +4,7 @@ import serverFetch from "@/util/fetchUtil/serverFetch";
 interface GetProductParams {
   productId: string;
 }
-type GetProductResponse = ProductDetailItem;
+type GetProductResponse = ProductDetailItem | null;
 
 const getProduct = async ({
   productId,
@@ -20,7 +20,7 @@ const getProduct = async ({
     return result.data;
   } else {
     console.error("API Error:", result.status, result.error);
-    throw new Error(`상품 정보를 불러오는 데 실패했습니다: ${result.error}`);
+    return null;
   }
 };
 

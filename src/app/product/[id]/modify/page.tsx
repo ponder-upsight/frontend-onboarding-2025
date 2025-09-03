@@ -1,5 +1,5 @@
 import getProduct from "@/api/products/server/getProduct";
-import ProductModifyForm from "@/components/ProductModifyForm";
+import ProductEditForm from "@/components/ProductEditForm";
 import { Container, Text } from "@chakra-ui/react";
 
 export const revalidate = 3600;
@@ -10,12 +10,11 @@ interface PageProps {
 
 const ProductModifyPage = async ({ params }: PageProps) => {
   const { id } = params;
-  const { name, description, stock, thumbnailUrl, detailFileUrls } =
-    await getProduct({
-      productId: id,
-    });
+  const product = await getProduct({
+    productId: id,
+  });
 
-  if (!name) {
+  if (!product) {
     return (
       <Container centerContent p={8}>
         <Text>상품을 찾을 수 없습니다.</Text>
@@ -23,11 +22,7 @@ const ProductModifyPage = async ({ params }: PageProps) => {
     );
   }
 
-  return (
-    <ProductModifyForm
-      initData={{ id, name, description, stock, thumbnailUrl, detailFileUrls }}
-    />
-  );
+  return <ProductEditForm initData={{ id, ...product }} />;
 };
 
 export default ProductModifyPage;

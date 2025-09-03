@@ -2,19 +2,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 
-interface PutCreateProductProps {
+interface PostPurchaseProductProps {
   productId: string;
 }
 
-const deleteProduct = async ({ productId }: PutCreateProductProps) => {
+const postPurchaseProduct = async ({ productId }: PostPurchaseProductProps) => {
   const response = await publicAxiosInstance.delete(`/products/${productId}`);
   return response.data;
 };
-export const useDeleteProduct = () => {
+export const usePostPurchaseProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (deleteProductProps: PutCreateProductProps) =>
-      deleteProduct(deleteProductProps),
+    mutationFn: (postPurchaseProductProps: PostPurchaseProductProps) =>
+      postPurchaseProduct(postPurchaseProductProps),
     onSuccess: () => {
       // 상품 생성 성공 시, 상품 목록 캐시를 무효화하여 최신 데이터로 갱신
       queryClient.invalidateQueries({ queryKey: [QueryKeys.PRODUCTS] });
@@ -22,4 +22,4 @@ export const useDeleteProduct = () => {
   });
 };
 
-export default useDeleteProduct;
+export default usePostPurchaseProduct;
