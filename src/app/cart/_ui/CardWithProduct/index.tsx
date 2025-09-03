@@ -104,14 +104,15 @@ const CartItemWithProduct = ({
               <Button
                 size="sm"
                 colorScheme="red"
-                variant="outline"
+                variant="toggle"
                 onClick={handleRemove}>
                 삭제
               </Button>
               {
                 <Button
                   size="sm"
-                  colorScheme="green"
+                  colorScheme="toggle"
+                  aria-selected
                   onClick={() => postPurchaseProduct({ productId, quantity })}>
                   구매
                 </Button>
