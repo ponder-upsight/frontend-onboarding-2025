@@ -47,5 +47,14 @@
   "deleteProduct": "Delete Product",
   "deleteProductContent": "Are you sure you want to delete this product?",
   "delete": "Delete",
-  "addImage": "Add New Image"
+  "addImage": "Add New Image",
+  "editProduct": "Edit Product",
+  "productEdit": "Product Edit",
+  "edit": "Edit",
+  "update": "Update",
+  "updateComplete": "Product updated successfully",
+  "updateFailed": "Failed to update product",
+  "currentImages": "Current Images",
+  "deleteImage": "Delete Image",
+  "newImages": "New Images"
 }

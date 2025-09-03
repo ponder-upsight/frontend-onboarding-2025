@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { ProductDetails } from "@/domain/product/ProductDetails";
 import { Box, HStack, VStack } from "@chakra-ui/react";
 
@@ -9,7 +11,7 @@ import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
-import { MinusGray, PlusGray } from "@/assets/icons";
+import { EditBlack, MinusGray, PlusGray } from "@/assets/icons";
 
 interface ProductInfoProps {
   id: string;
@@ -17,7 +19,8 @@ interface ProductInfoProps {
 }
 
 const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
-  const { t } = useI18n();
+  const { t, lng } = useI18n();
+  const router = useRouter();
   const {
     orderConfirmModalState,
     stockQuantity,
@@ -29,12 +32,28 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
     productDetails,
   });
 
+  const handleEditProduct = () => {
+    router.push(`/${lng}/product/${id}/edit`);
+  };
+
   return (
     <VStack spacing="24px" align="stretch" mb="16px">
       <Box>
-        <TypoGraph variant="headline01" color="gray.900" mb="8px">
-          {productDetails.name}
-        </TypoGraph>
+        <HStack justify="space-between" align="start" mb="8px">
+          <TypoGraph variant="headline01" color="gray.900">
+            {productDetails.name}
+          </TypoGraph>
+          <Button
+            variant="outlined"
+            leftIcon={<EditBlack />}
+            onClick={handleEditProduct}
+            px="12px"
+            w="128px"
+            h="32px"
+          >
+            {t("edit")}
+          </Button>
+        </HStack>
         <TypoGraph variant="label05" color="gray.600">
           {productDetails.createdAt}
         </TypoGraph>
