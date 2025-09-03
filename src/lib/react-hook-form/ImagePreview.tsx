@@ -1,4 +1,4 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useController, useFormContext } from "react-hook-form";
 import {
   Box,
   Image,
@@ -9,15 +9,21 @@ import {
   CloseButton,
   Text,
 } from "@chakra-ui/react";
-import { ProductFormValues } from "@/lib/react-hook-form/schema";
+import {
+  ProductFormValues,
+  ProductModifyFormValues,
+} from "@/lib/react-hook-form/schema";
 import FileUpload from "@/lib/react-hook-form/FileUpload";
 
+// 공통 폼 타입 (생성용과 수정용 모두 지원)
+type CommonFormType = ProductFormValues | ProductModifyFormValues;
+
 interface ImagePreviewProps {
-  name: "thumbnail" | "detail";
+  name: string;
   label: string;
   multiple?: boolean;
   existingImageUrls?: string[]; // 기존 이미지 URL들
-  onRemoveExistingImage?: (url: string) => void; // 기존 이미지 삭제 콜백
+  deletedImageUrlsFieldName?: "deletedImageUrls"; // 삭제된 이미지 URL들 필드명 (수정 모드에서만 사용)
 }
 
 const ImagePreview = ({
@@ -25,12 +31,39 @@ const ImagePreview = ({
   label,
   multiple = false,
   existingImageUrls = [],
-  onRemoveExistingImage,
+  deletedImageUrlsFieldName,
 }: ImagePreviewProps) => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<ProductFormValues>();
+  } = useFormContext<CommonFormType>();
+
+  // React Hook 조건부 호출 문제 해결: 항상 호출하되 필요할 때만 사용
+  const deletedImagesController = useController({
+    name: (deletedImageUrlsFieldName ||
+      "deletedImageUrls") as "deletedImageUrls",
+    control,
+    defaultValue: [],
+  });
+
+  const deletedImageUrls = deletedImageUrlsFieldName
+    ? deletedImagesController.field.value || []
+    : [];
+
+  const setDeletedImageUrls = deletedImageUrlsFieldName
+    ? deletedImagesController.field.onChange
+    : null;
+
+  const handleRemoveExistingImage = (url: string) => {
+    if (setDeletedImageUrls) {
+      setDeletedImageUrls([...deletedImageUrls, url]);
+    }
+  };
+
+  // 삭제되지 않은 기존 이미지들만 필터링
+  const filteredExistingImages = existingImageUrls.filter(
+    (url) => !deletedImageUrls.includes(url)
+  );
 
   const error = errors[name]?.message as string;
 
@@ -75,7 +108,7 @@ const ImagePreview = ({
             <FormLabel fontSize="sm">{label}</FormLabel>
 
             {/* 기존 이미지들 표시 */}
-            {existingImageUrls.length > 0 && (
+            {filteredExistingImages.length > 0 && (
               <Box mb={4}>
                 <Text fontSize="sm" color="gray.600" mb={2}>
                   현재 이미지:
@@ -85,7 +118,7 @@ const ImagePreview = ({
                     columns={{ base: 2, sm: 3, md: 4 }}
                     spacing={4}
                     mb={2}>
-                    {existingImageUrls.map((url, index) => (
+                    {filteredExistingImages.map((url, index) => (
                       <Box key={`existing-${index}`} position="relative">
                         <Image
                           src={url}
@@ -94,7 +127,7 @@ const ImagePreview = ({
                           boxSize="150px"
                           objectFit="cover"
                         />
-                        {onRemoveExistingImage && (
+                        {deletedImageUrlsFieldName && (
                           <CloseButton
                             position="absolute"
                             top="2"
@@ -103,7 +136,7 @@ const ImagePreview = ({
                             bg="red.500"
                             color="white"
                             _hover={{ bg: "red.600" }}
-                            onClick={() => onRemoveExistingImage(url)}
+                            onClick={() => handleRemoveExistingImage(url)}
                           />
                         )}
                       </Box>
@@ -112,13 +145,13 @@ const ImagePreview = ({
                 ) : (
                   <Box position="relative" display="inline-block" mb={2}>
                     <Image
-                      src={existingImageUrls[0]}
+                      src={filteredExistingImages[0]}
                       alt={`현재 ${label}`}
                       borderRadius="md"
                       boxSize="150px"
                       objectFit="cover"
                     />
-                    {onRemoveExistingImage && (
+                    {deletedImageUrlsFieldName && (
                       <CloseButton
                         position="absolute"
                         top="2"
@@ -128,7 +161,7 @@ const ImagePreview = ({
                         color="white"
                         _hover={{ bg: "red.600" }}
                         onClick={() =>
-                          onRemoveExistingImage(existingImageUrls[0])
+                          handleRemoveExistingImage(filteredExistingImages[0])
                         }
                       />
                     )}
