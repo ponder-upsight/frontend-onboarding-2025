@@ -6,6 +6,6 @@ export class ProductDetails {
     public stockQuantity: number,
     public thumbnailUrl: string,
     public detailImagesUrl: string[],
-    public createdAt: string,
+    public createdAt: string
   ) {}
 }

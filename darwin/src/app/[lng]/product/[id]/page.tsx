@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { useProduct } from "@/domain/product/useProduct";
 import { Box, Flex } from "@chakra-ui/react";
 
 import { Button } from "@/app/components/ui/Button";
@@ -15,7 +16,6 @@ import { LeftIcon } from "@/assets/icons";
 
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ProductInfo from "./components/ProductInfo/ProductInfo";
-import {useProduct} from "@/domain/product/useProduct";
 
 type PageProps = {
   params: Promise<{
@@ -97,7 +97,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
             <ImageGallery
               images={[
                 getProductDetails.data.thumbnailUrl,
-                ...getProductDetails.data.detailImagesUrl
+                ...getProductDetails.data.detailImagesUrl,
               ].map((url) => ({
                 url,
                 name: getProductDetails.data.name,

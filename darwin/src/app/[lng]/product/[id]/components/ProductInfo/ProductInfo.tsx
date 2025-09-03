@@ -1,5 +1,6 @@
 "use client";
 
+import { ProductDetails } from "@/domain/product/ProductDetails";
 import { Box, HStack, VStack } from "@chakra-ui/react";
 
 import { useProductInfo } from "@/app/[lng]/product/[id]/components/ProductInfo/useProductInfo";
@@ -9,7 +10,6 @@ import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { MinusGray, PlusGray } from "@/assets/icons";
-import {ProductDetails} from "@/domain/product/ProductDetails";
 
 interface ProductInfoProps {
   id: string;
@@ -19,7 +19,7 @@ interface ProductInfoProps {
 const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
   const { t } = useI18n();
   const {
-    orderConfirmModalStore,
+    orderConfirmModalState,
     stockQuantity,
     handleOrder,
     handleQuantityChange,
@@ -133,12 +133,15 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
 
       <ConfirmModal
         title={t("order")}
-        content={t("orderConfirm", { name: productDetails.name, quantity: stockQuantity })}
-        isOpen={orderConfirmModalStore.isOpen}
-        onClose={orderConfirmModalStore.closeModal}
+        content={t("orderConfirm", {
+          name: productDetails.name,
+          quantity: stockQuantity,
+        })}
+        isOpen={orderConfirmModalState.isOpen}
+        onClose={orderConfirmModalState.closeModal}
         confirmBtn={t("order")}
         closeBtn={t("cancel")}
-        onConfirm={orderConfirmModalStore.onConfirm}
+        onConfirm={orderConfirmModalState.onConfirm}
       />
     </VStack>
   );

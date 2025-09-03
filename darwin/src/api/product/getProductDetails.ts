@@ -10,7 +10,9 @@ interface GetProductDetailsApiResponse {
   detailFileUrls: string[];
 }
 
-export const getProductDetailsApi = async (productId: string): Promise<GetProductDetailsApiResponse> => {
+export const getProductDetailsApi = async (
+  productId: string
+): Promise<GetProductDetailsApiResponse> => {
   const response = await apiClient.get(`/api/v1/products/${productId}`);
   return response.data;
 };

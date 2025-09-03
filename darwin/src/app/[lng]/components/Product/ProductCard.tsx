@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Product } from "@/domain/product/Product";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 
 import { useProductCard } from "@/app/[lng]/components/Product/useProductCard";
@@ -12,7 +13,6 @@ import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { DeleteSmallWhite, EyeOn } from "@/assets/icons";
-import {Product} from "@/domain/product/Product";
 
 interface ProductCardProps {
   product: Product;

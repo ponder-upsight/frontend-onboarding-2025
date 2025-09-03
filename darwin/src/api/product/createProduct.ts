@@ -29,5 +29,3 @@ export const createProductApi = async (productData: CreateProductApiRequest) => 
   });
   return response.data;
 };
-
-

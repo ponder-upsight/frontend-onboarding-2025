@@ -1,37 +1,37 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {createProductApi} from "@/api/product/createProduct";
-import {deleteProductApi} from "@/api/product/deleteProduct";
-import {getProductsApi} from "@/api/product/getProducts";
-import {getProductDetailsApi} from "@/api/product/getProductDetails";
-import {orderProductApi} from "@/api/product/orderProduct";
-import {updateProductApi} from "@/api/product/updateProduct";
-import {Product} from "@/domain/product/Product";
-import {ProductDetails} from "@/domain/product/ProductDetails";
+import { Product } from "@/domain/product/Product";
+import { ProductDetails } from "@/domain/product/ProductDetails";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { createProductApi } from "@/api/product/createProduct";
+import { deleteProductApi } from "@/api/product/deleteProduct";
+import { getProductDetailsApi } from "@/api/product/getProductDetails";
+import { getProductsApi } from "@/api/product/getProducts";
+import { orderProductApi } from "@/api/product/orderProduct";
+import { updateProductApi } from "@/api/product/updateProduct";
 
 export const useProduct = () => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const useCreateProduct = () => {
-    return useMutation<null, Error, {
-      name: string;
-      description: string;
-      stockQuantity: number;
-      thumbnailImage: File;
-      detailImages: File[];
-    }>({
-      mutationFn: ({
-        name,
-        description,
-        stockQuantity,
-        thumbnailImage,
-        detailImages,
-      }) => createProductApi({
-        name,
-        description,
-        amount: stockQuantity,
-        thumbnail: thumbnailImage,
-        detail: detailImages,
-      }),
+    return useMutation<
+      null,
+      Error,
+      {
+        name: string;
+        description: string;
+        stockQuantity: number;
+        thumbnailImage: File;
+        detailImages: File[];
+      }
+    >({
+      mutationFn: ({ name, description, stockQuantity, thumbnailImage, detailImages }) =>
+        createProductApi({
+          name,
+          description,
+          amount: stockQuantity,
+          thumbnail: thumbnailImage,
+          detail: detailImages,
+        }),
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: ["products"],
@@ -45,13 +45,10 @@ export const useProduct = () => {
     return useQuery<Product[]>({
       queryKey: ["products"],
       queryFn: async () => {
-        const data = await getProductsApi()
-        return data.map((item) => new Product(
-          item.id,
-          item.productName,
-          item.stock,
-          item.thumbnailUrl,
-        ));
+        const data = await getProductsApi();
+        return data.map(
+          (item) => new Product(item.id, item.productName, item.stock, item.thumbnailUrl)
+        );
       },
     });
   };
@@ -68,21 +65,23 @@ export const useProduct = () => {
           data.stock,
           data.thumbnailUrl,
           data.detailFileUrls,
-          data.createdAt,
-        )
+          data.createdAt
+        );
       },
       enabled: !!productId,
     });
   };
 
   const useOrderProduct = (productId: string) => {
-    return useMutation<null, Error, {
-      stockQuantity: number
-    }>({
-      mutationFn: ({ stockQuantity }) => orderProductApi(
-        productId,
-        { quantity: stockQuantity },
-      ),
+    return useMutation<
+      null,
+      Error,
+      {
+        stockQuantity: number;
+      }
+    >({
+      mutationFn: ({ stockQuantity }) =>
+        orderProductApi(productId, { quantity: stockQuantity }),
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: ["products", productId],
@@ -93,14 +92,18 @@ export const useProduct = () => {
   };
 
   const useUpdateProduct = (productId: string) => {
-    return useMutation<null, Error, {
-      name: string;
-      description: string;
-      stockQuantity: number,
-      deletedImageIds: string[],
-      newThumbnailImage: File | null,
-      newDetailImages: File[],
-    }>({
+    return useMutation<
+      null,
+      Error,
+      {
+        name: string;
+        description: string;
+        stockQuantity: number;
+        deletedImageIds: string[];
+        newThumbnailImage: File | null;
+        newDetailImages: File[];
+      }
+    >({
       mutationFn: ({
         name,
         description,
@@ -108,14 +111,15 @@ export const useProduct = () => {
         deletedImageIds,
         newThumbnailImage,
         newDetailImages,
-      }) => updateProductApi(productId, {
-        name,
-        description,
-        stock: stockQuantity,
-        deletedImageIds,
-        newThumbnail: newThumbnailImage,
-        newDetailImages: newDetailImages,
-      }),
+      }) =>
+        updateProductApi(productId, {
+          name,
+          description,
+          stock: stockQuantity,
+          deletedImageIds,
+          newThumbnail: newThumbnailImage,
+          newDetailImages: newDetailImages,
+        }),
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: ["products", productId],
@@ -139,5 +143,5 @@ export const useProduct = () => {
     useOrderProduct,
     useUpdateProduct,
     useDeleteProduct,
-  }
-}
+  };
+};

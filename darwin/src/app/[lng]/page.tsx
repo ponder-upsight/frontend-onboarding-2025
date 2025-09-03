@@ -3,6 +3,8 @@
 /** @jsxImportSource @emotion/react */
 import { useRouter } from "next/navigation";
 
+import { Product } from "@/domain/product/Product";
+import { useProduct } from "@/domain/product/useProduct";
 import { Box, Flex, Grid } from "@chakra-ui/react";
 
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
@@ -10,15 +12,13 @@ import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import ProductCard from "./components/Product/ProductCard";
-import {useProduct} from "@/domain/product/useProduct";
-import {Product} from "@/domain/product/Product";
 
 const HomePage = () => {
   const { t } = useI18n();
   const router = useRouter();
-  const { useDeleteProduct, useGetProducts } = useProduct()
-  const deleteProduct = useDeleteProduct()
-  const getProducts = useGetProducts()
+  const { useDeleteProduct, useGetProducts } = useProduct();
+  const deleteProduct = useDeleteProduct();
+  const getProducts = useGetProducts();
 
   const handleProductDetail = (product: Product) => {
     router.push(`product/${product.id}`);

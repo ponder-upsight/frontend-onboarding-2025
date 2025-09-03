@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { useRouter } from "next/navigation";
 
+import { useProduct } from "@/domain/product/useProduct";
 import { Box, Flex, FormControl, VStack } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
@@ -15,7 +16,6 @@ import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import FileUploadSection from "../components/File/FileUploadSection";
-import {useProduct} from "@/domain/product/useProduct";
 
 interface ProductFormValues {
   name: string;
@@ -165,7 +165,9 @@ const RegisterPage = () => {
 
               <FormControl>
                 <FileUploadSection
-                  {...register("isDetailImagesUploaded", { required: t("imageRequired") })}
+                  {...register("isDetailImagesUploaded", {
+                    required: t("imageRequired"),
+                  })}
                   title={t("detailImage")}
                   buttonText={t("imageUpload")}
                   onFileChange={handleDetailImagesChange}

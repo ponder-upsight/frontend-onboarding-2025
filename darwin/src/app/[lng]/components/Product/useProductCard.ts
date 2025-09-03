@@ -1,10 +1,10 @@
 import { toast } from "react-toastify";
 
+import { Product } from "@/domain/product/Product";
+import { useModalState } from "@/util/modal/useModalState";
+
 import { SuccessToast } from "@/app/components/ui/Toast";
 import { useI18n } from "@/app/i18n/I18nProvider";
-
-import { useModalStore } from "@/store/useModalStore";
-import {Product} from "@/domain/product/Product";
 
 export const useProductCard = ({
   product,
@@ -15,21 +15,23 @@ export const useProductCard = ({
   onDeleteClick: (product: Product) => void;
 }) => {
   const { t } = useI18n();
-  const deleteConfirmModalStore = useModalStore();
+  const deleteConfirmModalState = useModalState();
 
   const handleDelete = () => {
-    deleteConfirmModalStore.openModal(() => handleDeleteConfirm());
+    deleteConfirmModalState.openModal(() => handleDeleteConfirm());
   };
 
   const handleDeleteConfirm = () => {
     onDeleteClick(product);
 
-    toast(SuccessToast, {
-      data: { title: t("deleteProductSuccess") },
-      position: "top-center",
-      autoClose: 3000,
-    });
+    setTimeout(() => {
+      toast(SuccessToast, {
+        data: { title: t("deleteProductSuccess") },
+        position: "top-center",
+        autoClose: 3000,
+      });
+    }, 0);
   };
 
-  return { deleteConfirmModalStore, handleDelete };
+  return { deleteConfirmModalStore: deleteConfirmModalState, handleDelete };
 };

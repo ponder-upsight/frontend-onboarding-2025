@@ -9,7 +9,10 @@ interface UpdateProductApiRequest {
   newDetailImages: File[];
 }
 
-export const updateProductApi = async (productId: string, productData: UpdateProductApiRequest) => {
+export const updateProductApi = async (
+  productId: string,
+  productData: UpdateProductApiRequest
+) => {
   const formData = new FormData();
   formData.append("name", productData.name);
   formData.append("description", productData.description);
