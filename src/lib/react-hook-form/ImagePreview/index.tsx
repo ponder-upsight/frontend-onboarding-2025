@@ -6,12 +6,10 @@ import {
 } from "react-hook-form";
 import {
   Box,
-  Image,
   FormControl,
   FormLabel,
   FormErrorMessage,
   SimpleGrid,
-  CloseButton,
   Text,
 } from "@chakra-ui/react";
 import FileUpload from "@/lib/react-hook-form/FileUpload";
@@ -58,7 +56,6 @@ const ImagePreview = <T extends FieldValues = FieldValues>({
         return (
           <FormControl isInvalid={!!error}>
             <FormLabel fontSize="sm">{label}</FormLabel>
-
             {/* 기존 이미지들 표시 */}
             {filteredExistingImages.length > 0 && (
               <Box mb={4}>
