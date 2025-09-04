@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { useProduct } from "@/domain/product/useProduct";
+import { ProductService } from "@/service/product/ProductService";
 import { Box, Flex } from "@chakra-ui/react";
 
-import { Button } from "@/app/components/ui/Button";
-import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { Button } from "@/components/ui/Button";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { LeftIcon } from "@/assets/icons";
@@ -26,8 +26,7 @@ type PageProps = {
 const ProductDetailPage = ({ params }: PageProps) => {
   const [productId, setProductId] = useState<string>("");
   const router = useRouter();
-  const { useGetProductDetails } = useProduct();
-  const getProductDetails = useGetProductDetails(productId);
+  const getProductDetails = ProductService.useGetProductDetails(productId);
   const { t, lng } = useI18n();
 
   useEffect(() => {

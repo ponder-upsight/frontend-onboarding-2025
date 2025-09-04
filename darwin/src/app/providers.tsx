@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { showErrorToast } from "./components/ui/Toast";
+import { showErrorToast } from "@/components/ui/Toast";
 
 interface ProvidersProps {
   children: ReactNode;

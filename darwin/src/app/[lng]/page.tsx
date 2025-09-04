@@ -4,12 +4,12 @@
 import { useRouter } from "next/navigation";
 
 import { Product } from "@/domain/product/Product";
-import { useProduct } from "@/domain/product/useProduct";
+import { ProductService } from "@/service/product/ProductService";
 import { Box, Flex, Grid } from "@chakra-ui/react";
 
 import { CartSection } from "@/app/[lng]/components/Cart/CartSection";
-import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import ProductCard from "./components/Product/ProductCard";
@@ -17,9 +17,8 @@ import ProductCard from "./components/Product/ProductCard";
 const HomePage = () => {
   const { t } = useI18n();
   const router = useRouter();
-  const { useDeleteProduct, useGetProducts } = useProduct();
-  const deleteProduct = useDeleteProduct();
-  const getProducts = useGetProducts();
+  const deleteProduct = ProductService.useDeleteProduct();
+  const getProducts = ProductService.useGetProducts();
 
   const handleProductDetail = (product: Product) => {
     router.push(`product/${product.id}`);

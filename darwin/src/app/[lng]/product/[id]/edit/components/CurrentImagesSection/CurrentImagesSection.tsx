@@ -4,7 +4,7 @@
 import { Box, Grid } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 interface CurrentImagesSectionProps {

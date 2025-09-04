@@ -14,10 +14,10 @@ import {
 } from "@chakra-ui/react";
 
 import { useHeader } from "@/app/[lng]/components/Header/useHeader";
-import { Button } from "@/app/components/ui/Button";
-import { DropDown } from "@/app/components/ui/Dropdown";
-import { Hamburger } from "@/app/components/ui/Hamburger";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { Button } from "@/components/ui/Button";
+import { DropDown } from "@/components/ui/Dropdown";
+import { Hamburger } from "@/components/ui/Hamburger";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 const LANGUAGE_ITEMS = [

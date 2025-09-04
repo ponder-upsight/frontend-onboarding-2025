@@ -6,16 +6,16 @@ import { useForm } from "react-hook-form";
 
 import { useRouter } from "next/navigation";
 
-import { useProduct } from "@/domain/product/useProduct";
+import { ProductService } from "@/service/product/ProductService";
 import { Box, Flex, FormControl, VStack } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
 import FileUploadSection from "@/app/[lng]/components/File/FileUploadSection";
 import CurrentImagesSection from "@/app/[lng]/product/[id]/edit/components/CurrentImagesSection/CurrentImagesSection";
-import { Button } from "@/app/components/ui/Button";
-import { Input } from "@/app/components/ui/Input";
-import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 interface ProductFormValues {
@@ -36,9 +36,8 @@ const ProductEditPage = ({ params }: PageProps) => {
   const { t, lng } = useI18n();
   const router = useRouter();
   const [productId, setProductId] = useState<string>("");
-  const { useGetProductDetails, useUpdateProduct } = useProduct();
-  const getProductDetails = useGetProductDetails(productId);
-  const updateProduct = useUpdateProduct(productId);
+  const getProductDetails = ProductService.useGetProductDetails(productId);
+  const updateProduct = ProductService.useUpdateProduct(productId);
 
   const {
     register,

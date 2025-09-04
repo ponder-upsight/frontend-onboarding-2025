@@ -6,10 +6,10 @@ import { Product } from "@/domain/product/Product";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 
 import { useProductCard } from "@/app/[lng]/components/Product/useProductCard";
-import { Button } from "@/app/components/ui/Button";
-import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
-import { IconButton } from "@/app/components/ui/IconButton";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { Button } from "@/components/ui/Button";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { IconButton } from "@/components/ui/IconButton";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { DeleteSmallWhite, EyeOn } from "@/assets/icons";

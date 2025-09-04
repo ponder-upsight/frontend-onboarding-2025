@@ -6,13 +6,13 @@ import { useForm } from "react-hook-form";
 
 import { useRouter } from "next/navigation";
 
-import { useProduct } from "@/domain/product/useProduct";
+import { ProductService } from "@/service/product/ProductService";
 import { Box, Flex, FormControl, VStack } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
-import { Button } from "@/app/components/ui/Button";
-import { Input } from "@/app/components/ui/Input";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import FileUploadSection from "../components/File/FileUploadSection";
@@ -36,8 +36,7 @@ const INITIAL_FORM: ProductFormValues = {
 const RegisterPage = () => {
   const { t, lng } = useI18n();
   const router = useRouter();
-  const { useCreateProduct } = useProduct();
-  const createProduct = useCreateProduct();
+  const createProduct = ProductService.useCreateProduct();
 
   const {
     register,

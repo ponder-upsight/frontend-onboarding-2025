@@ -3,33 +3,37 @@ import { create } from "zustand/react";
 
 interface CartState {
   items: CartItem[];
-  addNewItem: (productId: string, quantity: number) => void;
-  clear: () => void;
+  actions: {
+    addNewItem: (productId: string, quantity: number) => void;
+    clear: () => void;
+  };
 }
 
 export const useCartStore = create<CartState>((set) => ({
   items: [],
-  addNewItem: (productId, quantity) => {
-    set((state) => {
-      const newItem = new CartItem(productId, quantity);
-      const existingItemIndex = state.items.findIndex((item) => item.isEqual(newItem));
+  actions: {
+    addNewItem: (productId, quantity) => {
+      set((state) => {
+        const newItem = new CartItem(productId, quantity);
+        const existingItemIndex = state.items.findIndex((item) => item.isEqual(newItem));
 
-      if (existingItemIndex >= 0) {
-        const updatedItems = state.items.slice();
-        updatedItems[existingItemIndex].addQuantity(quantity);
+        if (existingItemIndex >= 0) {
+          const updatedItems = state.items.slice();
+          updatedItems[existingItemIndex].addQuantity(quantity);
+          return {
+            items: updatedItems,
+          };
+        }
+
         return {
-          items: updatedItems,
+          items: [...state.items, newItem],
         };
-      }
-
-      return {
-        items: [...state.items, newItem],
-      };
-    });
-  },
-  clear: () => {
-    set({
-      items: [],
-    });
+      });
+    },
+    clear: () => {
+      set({
+        items: [],
+      });
+    },
   },
 }));

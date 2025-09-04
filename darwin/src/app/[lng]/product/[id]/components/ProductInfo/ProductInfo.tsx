@@ -6,9 +6,9 @@ import { ProductDetails } from "@/domain/product/ProductDetails";
 import { Box, HStack, VStack } from "@chakra-ui/react";
 
 import { useProductInfo } from "@/app/[lng]/product/[id]/components/ProductInfo/useProductInfo";
-import { Button } from "@/app/components/ui/Button";
-import { ConfirmModal } from "@/app/components/ui/ConfirmModal";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { Button } from "@/components/ui/Button";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { EditBlack, MinusGray, PlusGray } from "@/assets/icons";

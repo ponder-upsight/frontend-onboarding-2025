@@ -7,8 +7,8 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
 import { useFileUploadSection } from "@/app/[lng]/components/File/useFileUploadSection";
-import { IconButton } from "@/app/components/ui/IconButton";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { IconButton } from "@/components/ui/IconButton";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { DeleteSmallGray, UploadBlue } from "@/assets/icons";

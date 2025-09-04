@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 
 import { useImageGallery } from "@/app/[lng]/product/[id]/components/ImageGallery/useImageGallery";
-import { TypoGraph } from "@/app/components/ui/Typography";
+import { TypoGraph } from "@/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 interface ImageGalleryProps {

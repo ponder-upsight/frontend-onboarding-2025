@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-import { useCart } from "@/domain/cart/useCart";
 import { Product } from "@/domain/product/Product";
 import { ProductDetails } from "@/domain/product/ProductDetails";
-import { useProduct } from "@/domain/product/useProduct";
+import { CartService } from "@/service/cart/CartService";
+import { ProductService } from "@/service/product/ProductService";
 import { useModalState } from "@/util/modal/useModalState";
 
-import { SuccessToast } from "@/app/components/ui/Toast";
+import { SuccessToast } from "@/components/ui/Toast";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 export const useProductInfo = ({
@@ -20,9 +20,8 @@ export const useProductInfo = ({
   const { t } = useI18n();
   const [stockQuantity, setStockQuantity] = useState(1);
   const orderConfirmModalState = useModalState();
-  const { useOrderProduct } = useProduct();
-  const orderProduct = useOrderProduct(id);
-  const { addNewItem } = useCart();
+  const orderProduct = ProductService.useOrderProduct(id);
+  const addNewItem = CartService.useAddNewItem();
 
   const handleQuantityChange = (change: number) => {
     const newQuantity = stockQuantity + change;
