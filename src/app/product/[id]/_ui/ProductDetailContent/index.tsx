@@ -23,6 +23,7 @@ import useGetProduct from "@/api/products/client/useGetProduct";
 import useDeleteProduct from "@/api/products/client/useDeleteProduct";
 import useCartStore from "@/shared/lib/zustand/useCartStore";
 import { customConfirm } from "@/shared/lib/zustand/useCustomConfirmStroe";
+import { customToast } from "@/shared/lib/zustand/useCustomToastStore";
 
 interface ProductDetailContentProps {
   productId: string;
@@ -201,7 +202,10 @@ const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
                       productId,
                       quantity: 1,
                     });
-                    alert("장바구니에 상품이 추가되었습니다.");
+                    customToast({
+                      status: "success",
+                      message: "장바구니에 추가되었습니다.",
+                    });
                   }}
                   variant={"toggle"}
                   size="md"

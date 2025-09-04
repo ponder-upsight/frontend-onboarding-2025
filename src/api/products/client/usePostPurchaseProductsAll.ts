@@ -19,10 +19,6 @@ const usePostPurchaseProductsAll = () => {
       return results;
     },
 
-    onError: () => {
-      alert("상품 구매 중 오류가 발생했습니다. 다시 시도해주세요.");
-    },
-
     onSuccess: (results, variables) => {
       results.forEach((result, index) => {
         if (result.status === "fulfilled") {

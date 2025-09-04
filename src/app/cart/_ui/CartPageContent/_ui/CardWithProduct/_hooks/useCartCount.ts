@@ -1,4 +1,5 @@
 import useCartStore from "@/shared/lib/zustand/useCartStore";
+import { customToast } from "@/shared/lib/zustand/useCustomToastStore";
 import { ProductDetailItem } from "@/shared/types/products";
 import { useEffect, useRef, useState } from "react";
 
@@ -26,7 +27,10 @@ const useCartCount = ({
 
   const handleIncrease = () => {
     if (product && count > product.stock) {
-      alert("재고가 부족합니다.");
+      customToast({
+        status: "error",
+        message: "재고가 부족합니다.",
+      });
       return;
     }
     setCount((prev) => prev + 1);

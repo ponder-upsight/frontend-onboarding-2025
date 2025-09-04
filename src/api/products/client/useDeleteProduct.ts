@@ -99,8 +99,6 @@ const useDeleteProduct = () => {
           queryClient.setQueryData(queryKey, data);
         });
       }
-
-      alert("상품 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
     },
 
     // 성공/실패 여부와 관계없이 서버 상태와 동기화
