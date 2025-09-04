@@ -19,8 +19,6 @@ const BASE = process.env.NEXT_PUBLIC_API_SERVER_URL;
 if (!BASE) {
   throw new Error("NEXT_PUBLIC_API_SERVER_URL is not defined");
 }
-
-/* ---------- 통합된 fetch 래퍼 ---------- */
 async function serverFetch<T = unknown>(
   url: string,
   { body, next, headers, ...init }: ServerFetchOptions = {}
@@ -43,7 +41,7 @@ async function serverFetch<T = unknown>(
   }
 
   try {
-    const response = await fetch(`${BASE}/api/v1${url}`, {
+    const response = await fetch(`${BASE}/${url}`, {
       ...init,
       headers: reqHeaders,
       body: requestBody,
