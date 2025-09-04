@@ -1,0 +1,157 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { QueryKeys } from "../QueryKeys";
+import { publicAxiosInstance } from "@/shared/utils/fetchUtil/axionsInstance";
+import { useRouter } from "next/navigation";
+import revalidateTags from "@/app/api/revalidate";
+
+interface PutCreateProductProps {
+  productId: string;
+  name: string;
+  description: string;
+  stock: number;
+  deletedImageIds: string[];
+  newThumbnail?: File; // string($binary) - 선택사항
+  newDetailImages: File[]; // array of binary strings
+}
+
+const putModifyProduct = async (newProduct: PutCreateProductProps) => {
+  const {
+    productId,
+    name,
+    description,
+    stock,
+    deletedImageIds,
+    newThumbnail,
+    newDetailImages,
+  } = newProduct;
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("description", description);
+  formData.append("stock", stock.toString());
+
+  deletedImageIds.forEach((id) => {
+    formData.append("deletedImageIds", id);
+  });
+
+  // newThumbnail이 있을 때만 추가
+  if (newThumbnail) {
+    formData.append("newThumbnail", newThumbnail);
+  }
+
+  newDetailImages.forEach((file) => {
+    formData.append("newDetailImages", file);
+  });
+
+  const response = await publicAxiosInstance.put(
+    `/products/${productId}`,
+    formData,
+    {}
+  );
+  return response.data;
+};
+export const usePutModifyProduct = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation<
+    unknown,
+    unknown,
+    PutCreateProductProps,
+    { previousProduct?: unknown; previousProductList?: unknown }
+  >({
+    mutationFn: (newProduct: PutCreateProductProps) =>
+      putModifyProduct(newProduct),
+
+    // 낙관적 업데이트
+    onMutate: async (variables) => {
+      const { productId, name, description, stock } = variables;
+
+      router.push(`/product/${productId}?updated=true`);
+
+      // 진행 중인 쿼리들을 취소
+      await queryClient.cancelQueries({
+        queryKey: [QueryKeys.PRODUCT, productId],
+      });
+      await queryClient.cancelQueries({ queryKey: [QueryKeys.PRODUCTS] });
+
+      // 이전 데이터 백업
+      const previousProduct = queryClient.getQueryData([
+        QueryKeys.PRODUCT,
+        productId,
+      ]);
+      const previousProductList = queryClient.getQueryData([
+        QueryKeys.PRODUCTS,
+      ]);
+
+      // 상세 페이지 캐시 즉시 업데이트
+      queryClient.setQueryData(
+        [QueryKeys.PRODUCT, productId],
+        (old: unknown) => {
+          if (!old || typeof old !== "object") return old;
+          return {
+            ...(old as Record<string, unknown>),
+            name,
+            description,
+            stock,
+          };
+        }
+      );
+
+      // 상품 목록 캐시 즉시 업데이트
+      queryClient.setQueryData([QueryKeys.PRODUCTS], (old: unknown) => {
+        if (!old || typeof old !== "object") return old;
+        const oldData = old as { pageResult?: unknown[] };
+        if (!oldData.pageResult || !Array.isArray(oldData.pageResult))
+          return old;
+
+        return {
+          ...oldData,
+          pageResult: oldData.pageResult.map((product: unknown) => {
+            if (typeof product !== "object" || !product) return product;
+            const prod = product as { id?: string };
+            return prod.id === productId
+              ? { ...prod, name, description, stock }
+              : product;
+          }),
+        };
+      });
+
+      return { previousProduct, previousProductList };
+    },
+    onSuccess: (data, variables) => {
+      const { productId } = variables;
+      // 수정 성공 시, 관련 태그 리밸리데이트
+      revalidateTags([QueryKeys.PRODUCTS, `${QueryKeys.PRODUCT}-${productId}`]);
+    },
+    // 에러 시 롤백
+    onError: (err, variables, context) => {
+      if (context?.previousProduct) {
+        queryClient.setQueryData(
+          [QueryKeys.PRODUCT, variables.productId],
+          context.previousProduct
+        );
+      }
+      if (context?.previousProductList) {
+        queryClient.setQueryData(
+          [QueryKeys.PRODUCTS],
+          context.previousProductList
+        );
+      }
+      // 애러 토스트 메시지를 위한 에러 throw
+      throw err;
+    },
+
+    // 성공 실패 여부 관계 없이 백그라운드에서 서버 데이터 재검증
+    onSettled: (data, error, variables) => {
+      const { productId } = variables;
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.PRODUCT, productId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.PRODUCTS],
+      });
+    },
+  });
+};
+
+export default usePutModifyProduct;
