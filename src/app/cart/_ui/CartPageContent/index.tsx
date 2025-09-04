@@ -12,6 +12,7 @@ import useCartStore from "@/shared/lib/zustand/useCartStore";
 import CartItemWithProduct from "./_ui/CardWithProduct";
 import EmptyResult from "@/components/EmptyResult";
 import usePostPurchaseProductsAll from "@/api/products/client/usePostPurchaseProductsAll";
+import { customConfirm } from "@/shared/lib/zustand/useCustomConfirmStroe";
 
 const CartPageContent = () => {
   const { items } = useCartStore();
@@ -44,7 +45,13 @@ const CartPageContent = () => {
               variant={"toggle"}
               size="lg"
               onClick={() => {
-                if (!confirm("선택한 상품들을 구매하시겠습니까?")) return;
+                if (
+                  !customConfirm({
+                    title: "구매하시겠습니까?",
+                    description: "구매한 상품은 환불이 불가능합니다.",
+                  })
+                )
+                  return;
                 const productIds = items.map((item) => ({
                   productId: item.productId,
                   quantity: item.quantity,

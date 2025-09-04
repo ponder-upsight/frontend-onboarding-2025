@@ -2,6 +2,7 @@
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
+import { customToast } from "../zustand/useCustomToastStore";
 
 interface QueryProviderProps {
   children: React.ReactNode;
@@ -15,6 +16,18 @@ const QueryProvider = ({ children }: QueryProviderProps) => {
           queries: {
             refetchOnWindowFocus: false, // 윈도우 포커스 시 자동 리페치 비활성화
             retry: 1, // 실패 시 1번 재시도
+          },
+          mutations: {
+            onError: (error) => {
+              customToast({
+                status: "error",
+                message:
+                  error instanceof Error
+                    ? error.message
+                    : "알 수 없는 에러가 발생했습니다.",
+                duration: 3000,
+              });
+            },
           },
         },
       })

@@ -22,6 +22,7 @@ import Link from "next/link";
 import useGetProduct from "@/api/products/client/useGetProduct";
 import useDeleteProduct from "@/api/products/client/useDeleteProduct";
 import useCartStore from "@/shared/lib/zustand/useCartStore";
+import { customConfirm } from "@/shared/lib/zustand/useCustomConfirmStroe";
 
 interface ProductDetailContentProps {
   productId: string;
@@ -56,8 +57,12 @@ const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
             수정하기
           </Button>
           <Button
-            onClick={() => {
-              if (!confirm("정말로 이 상품을 삭제하시겠습니까?")) return;
+            onClick={async () => {
+              const ok = await customConfirm({
+                title: "삭제하시겠습니까?",
+                description: "삭제한 상품은 복구할 수 없습니다.",
+              });
+              if (!ok) return;
               deleteProduct({ productId });
             }}
             size="sm"

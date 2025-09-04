@@ -4,6 +4,9 @@ type CustomConfirmState = {
   isOpen: boolean;
   title: string;
   description: string;
+  yesText?: string;
+  noText?: string;
+  iconSrc?: string | React.ElementType;
   resolver?: (value: boolean) => void;
 };
 
