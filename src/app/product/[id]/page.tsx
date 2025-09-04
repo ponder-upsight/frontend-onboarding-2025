@@ -1,5 +1,4 @@
 import getProduct from "@/api/products/server/getProduct";
-import { Container, Text } from "@chakra-ui/react";
 import ProductDetailContent from "./_ui/ProductDetailContent";
 import { HydrationBoundary } from "@tanstack/react-query";
 import getPrefetchHydrateProduct from "@/api/products/server/getPrefetchHydrateProduct";

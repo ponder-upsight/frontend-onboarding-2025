@@ -11,7 +11,6 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import useGetProduct from "@/api/products/client/useGetProduct";
-import usePostPurchaseProduct from "@/api/products/client/usePostPurchaseProduct";
 import useCartCount from "./_hooks/useCartCount";
 
 interface CartItemWithProductProps {
@@ -29,8 +28,6 @@ const CartItemWithProduct = ({
     quantity,
     productId,
   });
-
-  const { mutate: postPurchaseProduct } = usePostPurchaseProduct();
 
   if (isLoading) {
     return (
@@ -108,15 +105,6 @@ const CartItemWithProduct = ({
                 onClick={handleRemove}>
                 삭제
               </Button>
-              {
-                <Button
-                  size="sm"
-                  colorScheme="toggle"
-                  aria-selected
-                  onClick={() => postPurchaseProduct({ productId, quantity })}>
-                  구매
-                </Button>
-              }
             </HStack>
           </VStack>
         </HStack>

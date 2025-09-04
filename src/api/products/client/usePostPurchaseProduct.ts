@@ -1,24 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
-import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 import useCartStore from "@/lib/zustand/useCartStore";
 import { useRouter } from "next/navigation";
+import {
+  postPurchaseProduct,
+  PostPurchaseProductProps,
+} from "./postPurchaseProduct";
 
-interface PostPurchaseProductProps {
-  productId: string;
-  quantity: number;
-}
-
-const postPurchaseProduct = async ({
-  productId,
-  quantity,
-}: PostPurchaseProductProps) => {
-  const response = await publicAxiosInstance.post(`/products/${productId}`, {
-    quantity,
-  });
-  return response.data;
-};
-export const usePostPurchaseProduct = () => {
+const usePostPurchaseProduct = () => {
   const queryClient = useQueryClient();
   const { removeItem } = useCartStore();
   const router = useRouter();

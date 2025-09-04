@@ -181,7 +181,13 @@ const ProductDetailContent = ({ productId }: ProductDetailContentProps) => {
                 pt={5}
                 borderTopWidth="1px"
                 w="full">
-                <Button variant={"toggle"} aria-selected size="md" flex={1}>
+                <Button
+                  as={Link}
+                  href={`/cart`}
+                  variant={"toggle"}
+                  aria-selected
+                  size="md"
+                  flex={1}>
                   주문하기
                 </Button>
                 <Button

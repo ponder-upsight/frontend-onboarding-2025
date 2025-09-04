@@ -1,7 +1,7 @@
 import { Box, VStack, Heading, Text } from "@chakra-ui/react";
 
 interface EmptyResultProps {
-  heading: string;
+  heading?: string;
   text?: string;
 }
 
