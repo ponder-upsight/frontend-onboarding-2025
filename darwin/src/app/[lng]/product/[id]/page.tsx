@@ -10,6 +10,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { Button } from "@/components/ui/Button";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { TypoGraph } from "@/components/ui/Typography";
+
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { LeftIcon } from "@/assets/icons";
@@ -46,7 +47,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
           <Flex alignItems="center" gap="16px">
             <LoadingSpinner size={20} color="#101010" />
             <TypoGraph variant="headline01" color="gray.800">
-              {t("loading")}
+              {t("ui.loading")}
             </TypoGraph>
           </Flex>
         </Box>
@@ -59,7 +60,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
       <Box minH="100vh" bg="gray.50" pt="128px">
         <Box maxW="1200px" mx="auto" p="32px">
           <TypoGraph variant="headline01" color="gray.500">
-            {t("productNotFound")}
+            {t("product.validation.productNotFound")}
           </TypoGraph>
         </Box>
       </Box>
@@ -77,7 +78,7 @@ const ProductDetailPage = ({ params }: PageProps) => {
           mb="24px"
           p="8px 16px"
         >
-          {t("backToList")}
+          {t("product.list.backToList")}
         </Button>
 
         <Box

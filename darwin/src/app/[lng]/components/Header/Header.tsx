@@ -13,11 +13,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-import { useHeader } from "@/app/[lng]/components/Header/useHeader";
 import { Button } from "@/components/ui/Button";
 import { DropDown } from "@/components/ui/Dropdown";
 import { Hamburger } from "@/components/ui/Hamburger";
 import { TypoGraph } from "@/components/ui/Typography";
+
+import { useHeader } from "@/app/[lng]/components/Header/useHeader";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 const LANGUAGE_ITEMS = [
@@ -58,7 +59,7 @@ const Header = () => {
           pr={{ base: "16px", md: "64px" }}
           outline={0}
         >
-          <TypoGraph variant="title03">{t("title")}</TypoGraph>
+          <TypoGraph variant="title03">{t("navigation.title")}</TypoGraph>
 
           <Flex
             display={{ base: "none", md: "flex" }}
@@ -69,14 +70,14 @@ const Header = () => {
             bg="#fff"
           >
             <Button variant="primary" w="100px" onClick={() => router.push(`/${lng}`)}>
-              {t("products")}
+              {t("navigation.products")}
             </Button>
             <Button
               variant="secondary"
               w="100px"
               onClick={() => router.push(`/${lng}/register`)}
             >
-              {t("productRegistration")}
+              {t("product.registration.pageTitle")}
             </Button>
 
             <DropDown
@@ -122,7 +123,7 @@ const Header = () => {
                   mobileMenuDisclosure.onClose();
                 }}
               >
-                {t("products")}
+                {t("navigation.products")}
               </Button>
               <Button
                 variant="secondary"
@@ -132,7 +133,7 @@ const Header = () => {
                   mobileMenuDisclosure.onClose();
                 }}
               >
-                {t("productRegistration")}
+                {t("product.registration.pageTitle")}
               </Button>
 
               <Box pt={4}>

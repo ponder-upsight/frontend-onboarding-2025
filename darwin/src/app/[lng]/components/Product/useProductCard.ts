@@ -4,6 +4,7 @@ import { Product } from "@/domain/product/Product";
 import { useModalState } from "@/util/modal/useModalState";
 
 import { SuccessToast } from "@/components/ui/Toast";
+
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 export const useProductCard = ({
@@ -26,7 +27,7 @@ export const useProductCard = ({
 
     setTimeout(() => {
       toast(SuccessToast, {
-        data: { title: t("deleteProductSuccess") },
+        data: { title: t("messages.deleteProductSuccess") },
         position: "top-center",
         autoClose: 3000,
       });

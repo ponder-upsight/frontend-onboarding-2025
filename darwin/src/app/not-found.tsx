@@ -27,15 +27,11 @@ const NotFound = () => {
           <div style={styles.textCol}>
             <p style={styles.title}>404</p>
             <div style={styles.centered}>
-              <p style={styles.subtitle}>
-                {t("죄송합니다. 현재 찾을 수 없는 페이지에 접속하셨습니다.")}
-              </p>
+              <p style={styles.subtitle}>{t("notFound.title")}</p>
             </div>
             <div style={styles.descriptionCol}>
-              <p style={styles.desc}>{t("삭제되거나 주소가 잘못 입력되었습니다.")}</p>
-              <p style={styles.desc}>
-                {t("이전 페이지로 돌아가거나, 홈페이지로 이동해 주세요.")}
-              </p>
+              <p style={styles.desc}>{t("notFound.description")}</p>
+              <p style={styles.desc}>{t("notFound.suggestion")}</p>
             </div>
           </div>
         </div>
@@ -48,7 +44,7 @@ const NotFound = () => {
             onMouseEnter={() => setIsBackHovered(true)}
             onMouseLeave={() => setIsBackHovered(false)}
           >
-            <span style={styles.buttonText}>{t("이전 페이지")}</span>
+            <span style={styles.buttonText}>{t("notFound.backButton")}</span>
             <span style={styles.buttonIcon}>
               <Retry />
             </span>
@@ -63,7 +59,7 @@ const NotFound = () => {
             onMouseEnter={() => setIsHomeHovered(true)}
             onMouseLeave={() => setIsHomeHovered(false)}
           >
-            <span style={styles.buttonText}>{t("dashboard")}</span>
+            <span style={styles.buttonText}>{t("notFound.homeButton")}</span>
           </button>
         </div>
       </div>

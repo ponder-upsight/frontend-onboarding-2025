@@ -42,12 +42,12 @@ const useCreateProduct = () => {
 const useGetProducts = () => {
   return useQuery({
     queryKey: ["products"],
-    queryFn:  getProductsApi,
+    queryFn: getProductsApi,
     select: (data) => {
       return data.map(
         (item) => new Product(item.id, item.productName, item.stock, item.thumbnailUrl)
       );
-    }
+    },
   });
 };
 
@@ -67,8 +67,8 @@ const useGetProductDetails = (productId: string) => {
         data.thumbnailUrl,
         data.detailFileUrls,
         data.createdAt
-      )
-    }
+      );
+    },
   });
 };
 

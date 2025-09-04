@@ -5,6 +5,7 @@ import { Box, HStack, Image, Skeleton, VStack } from "@chakra-ui/react";
 
 import { Button } from "@/components/ui/Button";
 import { TypoGraph } from "@/components/ui/Typography";
+
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 export const CartSection = () => {
@@ -17,23 +18,23 @@ export const CartSection = () => {
       <Box mb="24px">
         <HStack justify="space-between" align="start" mb="4px">
           <TypoGraph variant="headline01" color="blue.700">
-            {t("cart")}
+            {t("cart.title")}
           </TypoGraph>
           {cartItems.length > 0 && (
             <Button variant="outlined" onClick={clearCart} w="64px" h="32px">
-              {t("clearCart")}
+              {t("cart.clear")}
             </Button>
           )}
         </HStack>
         <TypoGraph variant="body02" color="gray.700">
-          {t("cartItemsCount", { count: cartItems.length })}
+          {t("cart.itemsCount", { count: cartItems.length })}
         </TypoGraph>
       </Box>
 
       {cartItems.length === 0 ? (
         <Box textAlign="center" p="40px" borderRadius="4px" bg="gray.100">
           <TypoGraph variant="body02" color="gray.700">
-            {t("cartEmpty")}
+            {t("cart.empty")}
           </TypoGraph>
         </Box>
       ) : (
@@ -103,7 +104,7 @@ const CartItemCard = ({ item }: CartItemCardProps) => {
           {productDetails.name}
         </TypoGraph>
         <TypoGraph variant="label03" color="gray.600">
-          {t("quantity", { count: item.quantity })}
+          {t("cart.quantity", { count: item.quantity })}
         </TypoGraph>
       </VStack>
     </HStack>

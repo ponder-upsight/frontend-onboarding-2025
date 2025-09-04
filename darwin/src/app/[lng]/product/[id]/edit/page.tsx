@@ -1,7 +1,7 @@
 "use client";
 
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useRouter } from "next/navigation";
@@ -10,12 +10,13 @@ import { ProductService } from "@/service/product/ProductService";
 import { Box, Flex, FormControl, VStack } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
-import FileUploadSection from "@/app/[lng]/components/File/FileUploadSection";
-import CurrentImagesSection from "@/app/[lng]/product/[id]/edit/components/CurrentImagesSection/CurrentImagesSection";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { TypoGraph } from "@/components/ui/Typography";
+
+import FileUploadSection from "@/app/[lng]/components/File/FileUploadSection";
+import CurrentImagesSection from "@/app/[lng]/product/[id]/edit/components/CurrentImagesSection/CurrentImagesSection";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 interface ProductFormValues {
@@ -51,6 +52,7 @@ const ProductEditPage = ({ params }: PageProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [newThumbnailImage, setNewThumbnailImage] = useState<File[]>([]);
   const [newDetailImages, setNewDetailImages] = useState<File[]>([]);
+  const isFormInitialized = useRef(false);
 
   useEffect(() => {
     params.then((resolvedParams) => {
@@ -64,7 +66,7 @@ const ProductEditPage = ({ params }: PageProps) => {
   }, [register]);
 
   useEffect(() => {
-    if (getProductDetails.data) {
+    if (getProductDetails.data && !isFormInitialized.current) {
       const productData = getProductDetails.data;
       reset({
         name: productData.name,
@@ -73,6 +75,7 @@ const ProductEditPage = ({ params }: PageProps) => {
         isThumbnailUploaded: false,
         isDetailImagesUploaded: false,
       });
+      isFormInitialized.current = true;
     }
   }, [getProductDetails.data, reset]);
 
@@ -115,7 +118,7 @@ const ProductEditPage = ({ params }: PageProps) => {
           <Flex alignItems="center" gap="16px">
             <LoadingSpinner size={20} color="#101010" />
             <TypoGraph variant="headline01" color="gray.800">
-              {t("loading")}
+              {t("ui.loading")}
             </TypoGraph>
           </Flex>
         </Box>
@@ -128,7 +131,7 @@ const ProductEditPage = ({ params }: PageProps) => {
       <Box minH="100vh" bg="gray.50" pt="128px">
         <Box maxW="600px" mx="auto" p="32px">
           <TypoGraph variant="headline01" color="gray.500">
-            {t("productNotFound")}
+            {t("product.validation.productNotFound")}
           </TypoGraph>
         </Box>
       </Box>
@@ -141,10 +144,10 @@ const ProductEditPage = ({ params }: PageProps) => {
         <Box css={formContainer}>
           <Flex justify="space-between" align="center" mb="32px">
             <TypoGraph variant="headline02" color="gray.900">
-              {t("productEdit")}
+              {t("product.edit.pageTitle")}
             </TypoGraph>
             <Button variant="ghost" size="sm" onClick={handleBackToDetail}>
-              {t("cancel")}
+              {t("ui.cancel")}
             </Button>
           </Flex>
 
@@ -152,11 +155,11 @@ const ProductEditPage = ({ params }: PageProps) => {
             <VStack spacing="24px" align="stretch">
               <FormControl>
                 <TypoGraph variant="body01" mb="8px" color="gray.900">
-                  {t("productName")}
+                  {t("product.registration.name")}
                 </TypoGraph>
                 <Input
-                  {...register("name", { required: t("required") })}
-                  placeholder={t("productNamePlaceholder")}
+                  {...register("name", { required: t("product.validation.required") })}
+                  placeholder={t("product.registration.namePlaceholder")}
                   hasError={!!errors.name}
                   errorText={errors.name?.message}
                   height="48px"
@@ -165,11 +168,13 @@ const ProductEditPage = ({ params }: PageProps) => {
 
               <FormControl>
                 <TypoGraph variant="body01" mb="8px" color="gray.900">
-                  {t("description")}
+                  {t("product.registration.description")}
                 </TypoGraph>
                 <Input
-                  {...register("description", { required: t("required") })}
-                  placeholder={t("descriptionPlaceholder")}
+                  {...register("description", {
+                    required: t("product.validation.required"),
+                  })}
+                  placeholder={t("product.registration.descriptionPlaceholder")}
                   hasError={!!errors.description}
                   errorText={errors.description?.message}
                   height="48px"
@@ -178,12 +183,12 @@ const ProductEditPage = ({ params }: PageProps) => {
 
               <FormControl>
                 <TypoGraph variant="body01" mb="8px" color="gray.900">
-                  {t("stockQuantity")}
+                  {t("product.registration.stockQuantity")}
                 </TypoGraph>
                 <Input
                   {...register("stockQuantity", {
-                    required: t("required"),
-                    min: { value: 0, message: t("stockRequired") },
+                    required: t("product.validation.required"),
+                    min: { value: 0, message: t("product.validation.stockRequired") },
                   })}
                   type="number"
                   placeholder="0"
@@ -195,14 +200,14 @@ const ProductEditPage = ({ params }: PageProps) => {
 
               <FormControl>
                 <CurrentImagesSection
-                  title={t("productImage")}
+                  title={t("product.registration.image")}
                   imageUrls={[getProductDetails.data.thumbnailUrl]}
                   multiple={false}
                 />
                 <Box mt="16px">
                   <FileUploadSection
-                    title={t("newImages")}
-                    buttonText={t("imageUpload")}
+                    title={t("product.edit.newImages")}
+                    buttonText={t("product.registration.imageUpload")}
                     onFileChange={handleNewThumbnailChange}
                     multiple={false}
                     hasError={!!errors.isThumbnailUploaded}
@@ -213,14 +218,14 @@ const ProductEditPage = ({ params }: PageProps) => {
 
               <FormControl>
                 <CurrentImagesSection
-                  title={t("detailImage")}
+                  title={t("product.detail.detailImage")}
                   imageUrls={getProductDetails.data.detailImagesUrl}
                   multiple={true}
                 />
                 <Box mt="16px">
                   <FileUploadSection
-                    title={t("newImages")}
-                    buttonText={t("imageUpload")}
+                    title={t("product.edit.newImages")}
+                    buttonText={t("product.registration.imageUpload")}
                     onFileChange={handleNewDetailImagesChange}
                     multiple={true}
                     hasError={!!errors.isDetailImagesUploaded}
@@ -237,7 +242,7 @@ const ProductEditPage = ({ params }: PageProps) => {
                   onClick={handleBackToDetail}
                   disabled={isSubmitting}
                 >
-                  {t("cancel")}
+                  {t("ui.cancel")}
                 </Button>
                 <Button
                   type="submit"
@@ -247,7 +252,7 @@ const ProductEditPage = ({ params }: PageProps) => {
                   isLoading={isSubmitting}
                   disabled={isSubmitting}
                 >
-                  {t("update")}
+                  {t("product.edit.update")}
                 </Button>
               </Flex>
             </VStack>

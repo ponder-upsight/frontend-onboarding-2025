@@ -13,6 +13,7 @@ import { css } from "@emotion/react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { TypoGraph } from "@/components/ui/Typography";
+
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import FileUploadSection from "../components/File/FileUploadSection";
@@ -53,8 +54,10 @@ const RegisterPage = () => {
   const [detailImages, setDetailImages] = useState<File[]>([]);
 
   useEffect(() => {
-    register("isThumbnailUploaded", { required: t("imageRequired") });
-    register("isDetailImagesUploaded", { required: t("imageRequired") });
+    register("isThumbnailUploaded", { required: t("product.validation.imageRequired") });
+    register("isDetailImagesUploaded", {
+      required: t("product.validation.imageRequired"),
+    });
   }, [register, t]);
 
   const onSubmit = useCallback(
@@ -102,18 +105,18 @@ const RegisterPage = () => {
       <Box maxW="600px" mx="auto" p="32px">
         <Box css={formContainer}>
           <TypoGraph variant="headline02" mb="32px" color="gray.900">
-            {t("productRegistration")}
+            {t("product.registration.pageTitle")}
           </TypoGraph>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <VStack spacing="24px" align="stretch">
               <FormControl>
                 <TypoGraph variant="body01" mb="8px" color="gray.900">
-                  {t("productName")}
+                  {t("product.registration.name")}
                 </TypoGraph>
                 <Input
-                  {...register("name", { required: t("required") })}
-                  placeholder={t("productNamePlaceholder")}
+                  {...register("name", { required: t("product.validation.required") })}
+                  placeholder={t("product.registration.namePlaceholder")}
                   hasError={!!errors.name}
                   errorText={errors.name?.message}
                   height="48px"
@@ -122,11 +125,13 @@ const RegisterPage = () => {
 
               <FormControl>
                 <TypoGraph variant="body01" mb="8px" color="gray.900">
-                  {t("description")}
+                  {t("product.registration.description")}
                 </TypoGraph>
                 <Input
-                  {...register("description", { required: t("required") })}
-                  placeholder={t("descriptionPlaceholder")}
+                  {...register("description", {
+                    required: t("product.validation.required"),
+                  })}
+                  placeholder={t("product.registration.descriptionPlaceholder")}
                   hasError={!!errors.description}
                   errorText={errors.description?.message}
                   height="48px"
@@ -135,12 +140,12 @@ const RegisterPage = () => {
 
               <FormControl>
                 <TypoGraph variant="body01" mb="8px" color="gray.900">
-                  {t("stockQuantity")}
+                  {t("product.registration.stockQuantity")}
                 </TypoGraph>
                 <Input
                   {...register("stockQuantity", {
-                    required: t("required"),
-                    min: { value: 0, message: t("stockRequired") },
+                    required: t("product.validation.required"),
+                    min: { value: 0, message: t("product.validation.stockRequired") },
                   })}
                   type="number"
                   placeholder="0"
@@ -152,9 +157,11 @@ const RegisterPage = () => {
 
               <FormControl>
                 <FileUploadSection
-                  {...register("isThumbnailUploaded", { required: t("imageRequired") })}
-                  title={t("productImage")}
-                  buttonText={t("imageUpload")}
+                  {...register("isThumbnailUploaded", {
+                    required: t("product.validation.imageRequired"),
+                  })}
+                  title={t("product.registration.image")}
+                  buttonText={t("product.registration.imageUpload")}
                   onFileChange={handleMainImageChange}
                   multiple={false}
                   hasError={!!errors.isThumbnailUploaded}
@@ -165,10 +172,10 @@ const RegisterPage = () => {
               <FormControl>
                 <FileUploadSection
                   {...register("isDetailImagesUploaded", {
-                    required: t("imageRequired"),
+                    required: t("product.validation.imageRequired"),
                   })}
-                  title={t("detailImage")}
-                  buttonText={t("imageUpload")}
+                  title={t("product.detail.detailImage")}
+                  buttonText={t("product.registration.imageUpload")}
                   onFileChange={handleDetailImagesChange}
                   multiple={true}
                   hasError={!!errors.isDetailImagesUploaded}
@@ -185,7 +192,7 @@ const RegisterPage = () => {
                   isLoading={isSubmitting}
                   disabled={isSubmitting}
                 >
-                  {t("register")}
+                  {t("product.registration.register")}
                 </Button>
               </Flex>
             </VStack>

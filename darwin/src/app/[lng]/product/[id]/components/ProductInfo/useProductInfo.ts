@@ -8,6 +8,7 @@ import { ProductService } from "@/service/product/ProductService";
 import { useModalState } from "@/util/modal/useModalState";
 
 import { SuccessToast } from "@/components/ui/Toast";
+
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 export const useProductInfo = ({
@@ -38,7 +39,7 @@ export const useProductInfo = ({
     await orderProduct.mutateAsync({ stockQuantity });
     setTimeout(() => {
       toast(SuccessToast, {
-        data: { title: t("orderComplete") },
+        data: { title: t("messages.orderComplete") },
         position: "top-center",
         autoClose: 3000,
       });
@@ -57,7 +58,7 @@ export const useProductInfo = ({
 
     toast(SuccessToast, {
       data: {
-        title: t("addToCartSuccess", {
+        title: t("messages.addToCartSuccess", {
           name: productDetails.name,
           quantity: stockQuantity,
         }),

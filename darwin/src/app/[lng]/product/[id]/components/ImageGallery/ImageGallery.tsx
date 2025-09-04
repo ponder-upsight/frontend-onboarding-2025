@@ -4,8 +4,9 @@ import { useState } from "react";
 
 import { Box, Flex, VStack } from "@chakra-ui/react";
 
-import { useImageGallery } from "@/app/[lng]/product/[id]/components/ImageGallery/useImageGallery";
 import { TypoGraph } from "@/components/ui/Typography";
+
+import { useImageGallery } from "@/app/[lng]/product/[id]/components/ImageGallery/useImageGallery";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 interface ImageGalleryProps {
@@ -44,7 +45,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
             justifyContent="center"
           >
             <TypoGraph variant="label04" color="gray.500">
-              {t("imageNone")}
+              {t("product.detail.imageNone")}
             </TypoGraph>
           </Box>
         ) : (
@@ -62,7 +63,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
 
       <Box>
         <TypoGraph variant="label03" color="gray.700" mb="8px">
-          {t("detailImage")}
+          {t("product.detail.detailImage")}
         </TypoGraph>
         <Flex gap="8px">
           {images.map((image, index) => (

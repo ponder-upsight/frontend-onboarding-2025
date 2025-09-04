@@ -12,7 +12,10 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
+import { useI18n } from "@/app/i18n/I18nProvider";
+
 export default function NotFound() {
+  const { t } = useI18n();
   const router = useRouter();
   const bg = useColorModeValue("gray.50", "gray.900");
   const cardBg = useColorModeValue("white", "gray.800");
@@ -43,25 +46,20 @@ export default function NotFound() {
               404
             </Heading>
             <Heading as="h2" size="lg">
-              페이지를 찾을 수 없습니다
+              {t("notFound.title")}
             </Heading>
             <VStack spacing={2}>
-              <Text color="gray.600">
-                죄송합니다. 현재 찾을 수 없는 페이지에 접속하셨습니다.
-              </Text>
-              <Text color="gray.600">삭제되거나 주소가 잘못 입력되었습니다.</Text>
-              <Text color="gray.600">
-                이전 페이지로 돌아가거나, 홈페이지로 이동해 주세요.
-              </Text>
+              <Text color="gray.600">{t("notFound.description")}</Text>
+              <Text color="gray.600">{t("notFound.suggestion")}</Text>
             </VStack>
           </VStack>
 
           <HStack spacing={4}>
             <Button variant="outline" onClick={handleGoBack}>
-              이전 페이지
+              {t("notFound.backButton")}
             </Button>
             <Button colorScheme="blue" onClick={handleGoHome}>
-              홈으로 가기
+              {t("notFound.homeButton")}
             </Button>
           </HStack>
         </VStack>

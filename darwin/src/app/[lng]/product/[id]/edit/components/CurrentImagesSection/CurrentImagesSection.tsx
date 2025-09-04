@@ -5,6 +5,7 @@ import { Box, Grid } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
 import { TypoGraph } from "@/components/ui/Typography";
+
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 interface CurrentImagesSectionProps {
@@ -27,7 +28,7 @@ const CurrentImagesSection = ({
   return (
     <Box>
       <TypoGraph variant="body01" mb="8px" color="gray.900">
-        {t("currentImages")} ({title})
+        {t("product.edit.currentImages")} ({title})
       </TypoGraph>
 
       {!multiple && imageUrls.length > 0 ? (

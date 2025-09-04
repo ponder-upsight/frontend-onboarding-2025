@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { ProductDetails } from "@/domain/product/ProductDetails";
 import { Box, HStack, VStack } from "@chakra-ui/react";
 
-import { useProductInfo } from "@/app/[lng]/product/[id]/components/ProductInfo/useProductInfo";
 import { Button } from "@/components/ui/Button";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { TypoGraph } from "@/components/ui/Typography";
+
+import { useProductInfo } from "@/app/[lng]/product/[id]/components/ProductInfo/useProductInfo";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { EditBlack, MinusGray, PlusGray } from "@/assets/icons";
@@ -51,7 +52,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
             w="128px"
             h="32px"
           >
-            {t("edit")}
+            {t("product.edit.edit")}
           </Button>
         </HStack>
         <TypoGraph variant="label05" color="gray.600">
@@ -61,7 +62,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
 
       <Box>
         <TypoGraph variant="headline03" color="gray.800" mb="8px">
-          {t("productDescription")}
+          {t("product.detail.description")}
         </TypoGraph>
         <TypoGraph variant="body02" color="gray.700" lineHeight="1.6">
           {productDetails.description}
@@ -70,11 +71,11 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
 
       <Box>
         <TypoGraph variant="headline03" color="gray.800" mb="12px">
-          {t("stockInfo")}
+          {t("product.detail.stockInfo")}
         </TypoGraph>
         <Box bg="gray.900" p="12px" borderRadius="4px" width="128px" textAlign="center">
           <TypoGraph variant="label03" color="white">
-            {t("stock", { count: productDetails.stockQuantity })}
+            {t("product.detail.stock", { count: productDetails.stockQuantity })}
           </TypoGraph>
         </Box>
       </Box>
@@ -83,7 +84,7 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
         <>
           <Box>
             <TypoGraph variant="headline03" color="gray.800" mb="12px">
-              {t("quantitySelect")}
+              {t("product.detail.quantitySelect")}
             </TypoGraph>
             <HStack spacing="0" w="fit-content">
               <Button
@@ -133,10 +134,10 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
 
           <VStack spacing="12px" align="stretch">
             <Button variant="primary" size="lg" w="100%" onClick={handleOrder}>
-              {t("order")}
+              {t("product.detail.order")}
             </Button>
             <Button variant="outlined" size="lg" w="100%" onClick={handleAddToCart}>
-              {t("addToCart")}
+              {t("product.detail.addToCart")}
             </Button>
           </VStack>
         </>
@@ -145,21 +146,21 @@ const ProductInfo = ({ id, productDetails }: ProductInfoProps) => {
       {productDetails.stockQuantity === 0 && (
         <Box bg="gray.100" p="16px" borderRadius="8px" textAlign="center">
           <TypoGraph variant="label03" color="gray.600">
-            {t("outOfStock")}
+            {t("product.detail.outOfStock")}
           </TypoGraph>
         </Box>
       )}
 
       <ConfirmModal
-        title={t("order")}
-        content={t("orderConfirm", {
+        title={t("product.detail.order")}
+        content={t("messages.orderConfirm", {
           name: productDetails.name,
           quantity: stockQuantity,
         })}
         isOpen={orderConfirmModalState.isOpen}
         onClose={orderConfirmModalState.closeModal}
-        confirmBtn={t("order")}
-        closeBtn={t("cancel")}
+        confirmBtn={t("product.detail.order")}
+        closeBtn={t("ui.cancel")}
         onConfirm={orderConfirmModalState.onConfirm}
       />
     </VStack>

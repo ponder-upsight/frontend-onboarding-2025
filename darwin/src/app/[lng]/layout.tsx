@@ -8,6 +8,7 @@ import { Global } from "@emotion/react";
 import { dir } from "i18next";
 
 import { toastStyles } from "@/components/ui/Toast/toastStyles";
+
 import I18nProvider from "../i18n/I18nProvider";
 import { ChakraLayoutProvider, QueryProviders } from "../providers";
 import Header from "./components/Header/Header";

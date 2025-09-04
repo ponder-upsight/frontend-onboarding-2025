@@ -7,9 +7,10 @@ import { Product } from "@/domain/product/Product";
 import { ProductService } from "@/service/product/ProductService";
 import { Box, Flex, Grid } from "@chakra-ui/react";
 
-import { CartSection } from "@/app/[lng]/components/Cart/CartSection";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { TypoGraph } from "@/components/ui/Typography";
+
+import { CartSection } from "@/app/[lng]/components/Cart/CartSection";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import ProductCard from "./components/Product/ProductCard";
@@ -35,7 +36,7 @@ const HomePage = () => {
           <Flex alignItems="center" gap="16px">
             <LoadingSpinner size={20} color="#101010" />
             <TypoGraph variant="headline01" color="gray.800">
-              {t("loading")}
+              {t("ui.loading")}
             </TypoGraph>
           </Flex>
         </Box>
@@ -48,10 +49,10 @@ const HomePage = () => {
       <Box maxW="1200px" mx="auto" p="32px">
         <Flex justify="space-between" direction="column" align="flex-start" mb="24px">
           <TypoGraph variant="headline01" color="blue.700">
-            {t("productList")}
+            {t("product.list.title")}
           </TypoGraph>
           <TypoGraph variant="body02" color="gray.700">
-            {t("totalProducts", { count: getProducts.data?.length })}
+            {t("product.list.totalProducts", { count: getProducts.data?.length })}
           </TypoGraph>
         </Flex>
 

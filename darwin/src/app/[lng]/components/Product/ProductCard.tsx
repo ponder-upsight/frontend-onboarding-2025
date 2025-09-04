@@ -5,11 +5,12 @@ import { useState } from "react";
 import { Product } from "@/domain/product/Product";
 import { Box, Flex, VStack } from "@chakra-ui/react";
 
-import { useProductCard } from "@/app/[lng]/components/Product/useProductCard";
 import { Button } from "@/components/ui/Button";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { IconButton } from "@/components/ui/IconButton";
 import { TypoGraph } from "@/components/ui/Typography";
+
+import { useProductCard } from "@/app/[lng]/components/Product/useProductCard";
 import { useI18n } from "@/app/i18n/I18nProvider";
 
 import { DeleteSmallWhite, EyeOn } from "@/assets/icons";
@@ -66,7 +67,7 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick }: ProductCardProps
             justifyContent="center"
           >
             <TypoGraph variant="label04" color="gray.500">
-              {t("imageNone")}
+              {t("product.detail.imageNone")}
             </TypoGraph>
           </Box>
         ) : (
@@ -110,18 +111,18 @@ const ProductCard = ({ product, onDetailClick, onDeleteClick }: ProductCardProps
             onDetailClick(product);
           }}
         >
-          {t("viewDetail")}
+          {t("product.list.viewDetail")}
         </Button>
       </VStack>
 
       <ConfirmModal
-        title={t("deleteProduct")}
-        content={t("deleteProductContent")}
+        title={t("product.delete.title")}
+        content={t("product.delete.content")}
         onConfirm={deleteConfirmModalStore.onConfirm}
         isOpen={deleteConfirmModalStore.isOpen}
         onClose={deleteConfirmModalStore.closeModal}
-        confirmBtn={t("delete")}
-        closeBtn={t("cancel")}
+        confirmBtn={t("ui.delete")}
+        closeBtn={t("ui.cancel")}
       />
     </Box>
   );
