@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
 import useCartStore from "@/lib/zustand/useCartStore";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface PostPurchaseProductProps {
   productId: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import useCartStore from "@/lib/zustand/useCartStore";
-import { NAV_BARS, Path, startWithPath } from "@/util/path";
+import { NAV_BARS, Path, isRouteActive } from "@/util/pathUtil";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -27,7 +27,7 @@ const AppHeader = () => {
           <Link key={nav.path} href={nav.path}>
             <Button
               variant={"toggle"}
-              aria-selected={startWithPath(path, nav.path)}
+              aria-selected={isRouteActive(path, nav.path)}
               size="md">
               {/* 장바구니는 item 개수를 사용 */}
               {nav.path === Path.CART ? `장바구니(${items.length})` : nav.label}

@@ -5,10 +5,6 @@ export const Path = {
   CART: "/cart",
 };
 
-export const startWithPath = (currentPath: string, targetPath: string) => {
-  return currentPath.startsWith(targetPath);
-};
-
 export const NAV_BARS = [
   {
     path: Path.ROOT,
@@ -23,3 +19,11 @@ export const NAV_BARS = [
     label: "장바구니",
   },
 ];
+
+export const isRouteActive = (
+  pathname: string | null,
+  route: string
+): boolean => {
+  const isActive = pathname === route || pathname?.startsWith(route + "/");
+  return isActive ? true : false;
+};
