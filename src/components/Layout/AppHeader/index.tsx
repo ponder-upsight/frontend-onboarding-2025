@@ -20,8 +20,9 @@ const AppHeader = () => {
       borderBottom="2px solid"
       borderColor="primary.500">
       <Heading fontSize="2xl" fontWeight={400} color={"primary.500"}>
-        상품 관리 시스템
+        <Link href={Path.ROOT}>상품 관리 시스템</Link>
       </Heading>
+
       <Flex gap={2}>
         {NAV_BARS.map((nav) => (
           <Link key={nav.path} href={nav.path}>
