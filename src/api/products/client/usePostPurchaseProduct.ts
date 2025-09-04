@@ -26,8 +26,7 @@ export const usePostPurchaseProduct = () => {
     mutationFn: (postPurchaseProductProps: PostPurchaseProductProps) =>
       postPurchaseProduct(postPurchaseProductProps),
 
-    onError: (error) => {
-      console.error("상품 구매 중 오류 발생:", error);
+    onError: () => {
       alert("상품 구매 중 오류가 발생했습니다. 다시 시도해주세요.");
     },
     onSuccess: (data, variables) => {

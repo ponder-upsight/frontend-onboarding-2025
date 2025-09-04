@@ -120,7 +120,7 @@ export const usePutModifyProduct = () => {
     },
     onSuccess: (data, variables) => {
       const { productId } = variables;
-      // 성공 시 추가 작업이 필요하면 여기에 작성
+      // 수정 성공 시, 관련 태그 리밸리데이트
       revalidateTags([QueryKeys.PRODUCTS, `${QueryKeys.PRODUCT}-${productId}`]);
     },
     // 에러 시 롤백
@@ -140,9 +140,9 @@ export const usePutModifyProduct = () => {
       alert("상품 수정에 실패했습니다. 다시 시도해주세요.");
     },
 
+    // 성공 실패 여부 관계 없이 백그라운드에서 서버 데이터 재검증
     onSettled: (data, error, variables) => {
       const { productId } = variables;
-      // // 백그라운드에서 서버 데이터 재검증
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PRODUCT, productId],
       });

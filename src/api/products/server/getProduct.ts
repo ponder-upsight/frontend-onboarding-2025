@@ -25,7 +25,6 @@ const getProduct = async ({
   if (result.isSuccess) {
     return result.data;
   } else {
-    console.error("API Error:", result.status, result.error);
     return null;
   }
 };

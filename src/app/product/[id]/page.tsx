@@ -3,6 +3,7 @@ import { Container, Text } from "@chakra-ui/react";
 import ProductDetailContent from "./_ui/ProductDetailContent";
 import { HydrationBoundary } from "@tanstack/react-query";
 import getPrefetchHydrateProduct from "@/api/products/server/getPrefetchHydrateProduct";
+import EmptyResult from "@/components/EmptyResult";
 
 export const revalidate = 3600;
 
@@ -34,19 +35,13 @@ const ProductDetailPage = async ({ params, searchParams }: PageProps) => {
 
   // 수정 후 리다이렉트인지 확인
   const skipPrefetch = (await searchParams?.updated) === "true";
-
   const dehydratedState = await getPrefetchHydrateProduct({
     productId: id,
     enable: !skipPrefetch,
   });
 
-  if (!skipPrefetch && !dehydratedState) {
-    return (
-      <Container centerContent p={8}>
-        <Text>상품을 찾을 수 없습니다.</Text>
-      </Container>
-    );
-  }
+  if (!skipPrefetch && !dehydratedState)
+    <EmptyResult heading="상품을 찾을 수 없습니다." />;
 
   return (
     <HydrationBoundary state={dehydratedState}>

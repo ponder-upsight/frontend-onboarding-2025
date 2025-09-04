@@ -9,7 +9,6 @@ import useGetProductListInfinite from "@/api/products/client/useGetInfinityProdu
 import useInfinityScroll from "@/util/hooks/useInfinityScroll";
 
 const ProductListContent = () => {
-  // get product list
   const {
     data: productList = [],
     isLoading,
@@ -17,6 +16,7 @@ const ProductListContent = () => {
     fetchNextPage,
     hasNextPage,
   } = useGetProductListInfinite();
+
   const { lastElementRef } = useInfinityScroll({ fetchNextPage, hasNextPage });
 
   const productCount = productList.length;

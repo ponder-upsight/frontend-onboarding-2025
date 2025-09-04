@@ -8,11 +8,11 @@ export const Path = {
 export const NAV_BARS = [
   {
     path: Path.ROOT,
-    label: "상품 목록",
+    label: "상품목록",
   },
   {
     path: Path.PRODUCT_ADD,
-    label: "상품 구매",
+    label: "상품등록",
   },
   {
     path: Path.CART,

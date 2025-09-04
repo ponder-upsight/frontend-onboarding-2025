@@ -34,10 +34,10 @@ const useDeleteProduct = () => {
 
     onMutate: async ({ productId }) => {
       router.push("/");
-      // 1. 진행 중인 모든 product 관련 쿼리를 취소합니다.
+      // 1. 진행 중인 모든 product 관련 쿼리를 취소
       await queryClient.cancelQueries({ queryKey: [QueryKeys.PRODUCTS] });
 
-      // 2. 현재 캐시된 데이터들을 백업합니다.
+      // 2. 현재 캐시된 데이터들을 백업
       const previousInfiniteData =
         queryClient.getQueryData<InfiniteProductData>([
           QueryKeys.PRODUCTS,
@@ -51,7 +51,7 @@ const useDeleteProduct = () => {
             Array.isArray(key) && key.length === 2 && typeof key[1] === "number"
         );
 
-      // 3. 무한 스크롤 쿼리에서 해당 상품을 제거합니다.
+      // 3. 무한 스크롤 쿼리에서 해당 상품을 제거
       queryClient.setQueryData<InfiniteProductData>(
         [QueryKeys.PRODUCTS, "infinite", 20],
         (oldData) => {
@@ -68,7 +68,7 @@ const useDeleteProduct = () => {
         }
       );
 
-      // 4. 페이지네이션된 쿼리들에서도 해당 상품을 제거합니다.
+      // 4. 페이지네이션된 쿼리들에서도 해당 상품을 제거
       previousPagedData.forEach(([queryKey]) => {
         queryClient.setQueryData<ProductListResponse>(queryKey, (oldData) => {
           if (!oldData?.pageResult) return oldData;
@@ -81,14 +81,11 @@ const useDeleteProduct = () => {
           };
         });
       });
-      // 5. 즉시 홈 페이지로 이동합니다.
-      // router.push("/");
-
-      // 6. 롤백을 위한 이전 데이터를 반환합니다.
+      // 롤백을 위한 데이터를 반환
       return { previousInfiniteData, previousPagedData };
     },
 
-    // 에러 발생 시 데이터를 롤백합니다.
+    // 에러 발생 시 데이터를 롤백
     onError: (err, variables, context) => {
       if (context?.previousInfiniteData) {
         queryClient.setQueryData(
@@ -106,7 +103,7 @@ const useDeleteProduct = () => {
       alert("상품 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
     },
 
-    // 성공/실패 여부와 관계없이 서버 상태와 동기화합니다.
+    // 성공/실패 여부와 관계없이 서버 상태와 동기화
     onSettled: (error, data, variables) => {
       const { productId } = variables;
       queryClient.invalidateQueries({ queryKey: [QueryKeys.PRODUCTS] });

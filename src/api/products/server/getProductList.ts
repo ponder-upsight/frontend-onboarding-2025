@@ -34,20 +34,14 @@ const getProductList = async ({
 
   const API_PATH = `/products?${params.toString()}`;
 
-  // serverFetch를 호출하고, 예상되는 응답 데이터 타입을 제네릭으로 전달합니다.
-  const result = await serverFetch<GetProductListResponse>(
-    API_PATH,
-    {
-      next: {
-        revalidate: 3600,
-        tags: [QueryKeys.PRODUCTS], // 개별 상품 태그
-      },
-    } // 3600초 동안 캐시
-  );
+  const result = await serverFetch<GetProductListResponse>(API_PATH, {
+    next: {
+      revalidate: 3600,
+      tags: [QueryKeys.PRODUCTS],
+    },
+  });
 
-  // serverFetch가 반환한 결과를 처리합니다.
   if (result.isSuccess) {
-    // 성공 시, API 데이터를 우리가 사용하려는 형태로 변환하여 반환합니다.
     return result.data;
   } else {
     return null;

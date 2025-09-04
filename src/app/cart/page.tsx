@@ -5,29 +5,21 @@ import {
   Heading,
   VStack,
   Divider,
-  Alert,
-  AlertIcon,
   Flex,
   Spacer,
 } from "@chakra-ui/react";
 import useCartStore from "@/lib/zustand/useCartStore";
 import CartItemWithProduct from "./_ui/CardWithProduct";
+import EmptyResult from "@/components/EmptyResult";
 
 const CartPage = () => {
   const { items } = useCartStore();
 
   if (items.length === 0) {
-    return (
-      <Container maxW="container.lg" py={8}>
-        <VStack spacing={8}>
-          <Heading size="lg">장바구니</Heading>
-          <Alert status="info">
-            <AlertIcon />
-            장바구니가 비어있습니다.
-          </Alert>
-        </VStack>
-      </Container>
-    );
+    <EmptyResult
+      heading="장바구니가 비어있습니다"
+      text={"장바구니를 추가하세요"}
+    />;
   }
 
   return (
@@ -37,7 +29,6 @@ const CartPage = () => {
           <Heading size="lg">장바구니</Heading>
           <Spacer />
         </Flex>
-
         <VStack spacing={4} align="stretch">
           {items.map((item) => (
             <CartItemWithProduct
@@ -47,7 +38,6 @@ const CartPage = () => {
             />
           ))}
         </VStack>
-
         <Divider />
       </VStack>
     </Container>

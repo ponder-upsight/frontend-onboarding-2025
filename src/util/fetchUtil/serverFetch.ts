@@ -5,7 +5,7 @@ type ServerFetchFailure = {
   error: string;
   data: undefined;
 };
-export type ServerFetchResult<T> = ServerFetchSuccess<T> | ServerFetchFailure;
+type ServerFetchResult<T> = ServerFetchSuccess<T> | ServerFetchFailure;
 
 type NextCacheOpt = { revalidate?: number; tags?: string[] } | undefined;
 
@@ -41,7 +41,7 @@ async function serverFetch<T = unknown>(
   }
 
   try {
-    const response = await fetch(`${BASE}/${url}`, {
+    const response = await fetch(`${BASE}${url}`, {
       ...init,
       headers: reqHeaders,
       body: requestBody,
