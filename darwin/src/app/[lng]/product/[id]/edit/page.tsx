@@ -11,7 +11,7 @@ import { Box, Flex, FormControl, VStack } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
 import FileUploadSection from "@/app/[lng]/components/File/FileUploadSection";
-import CurrentImagesSection from "@/app/[lng]/product/[id]/edit/components/CurrentImagesSection";
+import CurrentImagesSection from "@/app/[lng]/product/[id]/edit/components/CurrentImagesSection/CurrentImagesSection";
 import { Button } from "@/app/components/ui/Button";
 import { Input } from "@/app/components/ui/Input";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
+import { useCart } from "@/domain/cart/useCart";
+import { Product } from "@/domain/product/Product";
 import { ProductDetails } from "@/domain/product/ProductDetails";
 import { useProduct } from "@/domain/product/useProduct";
 import { useModalState } from "@/util/modal/useModalState";
@@ -20,6 +22,7 @@ export const useProductInfo = ({
   const orderConfirmModalState = useModalState();
   const { useOrderProduct } = useProduct();
   const orderProduct = useOrderProduct(id);
+  const { addNewItem } = useCart();
 
   const handleQuantityChange = (change: number) => {
     const newQuantity = stockQuantity + change;
@@ -44,9 +47,21 @@ export const useProductInfo = ({
   };
 
   const handleAddToCart = () => {
+    const product = new Product(
+      id,
+      productDetails.name,
+      productDetails.stockQuantity,
+      productDetails.thumbnailUrl
+    );
+
+    addNewItem(product.id!, stockQuantity);
+
     toast(SuccessToast, {
       data: {
-        title: t("addToCartSuccess", { name: productDetails.name, stockQuantity }),
+        title: t("addToCartSuccess", {
+          name: productDetails.name,
+          quantity: stockQuantity,
+        }),
       },
       position: "top-center",
       autoClose: 3000,

@@ -1,8 +1,8 @@
 export class Product {
   constructor(
-    public id: string | null = null,
-    public name: string,
-    public stockQuantity: number,
-    public thumbnailUrl: string
+    public readonly id: string | null = null,
+    public readonly name: string,
+    public readonly stockQuantity: number,
+    public readonly thumbnailUrl: string
   ) {}
 }

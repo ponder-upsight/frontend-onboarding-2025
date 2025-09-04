@@ -7,6 +7,7 @@ import { Product } from "@/domain/product/Product";
 import { useProduct } from "@/domain/product/useProduct";
 import { Box, Flex, Grid } from "@chakra-ui/react";
 
+import { CartSection } from "@/app/[lng]/components/Cart/CartSection";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import { TypoGraph } from "@/app/components/ui/Typography";
 import { useI18n } from "@/app/i18n/I18nProvider";
@@ -55,7 +56,12 @@ const HomePage = () => {
           </TypoGraph>
         </Flex>
 
-        <Grid templateColumns="repeat(auto-fill, minmax(320px, 1fr))" gap="24px" w="100%">
+        <Grid
+          templateColumns="repeat(auto-fill, minmax(320px, 1fr))"
+          gap="24px"
+          w="100%"
+          mb="48px"
+        >
           {getProducts.data?.map((product) => (
             <ProductCard
               key={product.id}
@@ -65,6 +71,8 @@ const HomePage = () => {
             />
           ))}
         </Grid>
+
+        <CartSection />
       </Box>
     </Box>
   );

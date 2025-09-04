@@ -56,5 +56,9 @@
   "updateFailed": "상품 수정에 실패했습니다",
   "currentImages": "현재 이미지",
   "deleteImage": "이미지 삭제",
-  "newImages": "새 이미지"
+  "newImages": "새 이미지",
+  "cart": "장바구니",
+  "cartItemsCount": "총 {{count}}개 상품",
+  "cartEmpty": "장바구니가 비어있습니다",
+  "quantity": "수량: {{count}}개"
 }

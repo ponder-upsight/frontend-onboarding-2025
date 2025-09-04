@@ -56,5 +56,9 @@
   "updateFailed": "Failed to update product",
   "currentImages": "Current Images",
   "deleteImage": "Delete Image",
-  "newImages": "New Images"
+  "newImages": "New Images",
+  "cart": "Shopping Cart",
+  "cartItemsCount": "Total {{count}} items",
+  "cartEmpty": "Your cart is empty",
+  "quantity": "Quantity: {{count}}"
 }
