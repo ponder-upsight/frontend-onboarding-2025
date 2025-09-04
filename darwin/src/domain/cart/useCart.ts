@@ -7,12 +7,17 @@ export const useCart = () => {
     cartStore.addNewItem(productId, quantity);
   };
 
+  const clear = () => {
+    cartStore.clear();
+  };
+
   const getItems = () => {
     return cartStore.items;
   };
 
   return {
     addNewItem,
+    clear,
     items: getItems(),
   };
 };

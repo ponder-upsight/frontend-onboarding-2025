@@ -60,5 +60,6 @@
   "cart": "장바구니",
   "cartItemsCount": "총 {{count}}개 상품",
   "cartEmpty": "장바구니가 비어있습니다",
-  "quantity": "수량: {{count}}개"
+  "quantity": "수량: {{count}}개",
+  "clearCart": "비우기"
 }

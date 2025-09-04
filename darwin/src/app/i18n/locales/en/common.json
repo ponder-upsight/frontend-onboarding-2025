@@ -60,5 +60,6 @@
   "cart": "Shopping Cart",
   "cartItemsCount": "Total {{count}} items",
   "cartEmpty": "Your cart is empty",
-  "quantity": "Quantity: {{count}}"
+  "quantity": "Quantity: {{count}}",
+  "clearCart": "Clear"
 }
