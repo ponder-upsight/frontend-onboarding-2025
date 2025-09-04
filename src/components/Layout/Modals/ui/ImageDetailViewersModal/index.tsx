@@ -14,7 +14,7 @@ import {
   Skeleton,
 } from "@chakra-ui/react";
 
-import useImageModalStore from "@/lib/zustand/useImageModalStore";
+import useImageModalStore from "@/shared/lib/zustand/useImageModalStore";
 import Image from "next/image";
 import useImageLoadingHandler from "./hooks/useImageLoadingHandler";
 

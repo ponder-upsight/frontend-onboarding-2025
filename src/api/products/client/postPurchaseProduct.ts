@@ -1,4 +1,4 @@
-import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
+import { publicAxiosInstance } from "@/shared/utils/fetchUtil/axionsInstance";
 
 export interface PostPurchaseProductProps {
   productId: string;

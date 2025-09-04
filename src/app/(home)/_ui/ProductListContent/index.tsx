@@ -1,12 +1,12 @@
 "use client";
 
-import { ProductListItem } from "@/types/products";
+import { ProductListItem } from "@/shared/types/products";
 import { Grid } from "@chakra-ui/react";
 import ProductCard from "./_ui/ProudctCard";
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import ProductCardSkeleton from "./_ui/ProudctCard/skeleton";
 import useGetProductListInfinite from "@/api/products/client/useGetInfinityProductList";
-import useInfinityScroll from "@/util/hooks/useInfinityScroll";
+import useInfinityScroll from "@/shared/hooks/useInfinityScroll";
 
 const ProductListContent = () => {
   const {

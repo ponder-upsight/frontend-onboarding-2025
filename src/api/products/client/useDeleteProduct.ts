@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
-import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
+import { publicAxiosInstance } from "@/shared/utils/fetchUtil/axionsInstance";
 import { useRouter } from "next/navigation";
-import { ProductListItem } from "@/types/products";
+import { ProductListItem } from "@/shared/types/products";
 import revaildateTags from "@/app/api/revalidate";
 
 interface DeleteProductParams {

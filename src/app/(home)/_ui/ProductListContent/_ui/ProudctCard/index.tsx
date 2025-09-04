@@ -1,7 +1,7 @@
 import { Box, Image, Text, Badge, Flex, Button } from "@chakra-ui/react";
 
-import { ProductListItem } from "@/types/products";
-import { formattedDotDate } from "@/util/dateUtil";
+import { ProductListItem } from "@/shared/types/products";
+import { formattedDotDate } from "@/shared/utils/dateUtil";
 import Link from "next/link";
 
 type ProductCardProps = {

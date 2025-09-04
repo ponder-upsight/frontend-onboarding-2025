@@ -17,11 +17,11 @@ import {
 } from "@chakra-ui/react";
 import RouterBackButton from "@/components/RouterBackButton.tsx";
 import ImageViewrPanel from "@/components/ImageViewrPanel";
-import { formattedDotDate } from "@/util/dateUtil";
+import { formattedDotDate } from "@/shared/utils/dateUtil";
 import Link from "next/link";
 import useGetProduct from "@/api/products/client/useGetProduct";
 import useDeleteProduct from "@/api/products/client/useDeleteProduct";
-import useCartStore from "@/lib/zustand/useCartStore";
+import useCartStore from "@/shared/lib/zustand/useCartStore";
 
 interface ProductDetailContentProps {
   productId: string;

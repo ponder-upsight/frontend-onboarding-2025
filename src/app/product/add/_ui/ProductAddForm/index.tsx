@@ -3,10 +3,10 @@
 import { Box, Button, Container, Heading, VStack } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import React from "react";
-import ContolledInputProvider from "@/lib/react-hook-form/ContolledInputProvider";
-import ControlledNumberInput from "@/lib/react-hook-form/ControlledNumberInput";
+import ContolledInputProvider from "@/shared/lib/react-hook-form/ContolledInputProvider";
+import ControlledNumberInput from "@/shared/lib/react-hook-form/ControlledNumberInput";
 import { Input, Textarea } from "@chakra-ui/react";
-import ImagePreview from "@/lib/react-hook-form/ImagePreview";
+import ImagePreview from "@/shared/lib/react-hook-form/ImagePreview";
 import useProductAddForm from "./_hooks/useProdcutAddForm";
 
 const ProductAddForm = () => {

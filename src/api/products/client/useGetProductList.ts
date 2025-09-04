@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import getProductList from "./getProductList";
-import { ProductListItem } from "@/types/products";
+import { ProductListItem } from "@/shared/types/products";
 
 const PAGE_SIZE = 20; // 한 페이지당 상품 수
 

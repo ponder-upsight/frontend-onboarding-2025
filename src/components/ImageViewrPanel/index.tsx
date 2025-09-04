@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import useImageModalStore from "@/lib/zustand/useImageModalStore";
+import useImageModalStore from "@/shared/lib/zustand/useImageModalStore";
 
 interface ImageViewrPanelProps {
   imageProps: React.ComponentProps<typeof Image>;

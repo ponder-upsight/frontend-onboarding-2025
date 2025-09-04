@@ -12,7 +12,7 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import FileUpload from "@/lib/react-hook-form/FileUpload";
+import FileUpload from "@/shared/lib/react-hook-form/FileUpload";
 import { removeAllNewImages, removeNewImage } from "./lib/imageUplaodUtil";
 import getPreviewImages from "./lib/getPreviewImages";
 import useImageController from "./hooks/useImageController";

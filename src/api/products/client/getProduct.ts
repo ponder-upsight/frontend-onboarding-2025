@@ -1,5 +1,5 @@
-import { ProductDetailItem } from "@/types/products";
-import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
+import { ProductDetailItem } from "@/shared/types/products";
+import { publicAxiosInstance } from "@/shared/utils/fetchUtil/axionsInstance";
 
 // 함수에 전달될 파라미터 타입
 interface GetProductProps {

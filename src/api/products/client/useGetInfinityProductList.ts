@@ -3,7 +3,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import getProductList from "./getProductList";
-import { ProductListItem } from "@/types/products";
+import { ProductListItem } from "@/shared/types/products";
 import { AxiosError } from "axios";
 
 const PAGE_SIZE = 20;

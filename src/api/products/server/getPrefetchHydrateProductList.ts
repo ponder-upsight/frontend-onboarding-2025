@@ -1,4 +1,4 @@
-import { getQueryClient } from "@/lib/react-query/getQueryClient";
+import { getQueryClient } from "@/shared/lib/react-query/getQueryClient";
 import { dehydrate } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import getProductList from "./getProductList";

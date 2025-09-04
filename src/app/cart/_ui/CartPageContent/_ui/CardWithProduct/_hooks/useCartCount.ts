@@ -1,5 +1,5 @@
-import useCartStore from "@/lib/zustand/useCartStore";
-import { ProductDetailItem } from "@/types/products";
+import useCartStore from "@/shared/lib/zustand/useCartStore";
+import { ProductDetailItem } from "@/shared/types/products";
 import { useEffect, useRef, useState } from "react";
 
 interface UseCartCountProps {

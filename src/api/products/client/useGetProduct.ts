@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
 import getProduct from "./getProduct";
-import { ProductDetailItem } from "@/types/products";
+import { ProductDetailItem } from "@/shared/types/products";
 
 type GetProductListResponse = ProductDetailItem;
 

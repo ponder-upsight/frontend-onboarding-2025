@@ -1,7 +1,7 @@
 "use client";
 
-import useCartStore from "@/lib/zustand/useCartStore";
-import { NAV_BARS, Path, isRouteActive } from "@/util/pathUtil";
+import useCartStore from "@/shared/lib/zustand/useCartStore";
+import { NAV_BARS, Path, isRouteActive } from "@/shared/utils/pathUtil";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

@@ -8,7 +8,7 @@ import {
   Spacer,
   Button,
 } from "@chakra-ui/react";
-import useCartStore from "@/lib/zustand/useCartStore";
+import useCartStore from "@/shared/lib/zustand/useCartStore";
 import CartItemWithProduct from "./_ui/CardWithProduct";
 import EmptyResult from "@/components/EmptyResult";
 import usePostPurchaseProductsAll from "@/api/products/client/usePostPurchaseProductsAll";

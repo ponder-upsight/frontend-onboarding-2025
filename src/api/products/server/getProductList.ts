@@ -1,5 +1,5 @@
-import { ProductListItem } from "@/types/products";
-import serverFetch from "@/util/fetchUtil/serverFetch"; // serverFetch 경로에 맞게 수정해주세요
+import { ProductListItem } from "@/shared/types/products";
+import serverFetch from "@/shared/utils/fetchUtil/serverFetch"; // serverFetch 경로에 맞게 수정해주세요
 import { QueryKeys } from "../QueryKeys";
 
 // API 응답의 실제 데이터 구조를 정의합니다.

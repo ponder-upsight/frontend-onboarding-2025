@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
-import { publicAxiosInstance } from "@/util/fetchUtil/axionsInstance";
+import { publicAxiosInstance } from "@/shared/utils/fetchUtil/axionsInstance";
 import { useRouter } from "next/navigation";
 import revalidateTags from "@/app/api/revalidate";
 

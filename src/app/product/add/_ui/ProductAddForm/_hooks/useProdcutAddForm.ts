@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import {
   productSchema,
   ProductFormValues,
-} from "@/lib/react-hook-form/schema/productSchema";
+} from "@/shared/lib/react-hook-form/schema/productSchema";
 import usePostCreateProduct from "@/api/products/client/usePostCreateProduct";
 
 interface UseProductAddFormReturn {

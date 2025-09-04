@@ -1,5 +1,5 @@
-import { ProductDetailItem } from "@/types/products"; // ProductDetail 타입을 정의해야 합니다.
-import serverFetch from "@/util/fetchUtil/serverFetch";
+import { ProductDetailItem } from "@/shared/types/products"; // ProductDetail 타입을 정의해야 합니다.
+import serverFetch from "@/shared/utils/fetchUtil/serverFetch";
 import { QueryKeys } from "../QueryKeys";
 
 interface GetProductParams {

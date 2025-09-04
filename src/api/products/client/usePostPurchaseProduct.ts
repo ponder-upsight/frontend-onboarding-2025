@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QueryKeys } from "../QueryKeys";
-import useCartStore from "@/lib/zustand/useCartStore";
+import useCartStore from "@/shared/lib/zustand/useCartStore";
 import { useRouter } from "next/navigation";
 import {
   postPurchaseProduct,
