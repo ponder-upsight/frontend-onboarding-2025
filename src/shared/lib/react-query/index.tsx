@@ -3,6 +3,12 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import { customToast } from "../zustand/useCustomToastStore";
+import { AxiosError } from "axios";
+
+type AxiosErrorResponse = {
+  code: string;
+  message: string;
+};
 
 interface QueryProviderProps {
   children: React.ReactNode;
@@ -19,12 +25,14 @@ const QueryProvider = ({ children }: QueryProviderProps) => {
           },
           mutations: {
             onError: (error) => {
+              const errorObj = error as AxiosError;
+              const { response } = errorObj;
+              const { data } = response || {};
+              const { message, code } = data as AxiosErrorResponse;
               customToast({
                 status: "error",
                 message:
-                  error instanceof Error
-                    ? error.message
-                    : "알 수 없는 에러가 발생했습니다.",
+                  `${message} : ${code}` || "요청 처리 중 문제가 발생했습니다.",
                 duration: 3000,
               });
             },
