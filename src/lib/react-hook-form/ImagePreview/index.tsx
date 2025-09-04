@@ -1,6 +1,5 @@
 import {
   Controller,
-  useController,
   useFormContext,
   FieldValues,
   FieldPath,
@@ -16,6 +15,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import FileUpload from "@/lib/react-hook-form/FileUpload";
+import { removeAllNewImages, removeNewImage } from "./lib/imageUplaodUtil";
+import getPreviewImages from "./lib/getPreviewImages";
+import useImageController from "./hooks/useImageController";
+import PreviewImageBox from "./ui/PreviewImageBox";
 
 interface ImagePreviewProps<T extends FieldValues = FieldValues> {
   name: FieldPath<T>;
@@ -37,69 +40,21 @@ const ImagePreview = <T extends FieldValues = FieldValues>({
     formState: { errors },
   } = useFormContext<T>();
 
-  const deletedImagesController = useController({
-    name: deletedImageUrlsFieldName || ("" as FieldPath<T>),
-    control,
-    defaultValue: [] as unknown as T[FieldPath<T>],
-    disabled: !deletedImageUrlsFieldName,
-  });
-
-  const deletedImageUrls: string[] = deletedImageUrlsFieldName
-    ? deletedImagesController?.field.value || []
-    : [];
-  const setDeletedImageUrls = deletedImageUrlsFieldName
-    ? deletedImagesController?.field.onChange
-    : null;
-
-  const handleRemoveExistingImage = (url: string) => {
-    if (setDeletedImageUrls) {
-      setDeletedImageUrls([...deletedImageUrls, url]);
-    }
-  };
-
-  // 삭제되지 않은 기존 이미지들만 필터링
-  const filteredExistingImages = existingImageUrls.filter(
-    (url) => !deletedImageUrls.includes(url)
-  );
-
   const error = errors[name]?.message as string | undefined;
+
+  const { filteredExistingImages, handleRemoveExistingImage } =
+    useImageController<T>({
+      control,
+      existingImageUrls,
+      deletedImageUrlsFieldName,
+    });
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value } }) => {
-        const files = value as FileList | undefined;
-
-        // 새로 선택한 이미지 삭제 함수
-        const removeNewImage = (indexToRemove: number) => {
-          if (!files || files.length === 0) return;
-
-          const filesArray = Array.from(files);
-          const newFiles = filesArray.filter(
-            (_, index) => index !== indexToRemove
-          );
-
-          if (newFiles.length === 0) {
-            onChange(undefined);
-          } else {
-            const dataTransfer = new DataTransfer();
-            newFiles.forEach((file) => dataTransfer.items.add(file));
-            onChange(dataTransfer.files);
-          }
-        };
-
-        // 단일 이미지 전체 삭제 함수
-        const removeAllNewImages = () => {
-          onChange(undefined);
-        };
-
-        // 미리보기 URL 생성
-        const previews =
-          files && files.length > 0
-            ? Array.from(files).map((file) => URL.createObjectURL(file as File))
-            : [];
-
+      render={({ field: { onChange, value: files } }) => {
+        const previews = getPreviewImages(files);
         return (
           <FormControl isInvalid={!!error}>
             <FormLabel fontSize="sm">{label}</FormLabel>
@@ -116,53 +71,29 @@ const ImagePreview = <T extends FieldValues = FieldValues>({
                     spacing={4}
                     mb={2}>
                     {filteredExistingImages.map((url, index) => (
-                      <Box key={`existing-${index}`} position="relative">
-                        <Image
-                          src={url}
-                          alt={`현재 ${label} ${index}`}
-                          borderRadius="md"
-                          boxSize="150px"
-                          objectFit="cover"
-                        />
-                        {deletedImageUrlsFieldName && (
-                          <CloseButton
-                            position="absolute"
-                            top="2"
-                            right="2"
-                            size="sm"
-                            bg="red.500"
-                            color="white"
-                            _hover={{ bg: "red.600" }}
-                            onClick={() => handleRemoveExistingImage(url)}
-                          />
-                        )}
-                      </Box>
+                      <PreviewImageBox
+                        key={`existing-preview-${index}`}
+                        src={url}
+                        alt={`현재 ${label} ${index}`}
+                        onRemove={
+                          deletedImageUrlsFieldName
+                            ? () => handleRemoveExistingImage(url)
+                            : undefined
+                        }
+                      />
                     ))}
                   </SimpleGrid>
                 ) : (
-                  <Box position="relative" display="inline-block" mb={2}>
-                    <Image
-                      src={filteredExistingImages[0]}
-                      alt={`현재 ${label}`}
-                      borderRadius="md"
-                      boxSize="150px"
-                      objectFit="cover"
-                    />
-                    {deletedImageUrlsFieldName && (
-                      <CloseButton
-                        position="absolute"
-                        top="2"
-                        right="2"
-                        size="sm"
-                        bg="red.500"
-                        color="white"
-                        _hover={{ bg: "red.600" }}
-                        onClick={() =>
-                          handleRemoveExistingImage(filteredExistingImages[0])
-                        }
-                      />
-                    )}
-                  </Box>
+                  <PreviewImageBox
+                    src={filteredExistingImages[0]}
+                    alt={`현재 ${label}`}
+                    onRemove={
+                      deletedImageUrlsFieldName
+                        ? () =>
+                            handleRemoveExistingImage(filteredExistingImages[0])
+                        : undefined
+                    }
+                  />
                 )}
               </Box>
             )}
@@ -180,25 +111,18 @@ const ImagePreview = <T extends FieldValues = FieldValues>({
                   spacing={4}
                   mb={2}>
                   {previews.map((src, index) => (
-                    <Box key={`new-${index}`} position="relative">
-                      <Image
-                        src={src}
-                        alt={`${label} preview ${index}`}
-                        borderRadius="md"
-                        boxSize="150px"
-                        objectFit="cover"
-                      />
-                      <CloseButton
-                        position="absolute"
-                        top="2"
-                        right="2"
-                        size="sm"
-                        bg="red.500"
-                        color="white"
-                        _hover={{ bg: "red.600" }}
-                        onClick={() => removeNewImage(index)}
-                      />
-                    </Box>
+                    <PreviewImageBox
+                      key={`preview-${index}`}
+                      src={src}
+                      alt={`${label} preview ${index}`}
+                      onRemove={() =>
+                        removeNewImage({
+                          indexToRemove: index,
+                          files,
+                          onChange,
+                        })
+                      }
+                    />
                   ))}
                 </SimpleGrid>
                 <FileUpload<T> name={name} multiple={multiple} />
@@ -208,26 +132,15 @@ const ImagePreview = <T extends FieldValues = FieldValues>({
                 <Text fontSize="sm" color="gray.600" mb={2}>
                   새로 선택한 이미지:
                 </Text>
-                <Box position="relative" display="inline-block">
-                  <Image
-                    src={previews[0]}
-                    alt={`${label} preview`}
-                    borderRadius="md"
-                    boxSize="150px"
-                    objectFit="cover"
-                    mb={2}
-                  />
-                  <CloseButton
-                    position="absolute"
-                    top="2"
-                    right="2"
-                    size="sm"
-                    bg="red.500"
-                    color="white"
-                    _hover={{ bg: "red.600" }}
-                    onClick={removeAllNewImages}
-                  />
-                </Box>
+                <PreviewImageBox
+                  src={previews[0]}
+                  alt={`${label} preview`}
+                  onRemove={() =>
+                    removeAllNewImages({
+                      onChange,
+                    })
+                  }
+                />
                 <FileUpload<T> name={name} multiple={multiple} />
               </Box>
             )}
