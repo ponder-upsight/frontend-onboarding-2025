@@ -15,7 +15,6 @@ const usePostPurchaseProduct = () => {
     mutationFn: (postPurchaseProductProps: PostPurchaseProductProps) =>
       postPurchaseProduct(postPurchaseProductProps),
 
-    onError: () => {},
     onSuccess: (data, variables) => {
       const { productId } = variables;
       // 상품 생성 성공 시, 상품 목록 캐시를 무효화하여 최신 데이터로 갱신

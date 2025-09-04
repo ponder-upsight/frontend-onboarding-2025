@@ -137,6 +137,8 @@ export const usePutModifyProduct = () => {
           context.previousProductList
         );
       }
+      // 애러 토스트 메시지를 위한 에러 throw
+      throw err;
     },
 
     // 성공 실패 여부 관계 없이 백그라운드에서 서버 데이터 재검증

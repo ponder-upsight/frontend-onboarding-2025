@@ -99,6 +99,9 @@ const useDeleteProduct = () => {
           queryClient.setQueryData(queryKey, data);
         });
       }
+
+      // 애러 토스트 메시지를 위한 에러 throw
+      throw err;
     },
 
     // 성공/실패 여부와 관계없이 서버 상태와 동기화
